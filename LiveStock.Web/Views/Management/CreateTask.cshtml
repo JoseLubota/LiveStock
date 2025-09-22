@@ -1,0 +1,240 @@
+@model LiveStock.Core.Models.FarmTask
+
+@{
+    ViewData["Title"] = "Create Task";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-dark-green sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Dashboard">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Sheep">
+                            <i class="fas fa-sheep me-2"></i>
+                            Sheep Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Cows">
+                            <i class="fas fa-cow me-2"></i>
+                            Cow Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Camps">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            Camps
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Staff">
+                            <i class="fas fa-users me-2"></i>
+                            Staff Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white active" asp-action="Tasks">
+                            <i class="fas fa-tasks me-2"></i>
+                            Tasks
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Water">
+                            <i class="fas fa-tint me-2"></i>
+                            Water & Rainfall
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Assets">
+                            <i class="fas fa-tools me-2"></i>
+                            Assets
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Finance">
+                            <i class="fas fa-dollar-sign me-2"></i>
+                            Finance
+                        </a>
+                    </li>
+                    <li class="nav-item mt-3">
+                        <a class="nav-link text-warning" asp-controller="Account" asp-action="Logout">
+                            <i class="fas fa-sign-out-alt me-2"></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Create New Task</h1>
+                <a asp-action="Tasks" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Tasks
+                </a>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card shadow">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="fas fa-plus me-2"></i>Create New Task</h5>
+                        </div>
+                        <div class="card-body">
+                            <form asp-action="CreateTask" method="post" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label asp-for="Description" class="form-label">Task Description:</label>
+                                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Describe the task in detail" required></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label asp-for="AssignedToId" class="form-label">Assign To:</label>
+                                            <select asp-for="AssignedToId" class="form-control" required>
+                                                <option value="">Select Staff Member</option>
+                                                @foreach (var staff in ViewBag.Staff)
+                                                {
+                                                    <option value="@staff.Id">@staff.Name (@staff.EmployeeId)</option>
+                                                }
+                                            </select>
+                                            <span asp-validation-for="AssignedToId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label asp-for="Importance" class="form-label">Importance:</label>
+                                            <select asp-for="Importance" class="form-control" required>
+                                                <option value="">Select Importance</option>
+                                                <option value="Low">Low</option>
+                                                <option value="Medium">Medium</option>
+                                                <option value="High">High</option>
+                                                <option value="Critical">Critical</option>
+                                            </select>
+                                            <span asp-validation-for="Importance" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="DueDate" class="form-label">Due Date:</label>
+                                    <input asp-for="DueDate" class="form-control" type="datetime-local" required />
+                                    <span asp-validation-for="DueDate" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="Notes" class="form-label">Notes (optional):</label>
+                                    <textarea asp-for="Notes" class="form-control" rows="2" placeholder="Any additional notes about this task"></textarea>
+                                    <span asp-validation-for="Notes" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Photo (optional):</label>
+                                    <input type="file" class="form-control" name="photo" accept="image/*" />
+                                    <small class="text-muted">Add a photo to help describe the task</small>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a asp-action="Tasks" class="btn btn-secondary">Cancel</a>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-plus me-2"></i>Create Task
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card shadow">
+                        <div class="card-header bg-info text-white">
+                            <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Task Guidelines</h6>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Description:</strong> Be specific about what needs to be done.</p>
+                            <p><strong>Assignment:</strong> Choose the most appropriate staff member.</p>
+                            <p><strong>Importance:</strong> Set priority level based on urgency.</p>
+                            <p><strong>Due Date:</strong> Set realistic deadlines.</p>
+                            <p><strong>Notes:</strong> Include any special instructions.</p>
+                            <p><strong>Photo:</strong> Visual reference can help clarify tasks.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card shadow mt-3">
+                        <div class="card-header bg-warning text-white">
+                            <h6 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Importance Levels</h6>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Low:</strong> Routine tasks, no urgency</p>
+                            <p><strong>Medium:</strong> Important but not critical</p>
+                            <p><strong>High:</strong> Urgent, needs attention soon</p>
+                            <p><strong>Critical:</strong> Emergency, immediate action required</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    // Set default due date to tomorrow
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(9, 0, 0, 0); // 9 AM tomorrow
+    document.querySelector('input[name="DueDate"]').value = tomorrow.toISOString().slice(0, 16);
+</script>
+
+<style>
+    .sidebar {
+        min-height: 100vh;
+        box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    }
+    
+    .sidebar .nav-link {
+        font-weight: 500;
+        color: #333;
+        padding: 0.75rem 1rem;
+        border-radius: 0.25rem;
+        margin: 0.125rem 0.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: var(--orange-yellow) !important;
+    }
+    
+    .card {
+        border: none;
+        border-radius: 15px;
+    }
+    
+    .btn {
+        border-radius: 10px;
+        font-weight: 600;
+    }
+    
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        transition: border-color 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: var(--medium-green);
+        box-shadow: 0 0 0 0.2rem rgba(78, 113, 69, 0.25);
+    }
+</style> 

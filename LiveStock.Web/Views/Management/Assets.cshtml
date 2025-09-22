@@ -1,0 +1,375 @@
+@model IEnumerable<LiveStock.Core.Models.Asset>
+
+@{
+    ViewData["Title"] = "Assets Management";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-dark-green sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Dashboard">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Sheep">
+                            <i class="fas fa-sheep me-2"></i>
+                            Sheep Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Cows">
+                            <i class="fas fa-cow me-2"></i>
+                            Cow Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Camps">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            Camps
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Staff">
+                            <i class="fas fa-users me-2"></i>
+                            Staff Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Tasks">
+                            <i class="fas fa-tasks me-2"></i>
+                            Tasks
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Water">
+                            <i class="fas fa-tint me-2"></i>
+                            Water & Rainfall
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white active" asp-action="Assets">
+                            <i class="fas fa-tools me-2"></i>
+                            Assets
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Finance">
+                            <i class="fas fa-dollar-sign me-2"></i>
+                            Finance
+                        </a>
+                    </li>
+                    <li class="nav-item mt-3">
+                        <a class="nav-link text-warning" asp-controller="Account" asp-action="Logout">
+                            <i class="fas fa-sign-out-alt me-2"></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Assets Management</h1>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addAssetModal">
+                    <i class="fas fa-plus me-2"></i>Add New Asset
+                </button>
+            </div>
+
+            <!-- Asset Categories -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-seedling fa-3x text-success mb-3"></i>
+                            <h5>Feed</h5>
+                            <h3 class="text-success">@Model.Count(a => a.Category == "Feed")</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-fence fa-3x text-warning mb-3"></i>
+                            <h5>Fencing</h5>
+                            <h3 class="text-warning">@Model.Count(a => a.Category == "Fencing")</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-truck fa-3x text-info mb-3"></i>
+                            <h5>Vehicles</h5>
+                            <h3 class="text-info">@Model.Count(a => a.Category == "Vehicles")</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-list fa-3x text-primary mb-3"></i>
+                            <h5>Cattle Lists</h5>
+                            <h3 class="text-primary">@Model.Count(a => a.Category == "Cattle Lists")</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assets List -->
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="mb-0"><i class="fas fa-list me-2"></i>All Assets</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Type</th>
+                                        <th>Quantity</th>
+                                        <th>Purchase Price</th>
+                                        <th>Status</th>
+                                        <th>Location</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var asset in Model)
+                                    {
+                                        <tr>
+                                            <td>@asset.Name</td>
+                                            <td>
+                                                <span class="badge bg-secondary">@asset.Category</span>
+                                            </td>
+                                            <td>@asset.Type</td>
+                                            <td>
+                                                @if (asset.Quantity.HasValue)
+                                                {
+                                                    @asset.Quantity @asset.Unit
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (asset.PurchasePrice.HasValue)
+                                                {
+                                                    <span>$@asset.PurchasePrice</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (asset.Status == "Active")
+                                                {
+                                                    <span class="badge bg-success">@asset.Status</span>
+                                                }
+                                                else if (asset.Status == "Maintenance")
+                                                {
+                                                    <span class="badge bg-warning">@asset.Status</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">@asset.Status</span>
+                                                }
+                                            </td>
+                                            <td>@(asset.Location ?? "-")</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-info" onclick="editAsset(@asset.Id)">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-danger" onclick="removeAsset(@asset.Id)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center">No assets found. Add your first asset to get started!</p>
+                    }
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addAssetModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Add New Asset</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="assetForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Asset Name:</label>
+                                <input type="text" class="form-control" name="name" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Category:</label>
+                                <select class="form-control" name="category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Feed">Feed</option>
+                                    <option value="Fencing">Fencing</option>
+                                    <option value="Vehicles">Vehicles</option>
+                                    <option value="Cattle Lists">Cattle Lists</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Type:</label>
+                                <input type="text" class="form-control" name="type" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Quantity:</label>
+                                <input type="number" class="form-control" name="quantity" min="0" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Unit:</label>
+                                <input type="text" class="form-control" name="unit" placeholder="kg, pieces, liters, etc." />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Purchase Price:</label>
+                                <input type="number" class="form-control" name="purchasePrice" step="0.01" min="0" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Purchase Date:</label>
+                                <input type="date" class="form-control" name="purchaseDate" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Location:</label>
+                                <input type="text" class="form-control" name="location" placeholder="Where is this asset stored?" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description:</label>
+                        <textarea class="form-control" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Add Asset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('assetForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const assetName = formData.get('name');
+        const category = formData.get('category');
+        
+        alert(`Asset "${assetName}" added to ${category} category successfully!`);
+        
+        bootstrap.Modal.getInstance(document.getElementById('addAssetModal')).hide();
+        
+        this.reset();
+    });
+
+    function editAsset(assetId) {
+        alert(`Edit asset ${assetId}`);
+    }
+
+    function removeAsset(assetId) {
+        if (confirm('Are you sure you want to remove this asset?')) {
+            alert(`Asset ${assetId} removed successfully`);
+        }
+    }
+</script>
+
+<style>
+    .sidebar {
+        min-height: 100vh;
+        box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    }
+    
+    .sidebar .nav-link {
+        font-weight: 500;
+        color: #333;
+        padding: 0.75rem 1rem;
+        border-radius: 0.25rem;
+        margin: 0.125rem 0.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: var(--orange-yellow) !important;
+    }
+    
+    .card {
+        border: none;
+        border-radius: 15px;
+        transition: transform 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+    }
+    
+    .btn {
+        border-radius: 10px;
+        font-weight: 600;
+    }
+    
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        transition: border-color 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: var(--medium-green);
+        box-shadow: 0 0 0 0.2rem rgba(78, 113, 69, 0.25);
+    }
+</style> 

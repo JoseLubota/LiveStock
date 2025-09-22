@@ -1,0 +1,11 @@
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/bin/Debug/net9.0/LiveStock.Core.deps.json
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/bin/Debug/net9.0/LiveStock.Core.dll
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/bin/Debug/net9.0/LiveStock.Core.pdb
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/obj/Debug/net9.0/LiveStock.Core.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/obj/Debug/net9.0/LiveStock.Core.AssemblyInfoInputs.cache
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/obj/Debug/net9.0/LiveStock.Core.AssemblyInfo.cs
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/obj/Debug/net9.0/LiveStock.Core.csproj.CoreCompileInputs.cache
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/obj/Debug/net9.0/LiveStock.Core.dll
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/obj/Debug/net9.0/refint/LiveStock.Core.dll
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/obj/Debug/net9.0/LiveStock.Core.pdb
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/obj/Debug/net9.0/ref/LiveStock.Core.dll

@@ -1,0 +1,17 @@
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/bin/Debug/net9.0/LiveStock.Infrastructure.deps.json
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/bin/Debug/net9.0/LiveStock.Infrastructure.runtimeconfig.json
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/bin/Debug/net9.0/LiveStock.Infrastructure.dll
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/bin/Debug/net9.0/LiveStock.Infrastructure.pdb
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/bin/Debug/net9.0/LiveStock.Core.dll
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/bin/Debug/net9.0/LiveStock.Core.pdb
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/obj/Debug/net9.0/LiveStock.Infrastructure.csproj.AssemblyReference.cache
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/obj/Debug/net9.0/LiveStock.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/obj/Debug/net9.0/LiveStock.Infrastructure.AssemblyInfoInputs.cache
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/obj/Debug/net9.0/LiveStock.Infrastructure.AssemblyInfo.cs
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/obj/Debug/net9.0/LiveStock.Infrastructure.csproj.CoreCompileInputs.cache
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/obj/Debug/net9.0/LiveStoc.C39C4EAF.Up2Date
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/obj/Debug/net9.0/LiveStock.Infrastructure.dll
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/obj/Debug/net9.0/refint/LiveStock.Infrastructure.dll
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/obj/Debug/net9.0/LiveStock.Infrastructure.pdb
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/obj/Debug/net9.0/LiveStock.Infrastructure.genruntimeconfig.cache
+/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/obj/Debug/net9.0/ref/LiveStock.Infrastructure.dll

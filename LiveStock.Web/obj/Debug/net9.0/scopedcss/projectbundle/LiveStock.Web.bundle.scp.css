@@ -1,0 +1,49 @@
+/* _content/LiveStock.Web/Views/Shared/_Layout.cshtml.rz.scp.css */
+/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand[b-umye4bd5vu] {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+a[b-umye4bd5vu] {
+  color: #0077cc;
+}
+
+.btn-primary[b-umye4bd5vu] {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active[b-umye4bd5vu], .nav-pills .show > .nav-link[b-umye4bd5vu] {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.border-top[b-umye4bd5vu] {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom[b-umye4bd5vu] {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow[b-umye4bd5vu] {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy[b-umye4bd5vu] {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+.footer[b-umye4bd5vu] {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}

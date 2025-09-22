@@ -1,0 +1,400 @@
+@model IEnumerable<LiveStock.Core.Models.FinancialRecord>
+
+@{
+    ViewData["Title"] = "Finance Management";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-dark-green sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Dashboard">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Sheep">
+                            <i class="fas fa-sheep me-2"></i>
+                            Sheep Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Cows">
+                            <i class="fas fa-cow me-2"></i>
+                            Cow Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Camps">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            Camps
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Staff">
+                            <i class="fas fa-users me-2"></i>
+                            Staff Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Tasks">
+                            <i class="fas fa-tasks me-2"></i>
+                            Tasks
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Water">
+                            <i class="fas fa-tint me-2"></i>
+                            Water & Rainfall
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Assets">
+                            <i class="fas fa-tools me-2"></i>
+                            Assets
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white active" asp-action="Finance">
+                            <i class="fas fa-dollar-sign me-2"></i>
+                            Finance
+                        </a>
+                    </li>
+                    <li class="nav-item mt-3">
+                        <a class="nav-link text-warning" asp-controller="Account" asp-action="Logout">
+                            <i class="fas fa-sign-out-alt me-2"></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Finance Management</h1>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addFinancialRecordModal">
+                    <i class="fas fa-plus me-2"></i>Add Financial Record
+                </button>
+            </div>
+
+            <!-- Financial Summary Cards -->
+            <div class="row mb-4">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Total Income
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        $@Model.Where(f => f.Type == "Income").Sum(f => f.Amount).ToString("N2")
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                        Total Expenses
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        $@Model.Where(f => f.Type == "Expense").Sum(f => f.Amount).ToString("N2")
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-minus-circle fa-2x text-danger"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Net Profit
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        $@(Model.Where(f => f.Type == "Income").Sum(f => f.Amount) - Model.Where(f => f.Type == "Expense").Sum(f => f.Amount))
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-chart-line fa-2x text-info"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Total Records
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        @Model.Count()
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-list fa-2x text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Records Table -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="mb-0"><i class="fas fa-list me-2"></i>Financial Records</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Amount</th>
+                                        <th>Reference</th>
+                                        <th>Notes</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var record in Model)
+                                    {
+                                        <tr>
+                                            <td>@record.TransactionDate.ToString("MM/dd/yyyy")</td>
+                                            <td>
+                                                @if (record.Type == "Income")
+                                                {
+                                                    <span class="badge bg-success">@record.Type</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">@record.Type</span>
+                                                }
+                                            </td>
+                                            <td>@record.Description</td>
+                                            <td>@(record.Category ?? "-")</td>
+                                            <td>
+                                                <span class="@(record.Type == "Income" ? "text-success" : "text-danger")">
+                                                    $@record.Amount.ToString("N2")
+                                                </span>
+                                            </td>
+                                            <td>@(record.Reference ?? "-")</td>
+                                            <td>@(record.Notes ?? "-")</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-info" onclick="editFinancialRecord(@record.Id)">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-danger" onclick="removeFinancialRecord(@record.Id)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center">No financial records found. Add your first record to get started!</p>
+                    }
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Add Financial Record Modal -->
+<div class="modal fade" id="addFinancialRecordModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Add Financial Record</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="financialRecordForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Type:</label>
+                                <select class="form-control" name="type" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Income">Income</option>
+                                    <option value="Expense">Expense</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Category:</label>
+                                <select class="form-control" name="category">
+                                    <option value="">Select Category</option>
+                                    <option value="Livestock Sales">Livestock Sales</option>
+                                    <option value="Feed">Feed</option>
+                                    <option value="Veterinary">Veterinary</option>
+                                    <option value="Equipment">Equipment</option>
+                                    <option value="Labor">Labor</option>
+                                    <option value="Utilities">Utilities</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description:</label>
+                        <input type="text" class="form-control" name="description" required />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Amount:</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" class="form-control" name="amount" step="0.01" min="0" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Transaction Date:</label>
+                                <input type="date" class="form-control" name="transactionDate" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Reference:</label>
+                                <input type="text" class="form-control" name="reference" placeholder="Invoice #, Receipt #, etc." />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Notes:</label>
+                                <textarea class="form-control" name="notes" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Add Record</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .sidebar {
+        min-height: 100vh;
+        box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    }
+    
+    .sidebar .nav-link {
+        font-weight: 500;
+        color: #333;
+        padding: 0.75rem 1rem;
+        border-radius: 0.25rem;
+        margin: 0.125rem 0.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: var(--orange-yellow) !important;
+    }
+    
+    .card {
+        border: none;
+        border-radius: 15px;
+    }
+    
+    .border-left-success {
+        border-left: 0.25rem solid var(--medium-green) !important;
+    }
+    
+    .border-left-danger {
+        border-left: 0.25rem solid #dc3545 !important;
+    }
+    
+    .border-left-info {
+        border-left: 0.25rem solid var(--orange-yellow) !important;
+    }
+    
+    .border-left-warning {
+        border-left: 0.25rem solid var(--burnt-orange) !important;
+    }
+    
+    .text-success {
+        color: var(--medium-green) !important;
+    }
+    
+    .text-danger {
+        color: #dc3545 !important;
+    }
+    
+    .text-info {
+        color: var(--orange-yellow) !important;
+    }
+    
+    .text-warning {
+        color: var(--burnt-orange) !important;
+    }
+    
+    .text-gray-800 {
+        color: var(--dark-gray) !important;
+    }
+    
+    .btn {
+        border-radius: 10px;
+        font-weight: 600;
+    }
+    
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        transition: border-color 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: var(--medium-green);
+        box-shadow: 0 0 0 0.2rem rgba(78, 113, 69, 0.25);
+    }
+</style>

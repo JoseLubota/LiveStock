@@ -1,0 +1,6 @@
+@LiveStock.API_HostAddress = http://localhost:5101
+
+GET {{LiveStock.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

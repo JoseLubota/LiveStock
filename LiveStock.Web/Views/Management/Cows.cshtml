@@ -1,0 +1,395 @@
+@model IEnumerable<LiveStock.Core.Models.Cow>
+
+@{
+    ViewData["Title"] = "Cow Management";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-dark-green sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Dashboard">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Sheep">
+                            <i class="fas fa-sheep me-2"></i>
+                            Sheep Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white active" asp-action="Cows">
+                            <i class="fas fa-cow me-2"></i>
+                            Cow Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Camps">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            Camps
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Staff">
+                            <i class="fas fa-users me-2"></i>
+                            Staff Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Tasks">
+                            <i class="fas fa-tasks me-2"></i>
+                            Tasks
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Water">
+                            <i class="fas fa-tint me-2"></i>
+                            Water & Rainfall
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Assets">
+                            <i class="fas fa-tools me-2"></i>
+                            Assets
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Finance">
+                            <i class="fas fa-dollar-sign me-2"></i>
+                            Finance
+                        </a>
+                    </li>
+                    <li class="nav-item mt-3">
+                        <a class="nav-link text-warning" asp-controller="Account" asp-action="Logout">
+                            <i class="fas fa-sign-out-alt me-2"></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Cow Management</h1>
+                <a asp-action="AddCow" class="btn btn-success">
+                    <i class="fas fa-plus me-2"></i>Add Cow
+                </a>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Total Cows
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        @Model.Count()
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-cow fa-2x text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Active Cows
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        @Model.Count(c => c.IsActive)
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-check-circle fa-2x text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Total Value
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        $@Model.Sum(c => c.Price).ToString("N2")
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-info"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Average Age
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        @(Model.Any() ? Model.Average(c => c.Age).ToString("F1") : "0") years
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-calendar fa-2x text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cow List -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="mb-0"><i class="fas fa-list me-2"></i>Cow Inventory</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <!-- Update cow table to include checkboxes for bulk actions -->
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAllCows" aria-label="Select all cows" /></th>
+                                        <th>Photo</th>
+                                        <th>Ear Tag</th>
+                                        <th>Breed</th>
+                                        <th>Age</th>
+                                        <th>Camp</th>
+                                        <th>Gender</th>
+                                        <th>Price</th>
+                                        <th>Pregnant</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var cow in Model)
+                                    {
+                                        <tr>
+                                            <td><input type="checkbox" class="cow-select" value="@cow.Id" aria-label="Select cow @cow.EarTag" /></td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(cow.PhotoUrl))
+                                                {
+                                                    <img src="@cow.PhotoUrl" alt="Cow Photo" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;" />
+                                                }
+                                                else
+                                                {
+                                                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border-radius: 5px;">
+                                                        <i class="fas fa-cow"></i>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td>@(cow.EarTag ?? "-")</td>
+                                            <td>@cow.Breed</td>
+                                            <td>@cow.Age years</td>
+                                            <td>
+                                                <span class="badge bg-info">Camp @cow.Camp?.CampNumber</span>
+                                            </td>
+                                            <td>
+                                                @if (cow.Gender == "Male")
+                                                {
+                                                    <span class="badge bg-primary">@cow.Gender</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-pink">@cow.Gender</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <span class="text-success">$@cow.Price.ToString("N2")</span>
+                                            </td>
+                                            <td>
+                                                @if (cow.IsPregnant)
+                                                {
+                                                    <span class="badge bg-warning">Pregnant</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">No</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (cow.IsActive)
+                                                {
+                                                    <span class="badge bg-success">Active</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">Inactive</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a asp-action="CowDetails" asp-route-id="@cow.Id" class="btn btn-sm btn-info">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <button class="btn btn-sm btn-warning" onclick="editCow(@cow.Id)">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" onclick="removeCow(@cow.Id)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-cow fa-4x text-muted mb-3"></i>
+                            <h5 class="text-muted">No Cows Found</h5>
+                            <p class="text-muted">Start building your herd by adding your first cow!</p>
+                            <a asp-action="AddCow" class="btn btn-success">
+                                <i class="fas fa-plus me-2"></i>Add Your First Cow
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Bulk actions for cows -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h6 class="mb-0"><i class="fas fa-tasks me-2"></i>Bulk Actions</h6>
+                </div>
+                <div class="card-body">
+                    <form id="bulkActionsForm">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 mb-2">
+                                <select class="form-select" id="bulkActionType" aria-label="Bulk action type">
+                                    <option selected disabled>Choose action</option>
+                                    <option value="move">Move to Camp</option>
+                                    <option value="markSold">Mark as Sold</option>
+                                    <option value="markInactive">Mark as Inactive</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <input type="text" class="form-control" id="bulkActionValue" placeholder="Camp # or Reason" aria-label="Action value">
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <button type="button" class="btn btn-warning w-100" onclick="performBulkAction()">
+                                    <i class="fas fa-bolt"></i> Apply
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <small class="text-muted">Select cows using checkboxes in the table below.</small>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card shadow">
+                        <div class="card-header bg-info text-white">
+                            <h6 class="mb-0"><i class="fas fa-lightning-bolt me-2"></i>Quick Actions</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                <a asp-action="AddCow" class="btn btn-success">
+                                    <i class="fas fa-plus me-2"></i>Add New Cow
+                                </a>
+                                <button class="btn btn-outline-primary" onclick="exportCowData()">
+                                    <i class="fas fa-download me-2"></i>Export Data
+                                </button>
+                                <button class="btn btn-outline-info" onclick="generateReport()">
+                                    <i class="fas fa-chart-bar me-2"></i>Generate Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card shadow">
+                        <div class="card-header bg-warning text-white">
+                            <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Cow Management Tips</h6>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-0">
+                                <li><i class="fas fa-check text-success me-2"></i>Regular health checks</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Monitor grazing patterns</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Track breeding cycles</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Maintain camp rotation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    function editCow(cowId) {
+        alert(`Edit cow ${cowId} - Feature coming soon!`);
+    }
+
+    function removeCow(cowId) {
+        if (confirm('Are you sure you want to remove this cow? This action cannot be undone.')) {
+            alert(`Cow ${cowId} removed successfully`);
+            location.reload();
+        }
+    }
+
+    function exportCowData() {
+        alert('Export feature coming soon!');
+    }
+
+    function generateReport() {
+        alert('Report generation feature coming soon!');
+    }
+
+    // Bulk actions logic
+    function performBulkAction() {
+        const actionType = document.getElementById('bulkActionType').value;
+        const actionValue = document.getElementById('bulkActionValue').value;
+        const selectedCows = Array.from(document.querySelectorAll('.cow-select:checked')).map(cb => cb.value);
+        if (!actionType || selectedCows.length === 0) {
+            alert('Please select an action and at least one cow.');
+            return;
+        }
+        // In a real app, send AJAX request to backend
+        alert(`Action '${actionType}' applied to cows: ${selectedCows.join(', ')}${actionValue ? ' with value: ' + actionValue : ''}`);
+    }
+
+    // Cow management functionality is now handled in site.js
+</script>
+
+<!-- Page-specific styles for Cows Management -->
+<link rel="stylesheet" href="~/css/cows.css" />
