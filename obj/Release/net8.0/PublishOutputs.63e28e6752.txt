@@ -1,0 +1,7 @@
+D:\repos\LiveStock\obj\Release\net8.0\PubTmp\Out\LiveStock.exe
+D:\repos\LiveStock\obj\Release\net8.0\PubTmp\Out\appsettings.Development.json
+D:\repos\LiveStock\obj\Release\net8.0\PubTmp\Out\appsettings.json
+D:\repos\LiveStock\obj\Release\net8.0\PubTmp\Out\LiveStock.dll
+D:\repos\LiveStock\obj\Release\net8.0\PubTmp\Out\LiveStock.deps.json
+D:\repos\LiveStock\obj\Release\net8.0\PubTmp\Out\LiveStock.runtimeconfig.json
+D:\repos\LiveStock\obj\Release\net8.0\PubTmp\Out\LiveStock.pdb
