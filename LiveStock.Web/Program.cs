@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using LiveStock.Infrastructure.Data;
+using LiveStock.Web.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<adminService>();
 
 // Add Entity Framework with SQLite (macOS compatible)
 builder.Services.AddDbContext<LiveStockDbContext>(options =>

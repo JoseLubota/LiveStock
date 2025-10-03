@@ -1,4 +1,4 @@
-@model LiveStock.Web.Models.LoginViewModel
+@model LiveStock.Web.Models.AdminModel
 
 @{
     ViewData["Title"] = "Login - LiveStock Management";
@@ -18,7 +18,7 @@
                             <div class="employee-avatar">
                                 <i class="fas fa-user"></i>
                             </div>
-                            <span class="employee-name">Employee Login</span>
+                            <span class="employee-name">Admin Login</span>
                         </div>
                     </div>
 
@@ -26,9 +26,9 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         
                         <div class="mb-3">
-                            <label asp-for="EmployeeId" class="form-label fw-bold">Enter Employee ID:</label>
-                            <input asp-for="EmployeeId" class="form-control form-control-lg" placeholder="Enter your Employee ID" />
-                            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                            <label asp-for="Email" class="form-label fw-bold">Enter Email:</label>
+                            <input asp-for="Email" class="form-control form-control-lg" placeholder="Enter your Email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                         
                         <div class="mb-3">
@@ -36,12 +36,7 @@
                             <input asp-for="Password" class="form-control form-control-lg" placeholder="Enter your password" />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
-                        
-                        <div class="mb-3 form-check">
-                            <input asp-for="RememberMe" class="form-check-input" />
-                            <label asp-for="RememberMe" class="form-check-label">Remember me</label>
-                        </div>
-                        
+                                                
                         <div class="d-grid">
                             <button type="submit" class="btn btn-success btn-lg">LOGIN</button>
                         </div>
@@ -50,7 +45,7 @@
                     <div class="text-center mt-4">
                         <p class="text-muted">
                             <strong>Demo Credentials:</strong><br>
-                            Employee ID: <code>FARM001</code><br>
+                            Employee ID: <code>admin@@gmail.com</code><br>
                             Password: <code>demo123</code>
                         </p>
                     </div>

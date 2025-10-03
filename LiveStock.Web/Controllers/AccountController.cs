@@ -3,16 +3,17 @@ using LiveStock.Web.Models;
 using LiveStock.Core.Models;
 using LiveStock.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using LiveStock.Web.Service;
 
 namespace LiveStock.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly LiveStockDbContext _context;
+        private readonly adminService _adminService;
 
-        public AccountController(LiveStockDbContext context)
+        public AccountController(adminService adminService)
         {
-            _context = context;
+            _adminService = adminService;
         }
 
         public IActionResult Login()
@@ -21,29 +22,24 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(AdminModel model)
         {
             if (ModelState.IsValid)
             {
-                var staff = await _context.Staff
-                    .FirstOrDefaultAsync(s => s.EmployeeId == model.EmployeeId && s.IsActive);
-
-                if (staff != null)
+                int userID = _adminService.checkUser(model.Email, model.Password);
+                if (userID > 0)
                 {
-                    // In a real application, you would hash and verify passwords
-                    // For now, we'll use a simple check
-                    if (staff.PhoneNumber.EndsWith(model.Password) || model.Password == "demo123")
-                    {
-                        // Set session or authentication cookie
-                        HttpContext.Session.SetString("UserId", staff.Id.ToString());
-                        HttpContext.Session.SetString("UserName", staff.Name);
-                        HttpContext.Session.SetString("UserRole", staff.Role);
-
-                        return RedirectToAction("Dashboard", "Management");
-                    }
+                    HttpContext.Session.SetString("UserId", userID.ToString());
+                    HttpContext.Session.SetString("UserRole", "Admin");
+                    Console.WriteLine($"lOGIN WAS SUCCESFULL {userID}");
+                    return RedirectToAction("Dashboard", "Management");
                 }
 
-                ModelState.AddModelError("", "Invalid Employee ID or Password");
+            }
+            else
+            {
+                Console.WriteLine($"lOGIN WAS Failed");
+                ModelState.AddModelError("", "Invalid email or password");
             }
 
             return View(model);
@@ -55,4 +51,4 @@ namespace LiveStock.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
     }
-} 
+}  

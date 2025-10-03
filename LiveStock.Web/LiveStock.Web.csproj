@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LiveStock.Core\LiveStock.Core.csproj" />
     <ProjectReference Include="..\LiveStock.Infrastructure\LiveStock.Infrastructure.csproj" />
   </ItemGroup>
