@@ -37,7 +37,7 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 253,
+          "DockedWidth": 122,
           "SelectedChildIndex": -1,
           "Children": [
             {
@@ -55,6 +55,10 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             }
           ]
         },
@@ -73,7 +77,7 @@
           ]
         },
         {
-          "DockedWidth": 166,
+          "DockedWidth": 297,
           "SelectedChildIndex": 5,
           "Children": [
             {
@@ -94,8 +98,7 @@
               "RelativeToolTip": "LiveStock.Web\\Controllers\\ManagementController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-03T09:31:02.603Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-03T09:31:02.603Z"
             },
             {
               "$type": "Document",
@@ -107,8 +110,7 @@
               "RelativeToolTip": "LiveStock.Web\\Views\\Account\\Login.cshtml",
               "ViewState": "AgIAAAkAAAAAAAAAAAD4vz8AAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-03T07:21:45.208Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-03T07:21:45.208Z"
             },
             {
               "$type": "Document",
@@ -120,8 +122,7 @@
               "RelativeToolTip": "LiveStock.Web\\Service\\adminService.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAAQwCIAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-03T06:31:56.658Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-03T06:31:56.658Z"
             },
             {
               "$type": "Document",
@@ -131,7 +132,7 @@
               "RelativeDocumentMoniker": "LiveStock.Web\\Controllers\\AccountController.cs",
               "ToolTip": "D:\\repos\\LiveStock\\LiveStock.Web\\Controllers\\AccountController.cs",
               "RelativeToolTip": "LiveStock.Web\\Controllers\\AccountController.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAowB8AAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAowA4AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-02T22:39:33.041Z",
               "EditorCaption": ""
@@ -146,8 +147,7 @@
               "RelativeToolTip": "LiveStock.Web\\Models\\AdminModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-03T07:48:51.271Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-03T07:48:51.271Z"
             },
             {
               "$type": "Document",
@@ -159,8 +159,7 @@
               "RelativeToolTip": "LiveStock.Web\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-03T07:23:06.631Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-03T07:23:06.631Z"
             },
             {
               "$type": "Document",
@@ -172,8 +171,7 @@
               "RelativeToolTip": "LiveStock.Web\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-02T22:24:47.27Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-02T22:24:47.27Z"
             }
           ]
         }
