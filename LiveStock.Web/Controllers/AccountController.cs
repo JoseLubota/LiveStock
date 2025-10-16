@@ -31,14 +31,12 @@ namespace LiveStock.Web.Controllers
                 {
                     HttpContext.Session.SetString("UserId", userID.ToString());
                     HttpContext.Session.SetString("UserRole", "Admin");
-                    Console.WriteLine($"lOGIN WAS SUCCESFULL {userID}");
                     return RedirectToAction("Dashboard", "Management");
                 }
 
             }
             else
             {
-                Console.WriteLine($"lOGIN WAS Failed");
                 ModelState.AddModelError("", "Invalid email or password");
             }
 

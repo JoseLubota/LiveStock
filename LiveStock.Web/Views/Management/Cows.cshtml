@@ -155,7 +155,7 @@
                                         Average Age
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        @(Model.Any() ? Model.Average(c => c.Age).ToString("F1") : "0") years
+                                        <!--   (Model.Any() ? Model.Average(c => c.BirthDate).ToString("F1") : "0") years -->
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -212,7 +212,7 @@
                                             </td>
                                             <td>@(cow.EarTag ?? "-")</td>
                                             <td>@cow.Breed</td>
-                                            <td>@cow.Age years</td>
+                                            <td>@cow.BirthDate years</td>
                                             <td>
                                                 <span class="badge bg-info">Camp @cow.Camp?.CampNumber</span>
                                             </td>

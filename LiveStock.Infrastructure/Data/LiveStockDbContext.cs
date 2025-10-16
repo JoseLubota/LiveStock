@@ -5,6 +5,8 @@ namespace LiveStock.Infrastructure.Data
 {
     public class LiveStockDbContext : DbContext
     {
+        private const string V = "";
+
         public LiveStockDbContext(DbContextOptions<LiveStockDbContext> options) : base(options)
         {
         }
@@ -118,89 +120,6 @@ namespace LiveStock.Infrastructure.Data
                 IsActive = true,
                 CreatedAt = DateTime.UtcNow
             });
-
-            // Seed sample livestock data
-            modelBuilder.Entity<Sheep>().HasData(
-                new Sheep
-                {
-                    Id = 1,
-                    Breed = "Merino",
-                    Age = 3,
-                    CampId = 1,
-                    Gender = "Female",
-                    Price = 450.00m,
-                    TagNumber = "S001",
-                    IsActive = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-30)
-                },
-                new Sheep
-                {
-                    Id = 2,
-                    Breed = "Dorper",
-                    Age = 2,
-                    CampId = 2,
-                    Gender = "Male",
-                    Price = 380.00m,
-                    TagNumber = "S002",
-                    IsActive = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-25)
-                },
-                new Sheep
-                {
-                    Id = 3,
-                    Breed = "Suffolk",
-                    Age = 4,
-                    CampId = 3,
-                    Gender = "Female",
-                    Price = 520.00m,
-                    TagNumber = "S003",
-                    IsActive = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-20)
-                }
-            );
-
-            modelBuilder.Entity<Cow>().HasData(
-                new Cow
-                {
-                    Id = 1,
-                    Breed = "Angus",
-                    Age = 5,
-                    CampId = 4,
-                    Gender = "Female",
-                    Price = 2500.00m,
-                    EarTag = "C001",
-                    IsPregnant = true,
-                    ExpectedCalvingDate = DateTime.UtcNow.AddMonths(3),
-                    IsActive = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-45)
-                },
-                new Cow
-                {
-                    Id = 2,
-                    Breed = "Hereford",
-                    Age = 3,
-                    CampId = 5,
-                    Gender = "Male",
-                    Price = 1800.00m,
-                    EarTag = "C002",
-                    IsPregnant = false,
-                    IsActive = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-40)
-                },
-                new Cow
-                {
-                    Id = 3,
-                    Breed = "Brahman",
-                    Age = 6,
-                    CampId = 6,
-                    Gender = "Female",
-                    Price = 3200.00m,
-                    EarTag = "C003",
-                    IsPregnant = false,
-                    IsActive = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-35)
-                }
-            );
 
             // Seed sample financial records
             modelBuilder.Entity<FinancialRecord>().HasData(

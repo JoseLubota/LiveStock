@@ -4,16 +4,20 @@ using LiveStock.Infrastructure.Data;
 using LiveStock.Core.Models;
 using LiveStock.Web.Models;
 using LiveStock.Web.ViewModels;
+using LiveStock.Web.Service;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LiveStock.Web.Controllers
 {
     public class ManagementController : Controller
     {
         private readonly LiveStockDbContext _context;
+        private readonly sheepService _sheepService;
 
-        public ManagementController(LiveStockDbContext context)
+        public ManagementController(LiveStockDbContext context, sheepService sheepService)
         {
             _context = context;
+            _sheepService = sheepService;
         }
 
         public IActionResult Dashboard()
@@ -40,50 +44,62 @@ namespace LiveStock.Web.Controllers
         }
 
         #region Sheep Management
-        public async Task<IActionResult> Sheep()
-        {
-            var sheep = await _context.Sheep
-                .Include(s => s.Camp)
-                .Where(s => s.IsActive)
-                .ToListAsync();
-
-            return View(sheep);
-        }
 
         public IActionResult AddSheep()
         {
             ViewBag.Camps = _context.Camps.OrderBy(c => c.CampNumber).ToList();
             return View();
         }
-
-        [HttpPost]
-        public async Task<IActionResult> AddSheep(Sheep sheep)
+        public async Task<IActionResult> Sheep()
         {
-            if (ModelState.IsValid)
-            {
-                sheep.CreatedAt = DateTime.UtcNow;
-                sheep.IsActive = true;
-                _context.Sheep.Add(sheep);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Sheep));
-            }
+            var sheepList = _sheepService.GetAllSheep()
+                .OrderBy(s => s.SheepID)
+                .ToList();
 
-            ViewBag.Camps = _context.Camps.OrderBy(c => c.CampNumber).ToList();
-            return View(sheep);
+            return View(sheepList);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddSheep(string Breed, int Camp, string Gender, DateOnly BirthDate, string? Notes, IFormFile? Photo, decimal Price)
+        {
+            int? PhotoID = null;
+            if (Photo != null)
+            {
+                // Save photo in database
+                // Genererate and get photo ID
+            }
+            _sheepService.AddSheep(breed: Breed,
+                birdthDate: BirthDate,
+                camp: Camp,
+                gender: Gender,
+                price: Price,
+                photoID: PhotoID);
+
+            if (Notes != null)
+            {
+                // get sheep ID
+                // create a new note
+            }
+
+            return RedirectToAction("Sheep");
+
+        }
+         
         public async Task<IActionResult> SheepDetails(int id)
         {
-            var sheep = await _context.Sheep
-                .Include(s => s.Camp)
+            /*
+             *                 .Include(s => s.Camp)
                 .Include(s => s.MedicalRecords.OrderByDescending(m => m.TreatmentDate))
                 .Include(s => s.CampMovements.OrderByDescending(m => m.MovementDate))
-                .FirstOrDefaultAsync(s => s.Id == id);
+             */
+            var sheep = _sheepService.GetAllSheep().FirstOrDefault(s => s.SheepID == id);
 
             if (sheep == null)
             {
                 return NotFound();
-            }
+             }
+            //sheep.MedicalRecords = _medicalRecordService.GetBySheepId(id);
+            //sheep.CampMovements = _campMovementService.GetBySheepId(id);
 
             return View(sheep);
         }

@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<adminService>();
+builder.Services.AddScoped<sheepService>();
 
 // Add Entity Framework with SQLite (macOS compatible)
 builder.Services.AddDbContext<LiveStockDbContext>(options =>

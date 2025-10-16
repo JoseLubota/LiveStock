@@ -2,7 +2,10 @@ namespace LiveStock.Core.Models
 {
     public class Sheep : Animal
     {
-        public string? TagNumber { get; set; }
+
+       public int SheepID { set; get; }
+        public DateOnly BirthDate { set; get; }
+        public int? PhotoID { set; get; }
         
         public virtual ICollection<MedicalRecord> MedicalRecords { get; set; } = new List<MedicalRecord>();
         

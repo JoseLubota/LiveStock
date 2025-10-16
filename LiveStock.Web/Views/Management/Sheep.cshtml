@@ -135,7 +135,7 @@
                                         Total Value
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        $@Model.Sum(s => s.Price).ToString("N2")
+                                        R @Model.Sum(s => s.Price).ToString("N2")
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -155,7 +155,7 @@
                                         Average Age
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        @(Model.Any() ? Model.Average(s => s.Age).ToString("F1") : "0") years
+                                        <!-- (Model.Any() ? Model.Average(s => s.BirthDate).ToString("F1") : "0") years -->
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -181,9 +181,8 @@
                                     <tr>
                                         <th><input type="checkbox" id="selectAllSheep" aria-label="Select all sheep" /></th>
                                         <th>Photo</th>
-                                        <th>Tag Number</th>
                                         <th>Breed</th>
-                                        <th>Age</th>
+                                        <th>Birth Date</th>
                                         <th>Camp</th>
                                         <th>Gender</th>
                                         <th>Price</th>
@@ -195,7 +194,7 @@
                                     @foreach (var sheep in Model)
                                     {
                                         <tr>
-                                            <td><input type="checkbox" class="sheep-select" value="@sheep.Id" aria-label="Select sheep @sheep.TagNumber" /></td>
+                                            <td><input type="checkbox" class="sheep-select" value="@sheep.Id" aria-label="Select sheep @sheep.SheepID" /></td>
                                             <td>
                                                 @if (!string.IsNullOrEmpty(sheep.PhotoUrl))
                                                 {
@@ -208,11 +207,10 @@
                                                     </div>
                                                 }
                                             </td>
-                                            <td>@(sheep.TagNumber ?? "-")</td>
                                             <td>@sheep.Breed</td>
-                                            <td>@sheep.Age years</td>
+                                            <td>@sheep.BirthDate</td>
                                             <td>
-                                                <span class="badge bg-info">Camp @sheep.Camp?.CampNumber</span>
+                                                <span class="badge bg-info">Camp @sheep.CampId</span>
                                             </td>
                                             <td>
                                                 @if (sheep.Gender == "Male")
@@ -239,13 +237,13 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group">
-                                                    <a asp-action="SheepDetails" asp-route-id="@sheep.Id" class="btn btn-sm btn-info">
+                                                    <a asp-action="SheepDetails" asp-route-id="@sheep.SheepID" class="btn btn-sm btn-info">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
-                                                    <button class="btn btn-sm btn-warning" onclick="editSheep(@sheep.Id)">
+                                                    <button class="btn btn-sm btn-warning" onclick="editSheep(@sheep.SheepID)">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-danger" onclick="removeSheep(@sheep.Id)">
+                                                    <button class="btn btn-sm btn-danger" onclick="removeSheep(@sheep.SheepID)">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </div>

@@ -11,11 +11,13 @@ namespace LiveStock.Core.Models
         public string Breed { get; set; } = string.Empty;
         
         [Required]
-        public int Age { get; set; }
+        public DateOnly BirthDate { get; set; }
         
         [Required]
         public int CampId { get; set; }
-        
+        [Required]
+        public string Status { get; set; }
+
         public virtual Camp Camp { get; set; } = null!;
         
         [Required]
