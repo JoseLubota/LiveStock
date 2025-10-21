@@ -92,6 +92,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxTaGVlcERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/repos/LiveStock/LiveStock.Web/Views/Management/Sheep_Edit_Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxTaGVlcF9FZGl0X0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/repos/LiveStock/LiveStock.Web/Views/Management/Staff.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxTdGFmZi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

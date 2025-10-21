@@ -240,12 +240,12 @@
                                                     <a asp-action="SheepDetails" asp-route-id="@sheep.SheepID" class="btn btn-sm btn-info">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
-                                                    <button class="btn btn-sm btn-warning" onclick="editSheep(@sheep.SheepID)">
+                                                    <a asp-action="Sheep_Edit_Details" class="btn btn-sm btn-warning" asp-route-id="@sheep.SheepID" onclick="editSheep(@sheep.SheepID)">
                                                         <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-danger" onclick="removeSheep(@sheep.SheepID)">
+                                                    </a>
+                                                    <a  asp-action="RemoveSheep" asp-route-id="@sheep.SheepID" class="btn btn-sm btn-danger" onclick="removeSheep(@sheep.SheepID)">
                                                         <i class="fas fa-trash"></i>
-                                                    </button>
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -342,10 +342,6 @@
 </div>
 
 <script>
-    function editSheep(sheepId) {
-        alert(`Edit sheep ${sheepId} - Feature coming soon!`);
-    }
-
     function removeSheep(sheepId) {
         if (confirm('Are you sure you want to remove this sheep? This action cannot be undone.')) {
             alert(`Sheep ${sheepId} removed successfully`);

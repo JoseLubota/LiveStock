@@ -103,6 +103,53 @@ namespace LiveStock.Web.Controllers
 
             return View(sheep);
         }
+        public IActionResult RemoveSheep(int id)
+        {
+            try
+            {
+                _sheepService.DeleteSheep(id);
+                return RedirectToAction("    ", "Management");
+
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Sheep_Edit_Details(int id)
+        {
+            ViewBag.Camps = _context.Camps.OrderBy(c => c.CampNumber).ToList();
+            ViewBag.SheepID = id;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult UpdateSheep(int sheepID, string Breed, int Camp, string Gender, DateOnly BirthDate, string? Notes, IFormFile? Photo, decimal Price)
+        {
+            Sheep newSheep = new Sheep();
+            newSheep.SheepID = sheepID;
+            newSheep.Breed = Breed;
+            newSheep.CampId = Camp;
+            newSheep.Gender = Gender;
+            newSheep.BirthDate = BirthDate;
+            newSheep.Price = Price;
+
+            if (Photo != null)
+            {
+                // Save photo in database
+                // Genererate and get photo ID
+            }
+            var currentSheep = _sheepService.getSheepByID(newSheep.SheepID);
+            var newSheepList = new List<Sheep> { newSheep };
+            var mergedSheepList = _sheepService.FillVoidSheppFields(currentSheep, newSheepList);
+
+            _sheepService.UpdateSheep(mergedSheepList.First());
+
+
+            
+            return RedirectToAction("Sheep");
+        }
         #endregion
 
         #region Cow Management
