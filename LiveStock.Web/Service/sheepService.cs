@@ -173,10 +173,100 @@ namespace LiveStock.Web.Service
                     }
                     else
                     {
-                        Console.WriteLine($"Upsated {updateSheep.SheepID}");
+                        Console.WriteLine($"Updated {updateSheep.SheepID}");
                     }
                 }
 
+            }
+        }
+
+        public void SheepBulkActions(string action, string reason, List<int> sheepIDs)
+        {
+            switch (action)
+            {
+                case "markSold":
+                    foreach(int id in sheepIDs)
+                    {
+                        DeleteSheep(id);
+                    }
+                    break;
+
+                case "move":
+                    if (int.TryParse(reason, out int newCampId))
+                    {
+                        foreach(int id in sheepIDs)
+                        {
+                            MoveSheepToCamp(id, newCampId);
+                        }
+                       
+                    }
+                    break;
+
+                case "markInactive":
+                    foreach(int id in sheepIDs)
+                    {
+                        MarkSheepAsInactive(id);
+                    }
+                    break;
+
+                case "markAactive":
+                    foreach (int id in sheepIDs)
+                    {
+                        MarkSheepAsActive(id);
+                    }
+                    break;
+            }
+        }
+        public void MoveSheepToCamp(int id, int campID)
+        {
+            using(SqlConnection con = new SqlConnection(_conString))
+            {
+                const string sql = "UPDATE Sheep SET camp = @campID WHERE sheepID = @sheepID";
+
+                using(SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.Parameters.AddWithValue("@sheepID",id);
+                    cmd.Parameters.AddWithValue("@campID",campID);
+
+                    con.Open();
+                    int rows = cmd.ExecuteNonQuery();
+                    Console.WriteLine($"Move Sheep to camp {rows} affected");
+
+                }
+            }
+        }
+
+        public void MarkSheepAsInactive(int id)
+        {
+            using (SqlConnection con = new SqlConnection(_conString))
+            {
+                const string sql = "UPDATE Sheep SET isActive = 0 WHERE sheepID = @sheepID";
+
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.Parameters.AddWithValue("@sheepID", id);
+
+                    con.Open();
+                    int rows = cmd.ExecuteNonQuery();
+                    Console.WriteLine($"Mark Sheep as inactive {rows} affected");
+                }
+            }
+        }
+
+        public void MarkSheepAsActive(int id)
+        {
+            using (SqlConnection con = new SqlConnection(_conString))
+            {
+                const string sql = "UPDATE Sheep SET isActive = 1 WHERE sheepID = @sheepID";
+
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.Parameters.AddWithValue("@sheepID", id);
+
+                    con.Open();
+                    int rows = cmd.ExecuteNonQuery();
+                    Console.WriteLine($"Mark Sheep as active {rows} affected");
+                }
             }
         }
     }

@@ -68,6 +68,7 @@ namespace LiveStock.Web.Controllers
                 // Save photo in database
                 // Genererate and get photo ID
             }
+
             _sheepService.AddSheep(breed: Breed,
                 birdthDate: BirthDate,
                 camp: Camp,
@@ -148,6 +149,18 @@ namespace LiveStock.Web.Controllers
 
 
             
+            return RedirectToAction("Sheep");
+        }
+
+        [HttpPost]
+        public IActionResult SheepBulkActions(string action, string reason, List<int> selectedSheepID)
+        {
+            if(selectedSheepID == null || selectedSheepID.Count == 0)
+            {
+                RedirectToAction("Sheep");
+            }
+ 
+            _sheepService.SheepBulkActions(action, reason, selectedSheepID);
             return RedirectToAction("Sheep");
         }
         #endregion
