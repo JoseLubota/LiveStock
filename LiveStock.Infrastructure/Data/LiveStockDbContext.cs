@@ -22,6 +22,7 @@ namespace LiveStock.Infrastructure.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<Asset> Assets { get; set; }
         public DbSet<FinancialRecord> FinancialRecords { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -194,4 +195,4 @@ namespace LiveStock.Infrastructure.Data
             );
         }
     }
-} 
+}
