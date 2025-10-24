@@ -39,6 +39,14 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav align-items-center">
+                        @if (Context.Session.GetString("UserId") != null)
+                        {
+                            <li class="nav-item me-2">
+                                <a class="btn btn-outline-light" asp-controller="Management" asp-action="Notes">
+                                    <i class="fas fa-sticky-note me-1"></i>Notes
+                                </a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-light" href="#quote">Get a Quote</a>
                         </li>

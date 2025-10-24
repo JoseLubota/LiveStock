@@ -240,11 +240,12 @@ namespace LiveStock.Web.Controllers
                 return NotFound();
             }
 
+            ViewBag.Camps = await _context.Camps.OrderBy(c => c.CampNumber).ToListAsync();
             return View(camp);
         }
 
         [HttpPost]
-        public async Task<IActionResult> MoveAnimal(int animalId, string animalType, int fromCampId, int toCampId)
+        public async Task<IActionResult> MoveAnimal(int animalId, string animalType, int fromCampId, int toCampId, string? reason)
         {
             var movement = new CampMovement
             {
@@ -253,7 +254,8 @@ namespace LiveStock.Web.Controllers
                 FromCampId = fromCampId,
                 ToCampId = toCampId,
                 MovementDate = DateTime.UtcNow,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                Reason = reason
             };
 
             _context.CampMovements.Add(movement);
@@ -280,6 +282,42 @@ namespace LiveStock.Web.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(CampDetails), new { id = toCampId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddRainfallForCamp(int campId, double amountMl, string? notes)
+        {
+            var rainfall = new RainfallRecord
+            {
+                CampId = campId,
+                RainfallDate = DateTime.UtcNow,
+                AmountMl = amountMl,
+                Notes = notes,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.RainfallRecords.Add(rainfall);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(CampDetails), new { id = campId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCamp(int id, string Name, int CampNumber, double Hectares, string? Description)
+        {
+            var camp = await _context.Camps.FindAsync(id);
+            if (camp == null)
+            {
+                return NotFound();
+            }
+
+            camp.Name = Name;
+            camp.CampNumber = CampNumber;
+            camp.Hectares = Hectares;
+            camp.Description = Description;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(CampDetails), new { id });
         }
         #endregion
 
@@ -426,6 +464,102 @@ namespace LiveStock.Web.Controllers
 
             return View(financialRecords);
         }
+        #region Notes
+        public IActionResult Notes()
+        {
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            int userId = int.Parse(userIdStr);
+            var notes = _context.Notes
+                .Where(n => n.CreatedByUserId == userId)
+                .OrderByDescending(n => n.CreatedAt)
+                .ToList();
+            return View(notes);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateNote([Bind("Title,Content,Category")] Note input)
+        {
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Notes");
+            }
+            int userId = int.Parse(userIdStr);
+            var note = new Note
+            {
+                Title = input.Title,
+                Content = input.Content,
+                Category = input.Category,
+                CreatedByUserId = userId,
+                CreatedAt = DateTime.UtcNow
+            };
+            _context.Notes.Add(note);
+            _context.SaveChanges();
+            return RedirectToAction("Notes");
+        }
+        #endregion
+
+        // Livestock
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddLivestockToCamp(int campId, string animalType, string Breed, DateOnly BirthDate, string Gender, decimal Price, string? EarTag, bool? IsPregnant, DateTime? ExpectedCalvingDate, string? Notes)
+        {
+            if (animalType == "Sheep")
+            {
+                var sheep = new Sheep
+                {
+                    Breed = Breed,
+                    BirthDate = BirthDate,
+                    CampId = campId,
+                    Gender = Gender,
+                    Price = Price,
+                    Status = "Active",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true,
+                    Notes = Notes
+                };
+
+                _context.Sheep.Add(sheep);
+                await _context.SaveChangesAsync();
+            }
+            else if (animalType == "Cow")
+            {
+                var cow = new Cow
+                {
+                    Breed = Breed,
+                    BirthDate = BirthDate,
+                    CampId = campId,
+                    Gender = Gender,
+                    Price = Price,
+                    Status = "Active",
+                    EarTag = EarTag,
+                    IsPregnant = IsPregnant ?? false,
+                    ExpectedCalvingDate = ExpectedCalvingDate,
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true,
+                    Notes = Notes
+                };
+
+                _context.Cows.Add(cow);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                return BadRequest("Unsupported animal type.");
+            }
+
+            return RedirectToAction(nameof(CampDetails), new { id = campId });
+        }
+
         #endregion
     }
-} 
+}
