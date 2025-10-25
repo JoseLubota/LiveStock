@@ -13,11 +13,13 @@ namespace LiveStock.Web.Controllers
     {
         private readonly LiveStockDbContext _context;
         private readonly sheepService _sheepService;
+        private readonly IStaffService _staffService;
 
-        public ManagementController(LiveStockDbContext context, sheepService sheepService)
+        public ManagementController(LiveStockDbContext context, sheepService sheepService, IStaffService staffService)
         {
             _context = context;
             _sheepService = sheepService;
+            _staffService = staffService;
         }
 
         public IActionResult Dashboard()
@@ -284,45 +286,87 @@ namespace LiveStock.Web.Controllers
         #endregion
 
         #region Staff Management
+        // GET: Management/Staff
         public async Task<IActionResult> Staff()
         {
-            var staff = await _context.Staff
-                .Where(s => s.IsActive)
-                .ToListAsync();
-
+            var staff = await _staffService.GetActiveStaffAsync();
+            ViewBag.TotalStaff = await _staffService.GetTotalStaffCount();
             return View(staff);
         }
 
-        public IActionResult AddStaff()
-        {
-            return View();
-        }
-
+        // POST: Management/AddStaff
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddStaff(Staff staff)
         {
             if (ModelState.IsValid)
             {
-                staff.CreatedAt = DateTime.UtcNow;
-                staff.IsActive = true;
-                _context.Staff.Add(staff);
-                await _context.SaveChangesAsync();
+                var result = await _staffService.AddStaffAsync(staff);
+
+                if (result)
+                {
+                    TempData["Success"] = $"Staff member {staff.Name} added successfully!";
+                }
+                else
+                {
+                    TempData["Error"] = "Failed to add staff. Employee ID may already exist.";
+                }
+            }
+            else
+            {
+                TempData["Error"] = "Please fill in all required fields correctly.";
+            }
+
+            return RedirectToAction(nameof(Staff));
+        }
+
+        // POST: Management/RemoveStaff
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveStaff(int id)
+        {
+            var staff = await _staffService.GetStaffByIdAsync(id);
+
+            if (staff == null)
+            {
+                TempData["Error"] = "Staff member not found.";
                 return RedirectToAction(nameof(Staff));
             }
 
-            return View(staff);
+            var result = await _staffService.RemoveStaffAsync(id);
+
+            if (result)
+            {
+                TempData["Success"] = $"Staff member {staff.Name} removed successfully!";
+            }
+            else
+            {
+                TempData["Error"] = "Failed to remove staff member.";
+            }
+
+            return RedirectToAction(nameof(Staff));
         }
 
-        public async Task<IActionResult> StaffTasks(int staffId)
+        // GET: Management/GetStaff - for AJAX calls
+        [HttpGet]
+        public async Task<IActionResult> GetStaff(int id)
         {
-            var tasks = await _context.FarmTasks
-                .Include(t => t.AssignedTo)
-                .Include(t => t.CreatedBy)
-                .Where(t => t.AssignedToId == staffId)
-                .OrderByDescending(t => t.CreatedAt)
-                .ToListAsync();
+            var staff = await _staffService.GetStaffByIdAsync(id);
 
-            return View(tasks);
+            if (staff == null)
+            {
+                return NotFound();
+            }
+
+            return Json(new
+            {
+                id = staff.Id,
+                name = staff.Name,
+                employeeId = staff.EmployeeId,
+                phoneNumber = staff.PhoneNumber,
+                email = staff.Email,
+                role = staff.Role
+            });
         }
         #endregion
 
