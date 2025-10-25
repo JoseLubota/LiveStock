@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+LiveStock.Web/obj/Debug/net9.0/LiveStock.Web.assets.cache
+*.cache
+*.cache
+/LiveStock.Web/obj/Debug/net9.0
+/LiveStock.Web/obj
+LiveStock.Web/obj/Debug/net9.0/refint/LiveStock.Web.dll
