@@ -623,6 +623,78 @@ namespace LiveStock.Web.Controllers
 
             return View(financialRecords);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddFinancialRecord(LiveStock.Core.Models.FinancialRecord record)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["FinanceError"] = "Please correct the form and try again.";
+                return RedirectToAction(nameof(Finance));
+            }
+            record.CreatedAt = DateTime.UtcNow;
+            record.UpdatedAt = DateTime.UtcNow;
+            _context.FinancialRecords.Add(record);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Finance));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteFinancialRecord(int id)
+        {
+            var existing = await _context.FinancialRecords.FindAsync(id);
+            if (existing == null)
+            {
+                TempData["FinanceError"] = "Record not found.";
+                return RedirectToAction(nameof(Finance));
+            }
+            _context.FinancialRecords.Remove(existing);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Finance));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditFinancialRecord(int id)
+        {
+            var record = await _context.FinancialRecords.FindAsync(id);
+            if (record == null)
+            {
+                return RedirectToAction(nameof(Finance));
+            }
+            return View(record);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditFinancialRecord(LiveStock.Core.Models.FinancialRecord record)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(record);
+            }
+
+            var existing = await _context.FinancialRecords.FindAsync(record.Id);
+            if (existing == null)
+            {
+                return RedirectToAction(nameof(Finance));
+            }
+
+            existing.Type = record.Type;
+            existing.Description = record.Description;
+            existing.Amount = record.Amount;
+            existing.TransactionDate = record.TransactionDate;
+            existing.Category = record.Category;
+            existing.Reference = record.Reference;
+            existing.Notes = record.Notes;
+            existing.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Finance));
+        }
+
+        /* Removed stray duplicate finance methods appended outside the controller class. */
         #region Notes
         public IActionResult Notes()
         {

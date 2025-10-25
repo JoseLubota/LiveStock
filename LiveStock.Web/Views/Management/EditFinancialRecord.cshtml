@@ -1,0 +1,108 @@
+@model LiveStock.Core.Models.FinancialRecord
+@{
+    ViewData["Title"] = "Edit Financial Record";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Edit Financial Record</h1>
+        <a asp-action="Finance" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Finance
+        </a>
+    </div>
+
+    @if (TempData["FinanceError"] != null)
+    {
+        <div class="alert alert-danger">@TempData["FinanceError"]</div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="EditFinancialRecord" method="post" class="">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.Id)
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Type" class="form-label"></label>
+                            <select asp-for="Type" class="form-control">
+                                <option value="Income">Income</option>
+                                <option value="Expense">Expense</option>
+                            </select>
+                            <span asp-validation-for="Type" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Category" class="form-label"></label>
+                            <select asp-for="Category" class="form-control">
+                                <option value="">Select Category</option>
+                                <option>Livestock Sales</option>
+                                <option>Feed</option>
+                                <option>Veterinary</option>
+                                <option>Equipment</option>
+                                <option>Labor</option>
+                                <option>Utilities</option>
+                                <option>Other</option>
+                            </select>
+                            <span asp-validation-for="Category" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Amount" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input asp-for="Amount" class="form-control" />
+                            </div>
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="TransactionDate" class="form-label"></label>
+                            <input asp-for="TransactionDate" class="form-control" type="date" />
+                            <span asp-validation-for="TransactionDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Reference" class="form-label"></label>
+                            <input asp-for="Reference" class="form-control" />
+                            <span asp-validation-for="Reference" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Notes" class="form-label"></label>
+                            <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
+                            <span asp-validation-for="Notes" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-action="Finance" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
