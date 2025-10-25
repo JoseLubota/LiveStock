@@ -85,7 +85,7 @@
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Assets Management</h1>
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addAssetModal">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addAssetModal">
                     <i class="fas fa-plus me-2"></i>Add New Asset
                 </button>
             </div>
@@ -104,7 +104,7 @@
                 <div class="col-md-3">
                     <div class="card text-center">
                         <div class="card-body">
-                            <i class="fas fa-fence fa-3x text-warning mb-3"></i>
+                            <i class="fas fa-tools fa-3x text-warning mb-3"></i>
                             <h5>Fencing</h5>
                             <h3 class="text-warning">@Model.Count(a => a.Category == "Fencing")</h3>
                         </div>
@@ -122,9 +122,9 @@
                 <div class="col-md-3">
                     <div class="card text-center">
                         <div class="card-body">
-                            <i class="fas fa-list fa-3x text-primary mb-3"></i>
-                            <h5>Cattle Lists</h5>
-                            <h3 class="text-primary">@Model.Count(a => a.Category == "Cattle Lists")</h3>
+                            <i class="fas fa-paw fa-3x text-primary mb-3"></i>
+                            <h5>Animal</h5>
+                            <h3 class="text-primary">@Model.Count(a => a.Category == "Animal" || a.Category == "Cattle Lists")</h3>
                         </div>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
                                         <tr>
                                             <td>@asset.Name</td>
                                             <td>
-                                                <span class="badge bg-secondary">@asset.Category</span>
+                                                <span class="badge bg-secondary">@((asset.Category == "Cattle Lists") ? "Animal" : asset.Category)</span>
                                             </td>
                                             <td>@asset.Type</td>
                                             <td>
@@ -197,12 +197,16 @@
                                             </td>
                                             <td>@(asset.Location ?? "-")</td>
                                             <td>
-                                                <button class="btn btn-sm btn-info" onclick="editAsset(@asset.Id)">
+                                                <a class="btn btn-sm btn-info" asp-controller="Management" asp-action="EditAsset" asp-route-id="@asset.Id">
                                                     <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-danger" onclick="removeAsset(@asset.Id)">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
+                                                </a>
+                                                <form asp-controller="Management" asp-action="RemoveAsset" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@asset.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Remove this asset?');">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     }
@@ -229,23 +233,24 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="assetForm">
+                <form asp-controller="Management" asp-action="AddAsset" method="post">
+                    @Html.AntiForgeryToken()
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Asset Name:</label>
-                                <input type="text" class="form-control" name="name" required />
+                                <input type="text" class="form-control" name="Name" required />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Category:</label>
-                                <select class="form-control" name="category" required>
+                                <select class="form-control" name="Category" required>
                                     <option value="">Select Category</option>
                                     <option value="Feed">Feed</option>
                                     <option value="Fencing">Fencing</option>
                                     <option value="Vehicles">Vehicles</option>
-                                    <option value="Cattle Lists">Cattle Lists</option>
+                                    <option value="Animal">Animal</option>
                                 </select>
                             </div>
                         </div>
@@ -254,13 +259,13 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Type:</label>
-                                <input type="text" class="form-control" name="type" required />
+                                <input type="text" class="form-control" name="Type" required />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Quantity:</label>
-                                <input type="number" class="form-control" name="quantity" min="0" />
+                                <input type="number" class="form-control" name="Quantity" min="0" />
                             </div>
                         </div>
                     </div>
@@ -268,13 +273,13 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Unit:</label>
-                                <input type="text" class="form-control" name="unit" placeholder="kg, pieces, liters, etc." />
+                                <input type="text" class="form-control" name="Unit" placeholder="kg, pieces, liters, etc." />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Purchase Price:</label>
-                                <input type="number" class="form-control" name="purchasePrice" step="0.01" min="0" />
+                                <input type="number" class="form-control" name="PurchasePrice" step="0.01" min="0" />
                             </div>
                         </div>
                     </div>
@@ -282,19 +287,19 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Purchase Date:</label>
-                                <input type="date" class="form-control" name="purchaseDate" />
+                                <input type="date" class="form-control" name="PurchaseDate" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Location:</label>
-                                <input type="text" class="form-control" name="location" placeholder="Where is this asset stored?" />
+                                <input type="text" class="form-control" name="Location" placeholder="Where is this asset stored?" />
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Description:</label>
-                        <textarea class="form-control" name="description" rows="3"></textarea>
+                        <textarea class="form-control" name="Description" rows="3"></textarea>
                     </div>
                     <div class="d-flex justify-content-end gap-2">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -307,29 +312,7 @@
 </div>
 
 <script>
-    document.getElementById('assetForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(this);
-        const assetName = formData.get('name');
-        const category = formData.get('category');
-        
-        alert(`Asset "${assetName}" added to ${category} category successfully!`);
-        
-        bootstrap.Modal.getInstance(document.getElementById('addAssetModal')).hide();
-        
-        this.reset();
-    });
-
-    function editAsset(assetId) {
-        alert(`Edit asset ${assetId}`);
-    }
-
-    function removeAsset(assetId) {
-        if (confirm('Are you sure you want to remove this asset?')) {
-            alert(`Asset ${assetId} removed successfully`);
-        }
-    }
+    // Client-side handlers removed; form posts to server actions.
 </script>
 
 <style>
@@ -378,4 +361,4 @@
         border-color: var(--medium-green);
         box-shadow: 0 0 0 0.2rem rgba(78, 113, 69, 0.25);
     }
-</style> 
+</style>

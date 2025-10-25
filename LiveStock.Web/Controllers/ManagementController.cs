@@ -373,6 +373,13 @@ namespace LiveStock.Web.Controllers
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
 
+            ViewBag.Staff = await _context.Staff.Where(s => s.IsActive).ToListAsync();
+            ViewBag.Messages = await _context.Messages
+                .Include(m => m.Sender)
+                .OrderByDescending(m => m.SentAt)
+                .Take(100)
+                .ToListAsync();
+
             return View(tasks);
         }
 
@@ -385,19 +392,62 @@ namespace LiveStock.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTask(FarmTask task)
         {
+            // Debug logging - what did we receive?
+            Console.WriteLine($"[CreateTask] Received task:");
+            Console.WriteLine($"  Description: '{task.Description}'");
+            Console.WriteLine($"  AssignedToId: {task.AssignedToId}");
+            Console.WriteLine($"  Importance: '{task.Importance}'");
+            Console.WriteLine($"  DueDate: {task.DueDate}");
+            Console.WriteLine($"  Notes: '{task.Notes}'");
+            Console.WriteLine($"  CreatedById (initial): {task.CreatedById}");
+
+            // Check if we have any active staff
+            var activeStaff = _context.Staff.Where(s => s.IsActive).ToList();
+            Console.WriteLine($"[CreateTask] Found {activeStaff.Count} active staff members");
+            foreach (var staff in activeStaff)
+            {
+                Console.WriteLine($"  Staff: {staff.Id} - {staff.Name} ({staff.EmployeeId})");
+            }
+
+            // Set CreatedById BEFORE model validation to prevent foreign key validation errors
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            int createdById;
+            if (!int.TryParse(userIdStr, out createdById))
+            {
+                // Fallback: use the assigned staff or first active staff if session is missing
+                createdById = task.AssignedToId != 0
+                    ? task.AssignedToId
+                    : (activeStaff.FirstOrDefault()?.Id ?? 0);
+            }
+
+            Console.WriteLine($"[CreateTask] Setting CreatedById to: {createdById}");
+            task.CreatedById = createdById;
+            task.CreatedAt = DateTime.UtcNow;
+            task.Status = "Pending";
+
+            Console.WriteLine($"[CreateTask] Final task values before validation:");
+            Console.WriteLine($"  AssignedToId: {task.AssignedToId}");
+            Console.WriteLine($"  CreatedById: {task.CreatedById}");
+
             if (ModelState.IsValid)
             {
-                var userId = HttpContext.Session.GetString("UserId");
-                task.CreatedById = int.Parse(userId!);
-                task.CreatedAt = DateTime.UtcNow;
-                task.Status = "Pending";
-
+                Console.WriteLine("[CreateTask] ModelState is valid, saving task...");
                 _context.FarmTasks.Add(task);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Tasks));
             }
 
-            ViewBag.Staff = _context.Staff.Where(s => s.IsActive).ToList();
+            // Log ModelState errors to help diagnose why the form reloads
+            Console.WriteLine("[CreateTask] ModelState is INVALID:");
+            foreach (var kvp in ModelState)
+            {
+                foreach (var err in kvp.Value.Errors)
+                {
+                    Console.WriteLine($"  {kvp.Key} - {err.ErrorMessage}");
+                }
+            }
+
+            ViewBag.Staff = activeStaff;
             return View(task);
         }
 
@@ -456,6 +506,115 @@ namespace LiveStock.Web.Controllers
             return View(assets);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAsset(Asset asset)
+        {
+            Console.WriteLine("[AddAsset] Incoming asset:");
+            Console.WriteLine($"  Name={asset.Name}, Category={asset.Category}, Type={asset.Type}");
+            Console.WriteLine($"  Quantity={asset.Quantity}, Unit={asset.Unit}, PurchasePrice={asset.PurchasePrice}");
+            Console.WriteLine($"  PurchaseDate={asset.PurchaseDate}, Location={asset.Location}");
+
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("[AddAsset] ModelState INVALID");
+                foreach (var kvp in ModelState)
+                {
+                    foreach (var err in kvp.Value.Errors)
+                    {
+                        Console.WriteLine($"  {kvp.Key} - {err.ErrorMessage}");
+                    }
+                }
+                // Recompute list for counts and table if validation fails
+                var assets = await _context.Assets
+                    .OrderBy(a => a.Category)
+                    .ThenBy(a => a.Name)
+                    .ToListAsync();
+                TempData["AssetError"] = "Could not add asset. Please check required fields.";
+                return View(nameof(Assets), assets);
+            }
+
+            asset.Status = string.IsNullOrWhiteSpace(asset.Status) ? "Active" : asset.Status;
+            asset.CreatedAt = DateTime.UtcNow;
+            asset.UpdatedAt = null;
+
+            _context.Assets.Add(asset);
+            await _context.SaveChangesAsync();
+            Console.WriteLine($"[AddAsset] Saved asset #{asset.Id}");
+            return RedirectToAction(nameof(Assets));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveAsset(int id)
+        {
+            Console.WriteLine($"[RemoveAsset] Request to delete asset id={id}");
+            var asset = await _context.Assets.FindAsync(id);
+            if (asset != null)
+            {
+                _context.Assets.Remove(asset);
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"[RemoveAsset] Deleted asset #{id}");
+            }
+            else
+            {
+                Console.WriteLine($"[RemoveAsset] Asset not found id={id}");
+            }
+            return RedirectToAction(nameof(Assets));
+        }
+
+        public async Task<IActionResult> EditAsset(int id)
+        {
+            var asset = await _context.Assets.FindAsync(id);
+            if (asset == null)
+            {
+                return NotFound();
+            }
+            return View(asset);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAsset(Asset input)
+        {
+            Console.WriteLine($"[EditAsset] Incoming update for id={input.Id}");
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("[EditAsset] ModelState INVALID");
+                foreach (var kvp in ModelState)
+                {
+                    foreach (var err in kvp.Value.Errors)
+                    {
+                        Console.WriteLine($"  {kvp.Key} - {err.ErrorMessage}");
+                    }
+                }
+                return View(input);
+            }
+
+            var asset = await _context.Assets.FindAsync(input.Id);
+            if (asset == null)
+            {
+                return NotFound();
+            }
+
+            asset.Name = input.Name;
+            asset.Category = input.Category;
+            asset.Type = input.Type;
+            asset.Description = input.Description;
+            asset.Quantity = input.Quantity;
+            asset.Unit = input.Unit;
+            asset.PurchasePrice = input.PurchasePrice;
+            asset.PurchaseDate = input.PurchaseDate;
+            asset.ExpiryDate = input.ExpiryDate;
+            asset.Status = string.IsNullOrWhiteSpace(input.Status) ? asset.Status : input.Status;
+            asset.Location = input.Location;
+            asset.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            Console.WriteLine($"[EditAsset] Updated asset #{asset.Id}");
+            return RedirectToAction(nameof(Assets));
+        }
+
         public async Task<IActionResult> Finance()
         {
             var financialRecords = await _context.FinancialRecords
@@ -491,6 +650,12 @@ namespace LiveStock.Web.Controllers
             }
             if (!ModelState.IsValid)
             {
+                // Keep employees on dashboard when invalid
+                var roleInvalid = HttpContext.Session.GetString("UserRole");
+                if (string.Equals(roleInvalid, "Employee", StringComparison.OrdinalIgnoreCase))
+                {
+                    return RedirectToAction("Dashboard", "Employee");
+                }
                 return RedirectToAction("Notes");
             }
             int userId = int.Parse(userIdStr);
@@ -504,6 +669,12 @@ namespace LiveStock.Web.Controllers
             };
             _context.Notes.Add(note);
             _context.SaveChanges();
+
+            var role = HttpContext.Session.GetString("UserRole");
+            if (string.Equals(role, "Employee", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("Dashboard", "Employee");
+            }
             return RedirectToAction("Notes");
         }
         #endregion
@@ -558,6 +729,50 @@ namespace LiveStock.Web.Controllers
             }
 
             return RedirectToAction(nameof(CampDetails), new { id = campId });
+        }
+
+        // Chat/Staff Communication
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendMessage(string content, int? recipientId)
+        {
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                TempData["MessageError"] = "Message cannot be empty.";
+                return RedirectToAction(nameof(Tasks));
+            }
+
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            int senderId;
+            if (!int.TryParse(userIdStr, out senderId))
+            {
+                senderId = await _context.Staff.Where(s => s.IsActive).Select(s => s.Id).FirstOrDefaultAsync();
+            }
+
+            if (senderId == 0)
+            {
+                TempData["MessageError"] = "No active staff found to send message.";
+                return RedirectToAction(nameof(Tasks));
+            }
+
+            var message = new LiveStock.Core.Models.Message
+            {
+                SenderId = senderId,
+                RecipientId = recipientId,
+                Content = content,
+                IsBroadcast = recipientId == null,
+                SentAt = DateTime.UtcNow
+            };
+
+            _context.Messages.Add(message);
+            await _context.SaveChangesAsync();
+
+            var role = HttpContext.Session.GetString("UserRole");
+            if (string.Equals(role, "Employee", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("Dashboard", "Employee");
+            }
+            return RedirectToAction(nameof(Tasks));
         }
 
         #endregion

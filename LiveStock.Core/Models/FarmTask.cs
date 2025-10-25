@@ -13,7 +13,7 @@ namespace LiveStock.Core.Models
         [Required]
         public int AssignedToId { get; set; }
         
-        public virtual Staff AssignedTo { get; set; } = null!;
+        public virtual Staff? AssignedTo { get; set; }
         
         [Required]
         public string Importance { get; set; } = string.Empty; // "Low", "Medium", "High", "Critical"
@@ -33,6 +33,6 @@ namespace LiveStock.Core.Models
         
         public int CreatedById { get; set; }
         
-        public virtual Staff CreatedBy { get; set; } = null!;
+        public virtual Staff? CreatedBy { get; set; }
     }
-} 
+}

@@ -1,0 +1,118 @@
+@model LiveStock.Core.Models.Asset
+
+@{
+    ViewData["Title"] = "Edit Asset";
+    Layout = "_Layout";
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Asset</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Management" asp-action="EditAsset" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" value="@Model.Id" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" name="Name" value="@Model.Name" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-control" name="Category" required>
+                                        @if (Model.Category == "Feed") {<option value="Feed" selected>Feed</option>} else {<option value="Feed">Feed</option>}
+                                        @if (Model.Category == "Fencing") {<option value="Fencing" selected>Fencing</option>} else {<option value="Fencing">Fencing</option>}
+                                        @if (Model.Category == "Vehicles") {<option value="Vehicles" selected>Vehicles</option>} else {<option value="Vehicles">Vehicles</option>}
+                                        @if (Model.Category == "Animal" || Model.Category == "Cattle Lists") {<option value="Animal" selected>Animal</option>} else {<option value="Animal">Animal</option>}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <input type="text" class="form-control" name="Type" value="@Model.Type" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Quantity</label>
+                                    <input type="number" class="form-control" name="Quantity" value="@(Model.Quantity ?? 0)" min="0" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Unit</label>
+                                    <input type="text" class="form-control" name="Unit" value="@Model.Unit" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Purchase Price</label>
+                                    <input type="number" class="form-control" name="PurchasePrice" value="@Model.PurchasePrice" step="0.01" min="0" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Purchase Date</label>
+                                    <input type="date" class="form-control" name="PurchaseDate" value="@(Model.PurchaseDate?.ToString("yyyy-MM-dd"))" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Expiry Date</label>
+                                    <input type="date" class="form-control" name="ExpiryDate" value="@(Model.ExpiryDate?.ToString("yyyy-MM-dd"))" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-control" name="Status">
+                                        @if (Model.Status == "Active") {<option value="Active" selected>Active</option>} else {<option value="Active">Active</option>}
+                                        @if (Model.Status == "Maintenance") {<option value="Maintenance" selected>Maintenance</option>} else {<option value="Maintenance">Maintenance</option>}
+                                        @if (Model.Status == "Retired") {<option value="Retired" selected>Retired</option>} else {<option value="Retired">Retired</option>}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-control" name="Location" value="@Model.Location" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" name="Description" rows="3">@Model.Description</textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a class="btn btn-secondary" asp-controller="Management" asp-action="Assets">Cancel</a>
+                            <button type="submit" class="btn btn-info">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

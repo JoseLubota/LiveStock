@@ -3136,11 +3136,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/LiveStock.Infrastructure.csproj",
+      "projectUniqueName": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Infrastructure/LiveStock.Infrastructure.csproj",
       "projectName": "LiveStock.Infrastructure",
-      "projectPath": "/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/LiveStock.Infrastructure.csproj",
+      "projectPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Infrastructure/LiveStock.Infrastructure.csproj",
       "packagesPath": "/Users/mahefanyavo/.nuget/packages/",
-      "outputPath": "/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Infrastructure/obj/",
+      "outputPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Infrastructure/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/mahefanyavo/.nuget/NuGet/NuGet.Config"
@@ -3155,8 +3155,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/LiveStock.Core.csproj": {
-              "projectPath": "/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/LiveStock.Core.csproj"
+            "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/LiveStock.Core.csproj": {
+              "projectPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/LiveStock.Core.csproj"
             }
           }
         }

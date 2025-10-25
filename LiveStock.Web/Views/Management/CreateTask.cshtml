@@ -99,6 +99,9 @@
                         <div class="card-body">
                             <form asp-action="CreateTask" method="post" enctype="multipart/form-data">
                                 <div class="mb-3">
+                                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="mb-3">
                                     <label asp-for="Description" class="form-label">Task Description:</label>
                                     <textarea asp-for="Description" class="form-control" rows="3" placeholder="Describe the task in detail" required></textarea>
                                     <span asp-validation-for="Description" class="text-danger"></span>
@@ -199,7 +202,12 @@
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(9, 0, 0, 0); // 9 AM tomorrow
-    document.querySelector('input[name="DueDate"]').value = tomorrow.toISOString().slice(0, 16);
+    const dueDateInput = document.querySelector('input[name="DueDate"]');
+    if (dueDateInput && !dueDateInput.value) {
+        const pad = (n) => String(n).padStart(2, '0');
+        const localValue = `${tomorrow.getFullYear()}-${pad(tomorrow.getMonth()+1)}-${pad(tomorrow.getDate())}T${pad(tomorrow.getHours())}:${pad(tomorrow.getMinutes())}`;
+        dueDateInput.value = localValue;
+    }
 </script>
 
 <style>
@@ -243,4 +251,4 @@
         border-color: var(--medium-green);
         box-shadow: 0 0 0 0.2rem rgba(78, 113, 69, 0.25);
     }
-</style> 
+</style>

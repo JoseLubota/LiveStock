@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/LiveStock.Core.csproj": {}
+    "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/LiveStock.Core.csproj": {}
   },
   "projects": {
-    "/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/LiveStock.Core.csproj": {
+    "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/LiveStock.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/LiveStock.Core.csproj",
+        "projectUniqueName": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/LiveStock.Core.csproj",
         "projectName": "LiveStock.Core",
-        "projectPath": "/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/LiveStock.Core.csproj",
+        "projectPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/LiveStock.Core.csproj",
         "packagesPath": "/Users/mahefanyavo/.nuget/packages/",
-        "outputPath": "/Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Core/obj/",
+        "outputPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/mahefanyavo/.nuget/NuGet/NuGet.Config"

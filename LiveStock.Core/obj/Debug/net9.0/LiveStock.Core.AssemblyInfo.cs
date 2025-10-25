@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LiveStock.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+de712793a449532cd0112a4d09e07acff33c15a4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ef35ccad66192b2bf02b9fe3a501ac598fa7d86e")]
 [assembly: System.Reflection.AssemblyProductAttribute("LiveStock.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LiveStock.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

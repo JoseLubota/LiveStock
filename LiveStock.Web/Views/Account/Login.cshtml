@@ -10,18 +10,10 @@
         <div class="col-md-6">
             <div class="card shadow-lg">
                 <div class="card-header bg-dark-green text-white text-center">
-                    <h3 class="mb-0">STAFF LOGIN</h3>
+                    <h3 class="mb-0">USER LOGIN</h3>
                 </div>
                 <div class="card-body p-4">
-                    <div class="text-center mb-4">
-                        <div class="employee-profile mb-3">
-                            <div class="employee-avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <span class="employee-name">Admin Login</span>
-                        </div>
-                    </div>
-
+                    
                     <form asp-action="Login" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         
@@ -44,9 +36,12 @@
 
                     <div class="text-center mt-4">
                         <p class="text-muted">
-                            <strong>Demo Credentials:</strong><br>
-                            Employee ID: <code>admin@@gmail.com</code><br>
-                            Password: <code>demo123</code>
+                            <strong>Demo Admin Login Credentials:</strong><br>
+                            Admin Email: <code>admin@gmail.com</code><br>
+                            Admin Password: <code>demo123</code><br>
+                            <strong>Demo Employee Login Credentials:</strong><br>
+                            Employee Email: <code>staff@gmail.com</code><br>
+                            Employee Password: <code>staff123</code>
                         </p>
                     </div>
                 </div>
@@ -115,4 +110,4 @@
         border-color: var(--dark-green);
         transform: translateY(-2px);
     }
-</style> 
+</style>
