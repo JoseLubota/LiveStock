@@ -96,6 +96,8 @@ namespace LiveStock.Infrastructure.Data
 
         private void SeedData(ModelBuilder modelBuilder)
         {
+            var seedBase = new DateTime(2024, 01, 01, 0, 0, 0, DateTimeKind.Utc);
+
             // Seed 15 camps
             for (int i = 1; i <= 15; i++)
             {
@@ -104,7 +106,7 @@ namespace LiveStock.Infrastructure.Data
                     Id = i,
                     Name = $"Camp {i}",
                     CampNumber = i,
-                    Hectares = 153.33, // 2300 hectares / 15 camps
+                    Hectares = 153.33,
                     Description = $"Camp {i} - Livestock grazing area"
                 });
             }
@@ -119,7 +121,7 @@ namespace LiveStock.Infrastructure.Data
                 Email = "owner@farm.com",
                 Role = "Farmer",
                 IsActive = true,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = seedBase
             });
 
             // Seed sample financial records
@@ -130,10 +132,10 @@ namespace LiveStock.Infrastructure.Data
                     Type = "Income",
                     Description = "Sheep Sale - Merino Ewe",
                     Amount = 450.00m,
-                    TransactionDate = DateTime.UtcNow.AddDays(-10),
+                    TransactionDate = seedBase.AddDays(-10),
                     Category = "Livestock Sales",
                     Reference = "INV-001",
-                    CreatedAt = DateTime.UtcNow.AddDays(-10)
+                    CreatedAt = seedBase.AddDays(-10)
                 },
                 new FinancialRecord
                 {
@@ -141,10 +143,10 @@ namespace LiveStock.Infrastructure.Data
                     Type = "Expense",
                     Description = "Veterinary Services",
                     Amount = 150.00m,
-                    TransactionDate = DateTime.UtcNow.AddDays(-15),
+                    TransactionDate = seedBase.AddDays(-15),
                     Category = "Veterinary",
                     Reference = "REC-001",
-                    CreatedAt = DateTime.UtcNow.AddDays(-15)
+                    CreatedAt = seedBase.AddDays(-15)
                 },
                 new FinancialRecord
                 {
@@ -152,10 +154,10 @@ namespace LiveStock.Infrastructure.Data
                     Type = "Expense",
                     Description = "Feed Purchase",
                     Amount = 300.00m,
-                    TransactionDate = DateTime.UtcNow.AddDays(-20),
+                    TransactionDate = seedBase.AddDays(-20),
                     Category = "Feed",
                     Reference = "INV-002",
-                    CreatedAt = DateTime.UtcNow.AddDays(-20)
+                    CreatedAt = seedBase.AddDays(-20)
                 }
             );
 
@@ -171,10 +173,10 @@ namespace LiveStock.Infrastructure.Data
                     Quantity = 50,
                     Unit = "rolls",
                     PurchasePrice = 25.00m,
-                    PurchaseDate = DateTime.UtcNow.AddDays(-60),
+                    PurchaseDate = seedBase.AddDays(-60),
                     Status = "Active",
                     Location = "Storage Shed A",
-                    CreatedAt = DateTime.UtcNow.AddDays(-60)
+                    CreatedAt = seedBase.AddDays(-60)
                 },
                 new Asset
                 {
@@ -186,11 +188,11 @@ namespace LiveStock.Infrastructure.Data
                     Quantity = 1000,
                     Unit = "kg",
                     PurchasePrice = 0.80m,
-                    PurchaseDate = DateTime.UtcNow.AddDays(-30),
-                    ExpiryDate = DateTime.UtcNow.AddMonths(6),
+                    PurchaseDate = seedBase.AddDays(-30),
+                    ExpiryDate = seedBase.AddMonths(6),
                     Status = "Active",
                     Location = "Feed Storage",
-                    CreatedAt = DateTime.UtcNow.AddDays(-30)
+                    CreatedAt = seedBase.AddDays(-30)
                 }
             );
         }

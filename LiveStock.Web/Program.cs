@@ -8,10 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<adminService>();
 builder.Services.AddScoped<sheepService>();
+builder.Services.AddScoped<IStaffService, staffService>();
 
-// Add Entity Framework with SQLite (macOS compatible)
+// Add Entity Framework with Azure SQL Server
 builder.Services.AddDbContext<LiveStockDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=LiveStock.db"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConString")));
 
 // Add Session support
 builder.Services.AddDistributedMemoryCache();
@@ -45,21 +46,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-// Ensure database is created
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<LiveStockDbContext>();
-    context.Database.EnsureCreated();
-    // Ensure Notes table exists without migrations
-    context.Database.ExecuteSqlRaw(@"CREATE TABLE IF NOT EXISTS Notes (
-        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-        Title TEXT NOT NULL,
-        Content TEXT NOT NULL,
-        Category TEXT NOT NULL,
-        CreatedByUserId INTEGER NOT NULL,
-        CreatedAt TEXT NOT NULL,
-        UpdatedAt TEXT
-    );");
-}
 
 app.Run();
