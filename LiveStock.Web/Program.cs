@@ -50,6 +50,16 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<LiveStockDbContext>();
     context.Database.EnsureCreated();
+    // Ensure Notes table exists without migrations
+    context.Database.ExecuteSqlRaw(@"CREATE TABLE IF NOT EXISTS Notes (
+        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+        Title TEXT NOT NULL,
+        Content TEXT NOT NULL,
+        Category TEXT NOT NULL,
+        CreatedByUserId INTEGER NOT NULL,
+        CreatedAt TEXT NOT NULL,
+        UpdatedAt TEXT
+    );");
 }
 
 app.Run();
