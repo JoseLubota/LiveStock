@@ -224,7 +224,7 @@
                                                     }
                                                 </td>
                                                 <td>
-                                                    <span class="text-success">$@sheep.Price.ToString("N2")</span>
+                                                    <span class="text-success">R@sheep.Price.ToString("N2")</span>
                                                 </td>
                                                 <td>
                                                     @if (sheep.IsActive)
@@ -311,12 +311,18 @@
                                 <a asp-action="AddSheep" class="btn btn-success">
                                     <i class="fas fa-plus me-2"></i>Add New Sheep
                                 </a>
-                                <button class="btn btn-outline-primary" onclick="exportSheepData()">
-                                    <i class="fas fa-download me-2"></i>Export Data
-                                </button>
-                                <button class="btn btn-outline-info" onclick="generateReport()">
-                                    <i class="fas fa-chart-bar me-2"></i>Generate Report
-                                </button>
+                                <!-- onclick="exportSheepData()" -->
+                                <form asp-action="ExportSheep" method="post">
+                                    <button  class="btn btn-outline-primary w-100" type="submit">
+                                        <i class="fas fa-download me-2"></i>Export Data
+                                    </button>
+                                </form>
+                                <form asp-action ="GenerateSheepReport" method="post">
+                                    <button type="submit" class="btn btn-outline-info w-100">
+                                        <i class="fas fa-chart-bar me-2"></i>Generate Report
+                                    </button>
+                                 </form>
+
                             </div>
                         </div>
                     </div>

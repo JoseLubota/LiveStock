@@ -1,5 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using LiveStock.Core.Models;
+using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace LiveStock.Web.Service
 {
@@ -21,7 +24,7 @@ namespace LiveStock.Web.Service
 
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@breed", breed);
-                cmd.Parameters.AddWithValue("@birthDate",birdthDate);
+                cmd.Parameters.AddWithValue("@birthDate", birdthDate);
                 cmd.Parameters.AddWithValue("@camp", camp);
                 cmd.Parameters.AddWithValue("@gender", gender);
                 cmd.Parameters.AddWithValue("@price", price);
@@ -35,7 +38,7 @@ namespace LiveStock.Web.Service
         {
             List<Sheep> sheepList = new List<Sheep>();
 
-            using(SqlConnection con = new SqlConnection(_conString))
+            using (SqlConnection con = new SqlConnection(_conString))
             {
                 const string sql = "SELECT * FROM Sheep";
                 SqlCommand cmd = new SqlCommand(sql, con);
@@ -77,7 +80,7 @@ namespace LiveStock.Web.Service
                 con.Open();
                 int rowsAffected = cmd.ExecuteNonQuery();
 
-                if(rowsAffected == 0)
+                if (rowsAffected == 0)
                 {
                     Console.WriteLine($"No sheep found");
                 }
@@ -129,11 +132,11 @@ namespace LiveStock.Web.Service
         {
             List<Sheep> result = [];
 
-            foreach(var current in currentShepp)
+            foreach (var current in currentShepp)
             {
                 var updated = newSheppDetails.FirstOrDefault(s => s.SheepID == current.SheepID);
 
-                if(updated != null)
+                if (updated != null)
                 {
                     // Fill in missing fields
                     current.Breed = string.IsNullOrEmpty(updated.Breed) ? current.Breed : updated.Breed;
@@ -143,7 +146,7 @@ namespace LiveStock.Web.Service
                     current.BirthDate = updated.BirthDate == default ? current.BirthDate : updated.BirthDate;
                 }
                 result.Add(current);
-                    
+
             }
 
             return result;
@@ -151,11 +154,11 @@ namespace LiveStock.Web.Service
 
         public void UpdateSheep(Sheep updateSheep)
         {
-            using(SqlConnection con = new SqlConnection(_conString))
+            using (SqlConnection con = new SqlConnection(_conString))
             {
                 const string sql = " UPDATE Sheep SET breed = @breed, camp = @camp, gender = @gender,price = @price, birthDate = @birthDate WHERE sheepID = @sheepID";
 
-                using(SqlCommand cmd = new SqlCommand(sql, con))
+                using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
                     cmd.Parameters.AddWithValue("@sheepID", updateSheep.SheepID);
                     cmd.Parameters.AddWithValue("@breed", updateSheep.Breed);
@@ -163,11 +166,11 @@ namespace LiveStock.Web.Service
                     cmd.Parameters.AddWithValue("@price", updateSheep.Price);
                     cmd.Parameters.AddWithValue("@birthDate", updateSheep.BirthDate);
                     cmd.Parameters.AddWithValue("@gender", updateSheep.Gender);
-                    
+
                     con.Open();
                     int rows = cmd.ExecuteNonQuery();
 
-                    if(rows == 0)
+                    if (rows == 0)
                     {
                         Console.WriteLine($"No sheep dound with the ID {updateSheep.SheepID}");
                     }
@@ -185,7 +188,7 @@ namespace LiveStock.Web.Service
             switch (action)
             {
                 case "markSold":
-                    foreach(int id in sheepIDs)
+                    foreach (int id in sheepIDs)
                     {
                         DeleteSheep(id);
                     }
@@ -194,16 +197,16 @@ namespace LiveStock.Web.Service
                 case "move":
                     if (int.TryParse(reason, out int newCampId))
                     {
-                        foreach(int id in sheepIDs)
+                        foreach (int id in sheepIDs)
                         {
                             MoveSheepToCamp(id, newCampId);
                         }
-                       
+
                     }
                     break;
 
                 case "markInactive":
-                    foreach(int id in sheepIDs)
+                    foreach (int id in sheepIDs)
                     {
                         MarkSheepAsInactive(id);
                     }
@@ -219,14 +222,14 @@ namespace LiveStock.Web.Service
         }
         public void MoveSheepToCamp(int id, int campID)
         {
-            using(SqlConnection con = new SqlConnection(_conString))
+            using (SqlConnection con = new SqlConnection(_conString))
             {
                 const string sql = "UPDATE Sheep SET camp = @campID WHERE sheepID = @sheepID";
 
-                using(SqlCommand cmd = new SqlCommand(sql, con))
+                using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.AddWithValue("@sheepID",id);
-                    cmd.Parameters.AddWithValue("@campID",campID);
+                    cmd.Parameters.AddWithValue("@sheepID", id);
+                    cmd.Parameters.AddWithValue("@campID", campID);
 
                     con.Open();
                     int rows = cmd.ExecuteNonQuery();
@@ -269,5 +272,94 @@ namespace LiveStock.Web.Service
                 }
             }
         }
+        public byte[] ExportSheep()
+        {
+            var sheepList = GetAllSheep();
+
+            var csvBuilder = new System.Text.StringBuilder();
+
+            csvBuilder.AppendLine("SheepID,Breed,Camp,Gender,BirthDate,Price,isActive,PhotoID");
+            foreach (var item in sheepList)
+            {
+                csvBuilder.AppendLine($"{item.SheepID},{item.Breed},{item.CampId},{item.Gender},{item.Price},{item.IsActive}," +
+                    $"{(item.PhotoID.HasValue ? item.PhotoID.Value.ToString() : "N/A")}");
+
+            }
+
+            var bytes = System.Text.Encoding.UTF8.GetBytes(csvBuilder.ToString());
+            return bytes;
+
+        }
+        public byte[] GenerateSheepReport()
+        {
+
+            var sheepList = GetAllSheep();
+            using (var mstream = new MemoryStream())
+            {
+                Document doc = new Document(PageSize.A4, 50, 50, 50, 50);
+                PdfWriter.GetInstance(doc, mstream);
+                doc.Open();
+
+                // Title
+                var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 20, BaseColor.BLACK);
+                var subTitleFont = FontFactory.GetFont(FontFactory.HELVETICA, 12, BaseColor.DARK_GRAY);
+
+                Paragraph title = new Paragraph("Sheep Report", titleFont);
+                title.Alignment = Element.ALIGN_CENTER;
+                doc.Add(title);
+
+                doc.Add(new Paragraph("\n"));
+                doc.Add(new Paragraph($"Date Generated: {DateTime.Now:MMMM-dd, yyyy HH:mm}", subTitleFont));
+                doc.Add(new Paragraph($"Total Sheep: {sheepList.Count}", subTitleFont));
+                doc.Add(new Paragraph("\n\n"));
+
+                // Table Setup
+
+                PdfPTable table = new PdfPTable(7);
+                table.WidthPercentage = 100;
+                table.SetWidths(new float[] { 1.2f, 2f, 1.5f, 1.2f, 2f, 1.5f, 1.2f });
+
+                // Headers
+                var headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, BaseColor.WHITE);
+                string[] headers = { "ID", "Breed", "Camp ID", "Gender", "Birth Date", "Price", "Active" };
+
+                foreach (string header in headers)
+                {
+                    PdfPCell cell = new PdfPCell(new Phrase(header, headerFont))
+                    {
+                        BackgroundColor = new BaseColor(52, 73, 94),
+                        HorizontalAlignment = Element.ALIGN_CENTER,
+                        Padding = 6
+                    };
+                    table.AddCell(cell);
+                }
+                // Data
+
+                var dataFont = FontFactory.GetFont(FontFactory.HELVETICA, 9, BaseColor.BLACK);
+                foreach(var sheep in sheepList)
+                {
+                    table.AddCell(new Phrase(sheep.SheepID.ToString(), dataFont));
+                    table.AddCell(new Phrase(sheep.Breed, dataFont));
+                    table.AddCell(new Phrase($"Camp {sheep.CampId}", dataFont));
+                    table.AddCell(new Phrase(sheep.Gender, dataFont));
+                    table.AddCell(new Phrase(sheep.BirthDate.ToString("MMMM-dd-yyyy"), dataFont));
+                    table.AddCell(new Phrase("$R{sheep.Price:N2}", dataFont));
+                    table.AddCell(new Phrase(sheep.IsActive ? "Yes": "No", dataFont));
+                }
+                doc.Add(table);
+
+                // Footer
+                doc.Add(new Paragraph("\n\n"));
+                Paragraph footer = new Paragraph("", subTitleFont)
+                {
+                    Alignment = Element.ALIGN_CENTER
+                };
+                doc.Add(footer);
+                doc.Close();
+
+                return mstream.ToArray();
+            }   
+
+        } 
     }
-}
+} 

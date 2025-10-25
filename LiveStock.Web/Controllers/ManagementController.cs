@@ -163,6 +163,19 @@ namespace LiveStock.Web.Controllers
             _sheepService.SheepBulkActions(action, reason, selectedSheepID);
             return RedirectToAction("Sheep");
         }
+        [HttpPost]
+        public IActionResult GenerateSheepReport()
+        {
+            var file = _sheepService.GenerateSheepReport();
+            return File(file, "application/pdf", "SheepReport.pdf");
+        }
+        [HttpPost]
+        public IActionResult ExportSheep()
+        {
+            var result = _sheepService.ExportSheep();
+
+            return File(result, "text/csv", "SheepData.csv");
+        }
         #endregion
 
         #region Cow Management

@@ -477,3 +477,5 @@ D:\repos\LiveStock\LiveStock.Web\bin\Debug\net9.0\runtimes\win-x64\native\Micros
 D:\repos\LiveStock\LiveStock.Web\bin\Debug\net9.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 D:\repos\LiveStock\LiveStock.Web\bin\Debug\net9.0\runtimes\win\lib\net9.0\System.Diagnostics.EventLog.dll
 D:\repos\LiveStock\LiveStock.Web\bin\Debug\net9.0\runtimes\win\lib\net9.0\System.Security.Cryptography.Pkcs.dll
+D:\repos\LiveStock\LiveStock.Web\bin\Debug\net9.0\BouncyCastle.Cryptography.dll
+D:\repos\LiveStock\LiveStock.Web\bin\Debug\net9.0\itextsharp.dll
