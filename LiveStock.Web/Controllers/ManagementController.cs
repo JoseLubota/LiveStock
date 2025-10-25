@@ -298,12 +298,12 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddRainfallForCamp(int campId, double amountMl, string? notes)
+        public async Task<IActionResult> AddRainfallForCamp(int campId, double amountMl, string? notes, DateTime rainfallDate)
         {
             var rainfall = new RainfallRecord
             {
                 CampId = campId,
-                RainfallDate = DateTime.UtcNow,
+                RainfallDate = rainfallDate,
                 AmountMl = amountMl,
                 Notes = notes,
                 CreatedAt = DateTime.UtcNow
@@ -362,6 +362,52 @@ namespace LiveStock.Web.Controllers
             }
 
             return View(staff);
+        }
+
+        public async Task<IActionResult> EditStaff(int id)
+        {
+            var staff = await _context.Staff.FindAsync(id);
+            if (staff == null || !staff.IsActive)
+            {
+                return NotFound();
+            }
+            return View(staff);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditStaff(Staff staff)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingStaff = await _context.Staff.FindAsync(staff.Id);
+                if (existingStaff != null && existingStaff.IsActive)
+                {
+                    existingStaff.Name = staff.Name;
+                    existingStaff.EmployeeId = staff.EmployeeId;
+                    existingStaff.PhoneNumber = staff.PhoneNumber;
+                    existingStaff.Email = staff.Email;
+                    existingStaff.Role = staff.Role;
+                    existingStaff.UpdatedAt = DateTime.UtcNow;
+                    
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Staff));
+                }
+            }
+            return View(staff);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteStaff(int id)
+        {
+            var staff = await _context.Staff.FindAsync(id);
+            if (staff != null && staff.IsActive)
+            {
+                // Soft delete - mark as inactive
+                staff.IsActive = false;
+                staff.UpdatedAt = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Staff));
         }
 
         public async Task<IActionResult> StaffTasks(int staffId)
@@ -482,12 +528,22 @@ namespace LiveStock.Web.Controllers
         #region Water/Rainfall Management
         public async Task<IActionResult> Water()
         {
+            var camps = await _context.Camps
+                .OrderBy(c => c.CampNumber)
+                .ToListAsync();
+
             var rainfallRecords = await _context.RainfallRecords
                 .Include(r => r.Camp)
                 .OrderByDescending(r => r.RainfallDate)
                 .ToListAsync();
 
-            return View(rainfallRecords);
+            var model = new LiveStock.Web.ViewModels.WaterViewModel
+            {
+                Camps = camps,
+                RainfallRecords = rainfallRecords
+            };
+
+            return View(model);
         }
 
         [HttpPost]
