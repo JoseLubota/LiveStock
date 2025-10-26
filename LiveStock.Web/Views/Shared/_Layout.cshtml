@@ -6,12 +6,11 @@
     <title>@ViewData["Title"] - Agriculture</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/LiveStock.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark-green border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark-green">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <strong>LiveStock</strong>
@@ -23,33 +22,10 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 justify-content-center">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="#about">About Us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="#contact">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="#blog">Blog</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="#testimonials">Testimonials</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index"></a>
                         </li>
                     </ul>
                     <ul class="navbar-nav align-items-center">
-                        @if (Context.Session.GetString("UserId") != null)
-                        {
-                            <li class="nav-item me-2">
-                                <a class="btn btn-outline-light" asp-controller="Management" asp-action="Notes">
-                                    <i class="fas fa-sticky-note me-1"></i>Notes
-                                </a>
-                            </li>
-                        }
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="#quote">Get a Quote</a>
-                        </li>
                         <li class="nav-item">
                             <a class="btn btn-warning" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                         </li>

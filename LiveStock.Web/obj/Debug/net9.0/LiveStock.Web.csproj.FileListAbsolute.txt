@@ -660,9 +660,7 @@ D:/repos/LiveStock/LiveStock.Web/bin/Debug/net9.0/runtimes/win/lib/net9.0/System
 /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/scopedcss/bundle/LiveStock.Web.styles.css
 /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/scopedcss/projectbundle/LiveStock.Web.bundle.scp.css
 /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/q91u3rw3q1-maqv4ybm5f.gz
-/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/mmkmu21ucp-4u8ev0b2kr.gz
 /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/hwubsm3so9-61n19gt1b8.gz
-/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/ke3rlbxb2m-9r0sxoj5vh.gz
 /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/8ckaal9blc-bqjiyaj88i.gz
 /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/m4pshkahd0-c2jlpeoesf.gz
 /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/6nlzilzuex-erw9l3u2r3.gz
@@ -722,8 +720,6 @@ D:/repos/LiveStock/LiveStock.Web/bin/Debug/net9.0/runtimes/win/lib/net9.0/System
 /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/gvd43ylctx-muycvpuwrr.gz
 /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/6rccycmmxf-87fc7y1x7t.gz
 /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/qzowuzfldc-mlv21k5csn.gz
-/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/iqo59b6z2m-r6ehmpvcqu.gz
-/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/7w51d8v1ym-r6ehmpvcqu.gz
 /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/staticwebassets.build.json
 /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/staticwebassets.development.json
 /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/staticwebassets.build.endpoints.json
@@ -791,3 +787,15 @@ D:/repos/LiveStock/LiveStock.Web/bin/Debug/net9.0/runtimes/win/lib/net9.0/System
 /Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/q91u3rw3q1-maqv4ybm5f.gz
 /Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/mmkmu21ucp-4u8ev0b2kr.gz
 /Users/mahefanyavo/Desktop/XBCAD/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/ke3rlbxb2m-9r0sxoj5vh.gz
+/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/bin/Debug/net9.0/BouncyCastle.Cryptography.dll
+/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/bin/Debug/net9.0/itextsharp.dll
+/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.SqlServer.dll
+/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.dll
+/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/bin/Debug/net9.0/Microsoft.Extensions.Logging.dll
+/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/bin/Debug/net9.0/System.Formats.Asn1.dll
+/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/z64km9wfxl-5opipdjq0k.gz
+/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/iqo59b6z2m-2ijaluhlw2.gz
+/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/7w51d8v1ym-2ijaluhlw2.gz
+/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/mmkmu21ucp-iv6i76t74b.gz
+/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/ke3rlbxb2m-b1t4w82ske.gz

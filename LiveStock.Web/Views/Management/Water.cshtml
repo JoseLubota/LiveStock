@@ -83,11 +83,20 @@
 
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="module-hero" style="background-image: url('@Url.Content("~/Images/IMG-20251025-WA0034.jpg")'); background-size: cover; background-position: center; border-radius: 12px; position: relative; margin-bottom: 1rem;">
+                <div class="module-overlay"></div>
+                <div class="module-hero-content">
+                    <h2 class="h3 mb-1">Water & Rainfall</h2>
+                    <p class="mb-0">Monitor water levels and rainfall records across camps.</p>
+                </div>
+            </div>
+            <style>
+                .module-hero { position: relative; min-height: 220px; }
+                .module-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); border-radius: 12px; }
+                .module-hero-content { position: relative; z-index: 1; color: #fff; padding: 1.25rem 1.5rem; }
+            </style>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Water & Rainfall Management</h1>
-                <div class="text-muted">
-                    <small>% of rainfall can be calculated by evenly dividing 15 camps by 2300 hectare</small>
-                </div>
             </div>
 
             <div class="row">
@@ -111,34 +120,16 @@
                                     var waterLevelStr = (latest != null && latest.AmountMl > 0) ? "Good" : "Low";
                                     <div class="col-3 mb-2">
                                         <button class="btn btn-outline-info w-100 camp-grid-btn"
-                                                data-camp="@camp.CampNumber"
+                                                data-camp-number="@camp.CampNumber"
+                                                data-camp-id="@camp.Id"
                                                 data-last="@lastDateStr"
                                                 data-amount="@amountStr"
                                                 data-water="@waterLevelStr"
-                                                onclick="showCampDetails(@camp.CampNumber)">
+                                                onclick="waterShowCampDetails(@camp.CampNumber, @camp.Id)">
                                             @camp.CampNumber
                                         </button>
                                     </div>
                                 }
-                            </div>
-                            
-                            <!-- Water Report Section -->
-                            <div class="mt-4">
-                                <h6 class="text-info">Water Report</h6>
-                                <div class="table-responsive">
-                                    <table class="table table-sm">
-                                        <tbody>
-                                            <tr>
-                                                <td>10/07/2025:</td>
-                                                <td>Rain landed on camps 3, 5, 8 - 10ml per camp</td>
-                                            </tr>
-                                            <tr>
-                                                <td>12/08/2025:</td>
-                                                <td>Rain landed on camps 1 and 2 - 5ml per camp</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -210,7 +201,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="rainfallForm">
+                <form id="waterRainfallForm">
                     <div class="mb-3">
                         <label class="form-label">Rainfall Amount:</label>
                         <div class="input-group">
@@ -237,13 +228,13 @@
 </div>
 
 <script>
-    let selectedCampId = null;
+    let waterSelectedCampId = null;
 
-    function showCampDetails(campNumber) {
-        selectedCampId = campNumber;
+    function waterShowCampDetails(campNumber, campId) {
+        waterSelectedCampId = campId;
         document.getElementById('campHeader').textContent = `Camp ${campNumber} Details`;
         
-        const btn = document.querySelector(`[data-camp="${campNumber}"]`);
+        const btn = document.querySelector(`[data-camp-number="${campNumber}"]`);
         const lastRainfall = btn?.getAttribute('data-last') || 'No recent rainfall';
         const amount = btn?.getAttribute('data-amount') || '0ml';
         const waterLevel = btn?.getAttribute('data-water') || 'Unknown';
@@ -264,8 +255,11 @@
                 <strong>Water Level:</strong>
                 <span class="${waterLevelClass}">${waterLevel}</span>
             </div>
-            <button class="btn btn-info btn-sm w-100" onclick="addRainfallForCamp(${campNumber})">
+            <button class="btn btn-info btn-sm w-100" onclick="waterAddRainfallForCamp(${campNumber})">
                 <i class="fas fa-plus me-1"></i>Add Rainfall
+            </button>
+            <button class="btn btn-outline-danger btn-sm w-100 mt-2" onclick="waterClearRainfallForCamp(${campNumber})">
+                <i class="fas fa-trash me-1"></i>Clear Rainfall History
             </button>
         </div>
         `;
@@ -277,12 +271,12 @@
         btn.classList.add('btn-info');
     }
 
-    function addRainfallForCamp(campNumber) {
+    function waterAddRainfallForCamp(campNumber) {
         document.getElementById('modalCampNumber').textContent = campNumber;
-        document.getElementById('rainfallForm').action = `/Management/AddRainfallForCamp`;
+        document.getElementById('waterRainfallForm').action = `/Management/AddRainfallForCamp`;
         
         // Add hidden input for camp ID
-        let existingInput = document.querySelector('#rainfallForm input[name="campId"]');
+        let existingInput = document.querySelector('#waterRainfallForm input[name="campId"]');
         if (existingInput) {
             existingInput.remove();
         }
@@ -290,8 +284,8 @@
         const hiddenInput = document.createElement('input');
         hiddenInput.type = 'hidden';
         hiddenInput.name = 'campId';
-        hiddenInput.value = campNumber;
-        document.getElementById('rainfallForm').appendChild(hiddenInput);
+        hiddenInput.value = waterSelectedCampId; // Use DB Id, not camp number
+        document.getElementById('waterRainfallForm').appendChild(hiddenInput);
         
         // Set default date to today
         document.querySelector('input[name="rainfallDate"]').value = new Date().toISOString().split('T')[0];
@@ -300,22 +294,57 @@
         modal.show();
     }
 
+    function waterClearRainfallForCamp(campNumber) {
+        if (!waterSelectedCampId) {
+            alert('Please select a camp first.');
+            return;
+        }
+        if (!confirm(`Clear all rainfall history for Camp ${campNumber}?`)) {
+            return;
+        }
+        fetch('/Management/ClearRainfallForCamp', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: new URLSearchParams({ campId: waterSelectedCampId })
+        }).then(async (response) => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                const text = await response.text();
+                alert(text || 'Failed to clear rainfall history');
+            }
+        }).catch(err => {
+            console.error(err);
+            alert('Failed to clear rainfall history');
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-    const firstCampNumber = @((Model.Camps.FirstOrDefault()?.CampNumber) ?? 1);
-    showCampDetails(firstCampNumber);
+        const firstCampNumber = @((Model.Camps.FirstOrDefault()?.CampNumber) ?? 1);
+        const firstCampId = @((Model.Camps.FirstOrDefault()?.Id) ?? 0);
+        waterShowCampDetails(firstCampNumber, firstCampId);
          
          // Handle form submission
-         document.getElementById('rainfallForm').addEventListener('submit', function(e) {
+         document.getElementById('waterRainfallForm').addEventListener('submit', function(e) {
              e.preventDefault();
              
              const formData = new FormData(this);
              
              fetch(this.action, {
                  method: 'POST',
-                 body: formData
+                 body: formData,
+                 headers: {
+                     'X-Requested-With': 'XMLHttpRequest',
+                     'Accept': 'application/json'
+                 },
+                 redirect: 'manual'
              })
              .then(response => {
-                 if (response.ok) {
+                 // Treat 2xx and manual redirects as success
+                 if (response.ok || response.type === 'opaqueredirect' || (response.status >= 300 && response.status < 400)) {
                      location.reload();
                  } else {
                      alert('Error adding rainfall record');

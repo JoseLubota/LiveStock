@@ -71,12 +71,6 @@
                             Notes
                         </a>
                     </li>
-                    <li class="nav-item mt-3">
-                        <a class="nav-link text-warning" asp-controller="Account" asp-action="Logout">
-                            <i class="fas fa-sign-out-alt me-2"></i>
-                            Logout
-                        </a>
-                    </li>
                 </ul>
             </div>
         </nav>
@@ -84,10 +78,12 @@
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Edit Staff Member</h1>
-                <a asp-action="Staff" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left me-2"></i>Back to Staff List
-                </a>
+                <h1 class="h2">Edit Staff</h1>
+                <div>
+                    <a asp-action="Staff" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Staff List
+                    </a>
+                </div>
             </div>
 
             @if (TempData["Success"] != null)
@@ -108,8 +104,8 @@
 
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="card shadow">
-                        <div class="card-header bg-primary text-white">
+                    <div class="card shadow card-brand">
+                        <div class="card-header bg-medium-green text-white">
                             <h5 class="mb-0"><i class="fas fa-user-edit me-2"></i>Edit Staff Details</h5>
                         </div>
                         <div class="card-body">
@@ -161,7 +157,7 @@
                                 
                                 <div class="d-flex justify-content-end gap-2">
                                     <a asp-action="Staff" class="btn btn-secondary">Cancel</a>
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-brand">
                                         <i class="fas fa-save me-2"></i>Save Changes
                                     </button>
                                 </div>
@@ -171,8 +167,8 @@
                 </div>
                 
                 <div class="col-lg-4">
-                    <div class="card shadow">
-                        <div class="card-header bg-info text-white">
+                    <div class="card shadow card-brand">
+                        <div class="card-header bg-orange-yellow text-white">
                             <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Tips</h6>
                         </div>
                         <div class="card-body">

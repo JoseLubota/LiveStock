@@ -17,133 +17,137 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LiveStock.Web
 build_property.RootNamespace = LiveStock.Web
-build_property.ProjectDir = D:\repos\LiveStock\LiveStock.Web\
+build_property.ProjectDir = /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\repos\LiveStock\LiveStock.Web
+build_property.MSBuildProjectDirectory = /Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Account/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Employee/Dashboard.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVcRGFzaGJvYXJkLmNzaHRtbA==
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Employee/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWUvRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/AddCow.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxBZGRDb3cuY3NodG1s
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/AddCow.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9BZGRDb3cuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/AddSheep.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxBZGRTaGVlcC5jc2h0bWw=
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/AddSheep.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9BZGRTaGVlcC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/AddStaff.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxBZGRTdGFmZi5jc2h0bWw=
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/AddStaff.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9BZGRTdGFmZi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/Assets.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxBc3NldHMuY3NodG1s
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/Assets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9Bc3NldHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/CampDetails.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxDYW1wRGV0YWlscy5jc2h0bWw=
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/CampDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9DYW1wRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/Camps.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxDYW1wcy5jc2h0bWw=
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/Camps.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9DYW1wcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/CowDetails.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxDb3dEZXRhaWxzLmNzaHRtbA==
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/CowDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9Db3dEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/Cows.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxDb3dzLmNzaHRtbA==
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/Cows.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9Db3dzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/CreateTask.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxDcmVhdGVUYXNrLmNzaHRtbA==
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/CreateTask.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9DcmVhdGVUYXNrLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/Dashboard.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxEYXNoYm9hcmQuY3NodG1s
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9EYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/EditAsset.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxFZGl0QXNzZXQuY3NodG1s
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/EditAsset.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9FZGl0QXNzZXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/EditFinancialRecord.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxFZGl0RmluYW5jaWFsUmVjb3JkLmNzaHRtbA==
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/EditFinancialRecord.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9FZGl0RmluYW5jaWFsUmVjb3JkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/Finance.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxGaW5hbmNlLmNzaHRtbA==
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/EditStaff.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9FZGl0U3RhZmYuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/Notes.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxOb3Rlcy5jc2h0bWw=
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/Finance.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9GaW5hbmNlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/Sheep.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxTaGVlcC5jc2h0bWw=
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/Notes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9Ob3Rlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/SheepDetails.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxTaGVlcERldGFpbHMuY3NodG1s
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/Sheep.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9TaGVlcC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/Sheep_Edit_Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxTaGVlcF9FZGl0X0RldGFpbHMuY3NodG1s
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/SheepDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9TaGVlcERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/Staff.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxTdGFmZi5jc2h0bWw=
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/Sheep_Edit_Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9TaGVlcF9FZGl0X0RldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/StaffTasks.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxTdGFmZlRhc2tzLmNzaHRtbA==
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/Staff.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9TdGFmZi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/Tasks.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxUYXNrcy5jc2h0bWw=
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/StaffTasks.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9TdGFmZlRhc2tzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Management/Water.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlbWVudFxXYXRlci5jc2h0bWw=
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/Tasks.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9UYXNrcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Management/Water.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFuYWdlbWVudC9XYXRlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/repos/LiveStock/LiveStock.Web/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-svn6vu8raa
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-umye4bd5vu

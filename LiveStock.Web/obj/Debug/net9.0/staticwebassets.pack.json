@@ -2,7 +2,11 @@
   "Files": [
     {
       "Id": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/scopedcss/projectbundle/LiveStock.Web.bundle.scp.css",
-      "PackagePath": "staticwebassets/LiveStock.Web.r6ehmpvcqu.bundle.scp.css"
+      "PackagePath": "staticwebassets/LiveStock.Web.2ijaluhlw2.bundle.scp.css"
+    },
+    {
+      "Id": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/app.styles.fallback.css",
+      "PackagePath": "staticwebassets/app.styles.fallback.css"
     },
     {
       "Id": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/css/cows.css",
@@ -15,6 +19,38 @@
     {
       "Id": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/favicon.ico",
       "PackagePath": "staticwebassets/favicon.ico"
+    },
+    {
+      "Id": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/ChatGPT Image Oct 25, 2025, 05_27_01 PM.png",
+      "PackagePath": "staticwebassets/images/ChatGPT Image Oct 25, 2025, 05_27_01 PM.png"
+    },
+    {
+      "Id": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/AnimalFence.png",
+      "PackagePath": "staticwebassets/images/farm-photos/AnimalFence.png"
+    },
+    {
+      "Id": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/Cow.png",
+      "PackagePath": "staticwebassets/images/farm-photos/Cow.png"
+    },
+    {
+      "Id": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/Fence.png",
+      "PackagePath": "staticwebassets/images/farm-photos/Fence.png"
+    },
+    {
+      "Id": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/LargeView.png",
+      "PackagePath": "staticwebassets/images/farm-photos/LargeView.png"
+    },
+    {
+      "Id": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/SandyRoad.png",
+      "PackagePath": "staticwebassets/images/farm-photos/SandyRoad.png"
+    },
+    {
+      "Id": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/TopOfDune.png",
+      "PackagePath": "staticwebassets/images/farm-photos/TopOfDune.png"
+    },
+    {
+      "Id": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/storageBack.png",
+      "PackagePath": "staticwebassets/images/farm-photos/storageBack.png"
     },
     {
       "Id": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/js/site.js",

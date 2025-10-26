@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "5bT5bLCylVELKT6FhUWrn1G/OTYiB3wmJO1EsME15uc=",
+  "Hash": "3ShV+UEiDwIGjw41QcVnn5p3i24ZZc2YNmE0bwKEycw=",
   "Source": "LiveStock.Web",
   "BasePath": "_content/LiveStock.Web",
   "Mode": "Default",
@@ -248,12 +248,12 @@
       "OriginalItemSpec": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/lib/jquery-validation/LICENSE.md"
     },
     {
-      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/7w51d8v1ym-r6ehmpvcqu.gz",
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/7w51d8v1ym-2ijaluhlw2.gz",
       "SourceId": "LiveStock.Web",
       "SourceType": "Computed",
       "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/",
       "BasePath": "_content/LiveStock.Web",
-      "RelativePath": "LiveStock.Web#[.{fingerprint=r6ehmpvcqu}]!.bundle.scp.css.gz",
+      "RelativePath": "LiveStock.Web#[.{fingerprint=2ijaluhlw2}]!.bundle.scp.css.gz",
       "AssetKind": "All",
       "AssetMode": "Reference",
       "AssetRole": "Alternative",
@@ -262,8 +262,8 @@
       "RelatedAsset": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/scopedcss/projectbundle/LiveStock.Web.bundle.scp.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "spe3zrtwzv",
-      "Integrity": "QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8=",
+      "Fingerprint": "3wmo12x4up",
+      "Integrity": "HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/scopedcss/projectbundle/LiveStock.Web.bundle.scp.css"
@@ -626,12 +626,12 @@
       "OriginalItemSpec": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map"
     },
     {
-      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/iqo59b6z2m-r6ehmpvcqu.gz",
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/iqo59b6z2m-2ijaluhlw2.gz",
       "SourceId": "LiveStock.Web",
       "SourceType": "Computed",
       "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/",
       "BasePath": "_content/LiveStock.Web",
-      "RelativePath": "LiveStock.Web#[.{fingerprint=r6ehmpvcqu}]?.styles.css.gz",
+      "RelativePath": "LiveStock.Web#[.{fingerprint=2ijaluhlw2}]?.styles.css.gz",
       "AssetKind": "All",
       "AssetMode": "CurrentProject",
       "AssetRole": "Alternative",
@@ -640,8 +640,8 @@
       "RelatedAsset": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/scopedcss/bundle/LiveStock.Web.styles.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "spe3zrtwzv",
-      "Integrity": "QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8=",
+      "Fingerprint": "3wmo12x4up",
+      "Integrity": "HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/scopedcss/bundle/LiveStock.Web.styles.css"
@@ -668,12 +668,12 @@
       "OriginalItemSpec": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map"
     },
     {
-      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/ke3rlbxb2m-9r0sxoj5vh.gz",
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/ke3rlbxb2m-b1t4w82ske.gz",
       "SourceId": "LiveStock.Web",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/",
       "BasePath": "_content/LiveStock.Web",
-      "RelativePath": "js/site#[.{fingerprint=9r0sxoj5vh}]?.js.gz",
+      "RelativePath": "js/site#[.{fingerprint=b1t4w82ske}]?.js.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -682,8 +682,8 @@
       "RelatedAsset": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/js/site.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "0v6mrztupb",
-      "Integrity": "PIPdIsueEF9UD9lkzq+s9qiclN+JRu9AzUZ08XMW1Jc=",
+      "Fingerprint": "i006rzo4tk",
+      "Integrity": "btPjA+pImPSea6MxA2CGaS5K6nijShLfv5ofHNADQ5A=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/js/site.js"
@@ -731,12 +731,12 @@
       "OriginalItemSpec": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map"
     },
     {
-      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/mmkmu21ucp-4u8ev0b2kr.gz",
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/mmkmu21ucp-iv6i76t74b.gz",
       "SourceId": "LiveStock.Web",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/",
       "BasePath": "_content/LiveStock.Web",
-      "RelativePath": "css/site#[.{fingerprint=4u8ev0b2kr}]?.css.gz",
+      "RelativePath": "css/site#[.{fingerprint=iv6i76t74b}]?.css.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -745,8 +745,8 @@
       "RelatedAsset": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/css/site.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "226wnew0vc",
-      "Integrity": "Vqp1BgCOUrDbrOKLfDo8wF2rArLypnE5TZfYxxHQDlw=",
+      "Fingerprint": "kxgaw7b4aj",
+      "Integrity": "OMC6MHrJE7tWZOFPWQdET5Ebec4/jm5bPl+fnJ3GnoQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/css/site.css"
@@ -1319,6 +1319,27 @@
       "OriginalItemSpec": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map"
     },
     {
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/z64km9wfxl-5opipdjq0k.gz",
+      "SourceId": "LiveStock.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/LiveStock.Web",
+      "RelativePath": "app.styles.fallback#[.{fingerprint=5opipdjq0k}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/app.styles.fallback.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "vv3p1yhtwj",
+      "Integrity": "65jeFl34d2EoYGPhRFU+qwCaJdWd6Ujpu7Aclf2LJo0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/app.styles.fallback.css"
+    },
+    {
       "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/zctj8w58mp-63fj8s7r0e.gz",
       "SourceId": "LiveStock.Web",
       "SourceType": "Discovered",
@@ -1396,8 +1417,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ApplicationBundle",
-      "Fingerprint": "r6ehmpvcqu",
-      "Integrity": "7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI=",
+      "Fingerprint": "2ijaluhlw2",
+      "Integrity": "Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/scopedcss/bundle/LiveStock.Web.styles.css"
@@ -1417,11 +1438,32 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ProjectBundle",
-      "Fingerprint": "r6ehmpvcqu",
-      "Integrity": "7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI=",
+      "Fingerprint": "2ijaluhlw2",
+      "Integrity": "Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/scopedcss/projectbundle/LiveStock.Web.bundle.scp.css"
+    },
+    {
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/app.styles.fallback.css",
+      "SourceId": "LiveStock.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/",
+      "BasePath": "_content/LiveStock.Web",
+      "RelativePath": "app.styles.fallback#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "5opipdjq0k",
+      "Integrity": "i/CGAjzcO2Sh17ynYoEZNuyq5hmZqkR3m7Iza+SVFN8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/app.styles.fallback.css"
     },
     {
       "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/css/cows.css",
@@ -1459,8 +1501,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "4u8ev0b2kr",
-      "Integrity": "PNNWG7Yhh9tiNKxtuuo2bnFItb9SDWJTPG28c01yQn4=",
+      "Fingerprint": "iv6i76t74b",
+      "Integrity": "sj3X3BhtO0/f5AP1xcuX0hopan/8xX10WJ5GJRrDFWc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/css/site.css"
@@ -1487,6 +1529,174 @@
       "OriginalItemSpec": "wwwroot/favicon.ico"
     },
     {
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/ChatGPT Image Oct 25, 2025, 05_27_01 PM.png",
+      "SourceId": "LiveStock.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/",
+      "BasePath": "_content/LiveStock.Web",
+      "RelativePath": "images/ChatGPT Image Oct 25, 2025, 05_27_01 PM#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "eatnsyrf3w",
+      "Integrity": "+jdIY9ZtvZvjhBr5qzmvQpUjAaCOugmcmFmLOQ83rKQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/ChatGPT Image Oct 25, 2025, 05_27_01 PM.png"
+    },
+    {
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/AnimalFence.png",
+      "SourceId": "LiveStock.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/",
+      "BasePath": "_content/LiveStock.Web",
+      "RelativePath": "images/farm-photos/AnimalFence#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "w1810sjwux",
+      "Integrity": "BP/iL8Np5ckhjUc7/xM5pTxcHTRrj4zRTzWFEm1igVM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/farm-photos/AnimalFence.png"
+    },
+    {
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/Cow.png",
+      "SourceId": "LiveStock.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/",
+      "BasePath": "_content/LiveStock.Web",
+      "RelativePath": "images/farm-photos/Cow#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "eatnsyrf3w",
+      "Integrity": "+jdIY9ZtvZvjhBr5qzmvQpUjAaCOugmcmFmLOQ83rKQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/farm-photos/Cow.png"
+    },
+    {
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/Fence.png",
+      "SourceId": "LiveStock.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/",
+      "BasePath": "_content/LiveStock.Web",
+      "RelativePath": "images/farm-photos/Fence#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "dfv3nwneor",
+      "Integrity": "J1d11JE+llChMsgekuhXgyst/v3h7gwFtL11nsV3PXE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/farm-photos/Fence.png"
+    },
+    {
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/LargeView.png",
+      "SourceId": "LiveStock.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/",
+      "BasePath": "_content/LiveStock.Web",
+      "RelativePath": "images/farm-photos/LargeView#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "qe5nqa68st",
+      "Integrity": "3mJunyGH/4TcH1ru46zFOst/ND4CuWcTdbSXwN/RbkU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/farm-photos/LargeView.png"
+    },
+    {
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/SandyRoad.png",
+      "SourceId": "LiveStock.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/",
+      "BasePath": "_content/LiveStock.Web",
+      "RelativePath": "images/farm-photos/SandyRoad#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "1jqa2vj1z2",
+      "Integrity": "M81zgpgxyE6IyGG6uz2vft7E/f/rO1PTHuOKVin+7wk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/farm-photos/SandyRoad.png"
+    },
+    {
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/storageBack.png",
+      "SourceId": "LiveStock.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/",
+      "BasePath": "_content/LiveStock.Web",
+      "RelativePath": "images/farm-photos/storageBack#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "6kmnvnjq9y",
+      "Integrity": "CkPus04qwi2xlumM2JmFXY69q9ypZGwC1CoY8KxN5Eo=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/farm-photos/storageBack.png"
+    },
+    {
+      "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/TopOfDune.png",
+      "SourceId": "LiveStock.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/",
+      "BasePath": "_content/LiveStock.Web",
+      "RelativePath": "images/farm-photos/TopOfDune#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "nr3a22m8we",
+      "Integrity": "beTq/MRZcujGRe+cCb34bqVyg1wmz/YOwb7Eo3U8Yr8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/farm-photos/TopOfDune.png"
+    },
+    {
       "Identity": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/js/site.js",
       "SourceId": "LiveStock.Web",
       "SourceType": "Discovered",
@@ -1501,8 +1711,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "9r0sxoj5vh",
-      "Integrity": "K3y2rfS99RL9lY9KCZUGBmDQUmCKdABpiKCyOCAwQoI=",
+      "Fingerprint": "b1t4w82ske",
+      "Integrity": "ATQKcLlmG9T5m6HecqO1Ua8X0moDc4w9YxB++V1msC8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/js/site.js"
@@ -2770,6 +2980,304 @@
   ],
   "Endpoints": [
     {
+      "Route": "app.styles.fallback.5opipdjq0k.css",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/z64km9wfxl-5opipdjq0k.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.008000000000"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "124"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"65jeFl34d2EoYGPhRFU+qwCaJdWd6Ujpu7Aclf2LJo0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 20:31:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"i/CGAjzcO2Sh17ynYoEZNuyq5hmZqkR3m7Iza+SVFN8=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "5opipdjq0k"
+        },
+        {
+          "Name": "label",
+          "Value": "app.styles.fallback.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-i/CGAjzcO2Sh17ynYoEZNuyq5hmZqkR3m7Iza+SVFN8="
+        }
+      ]
+    },
+    {
+      "Route": "app.styles.fallback.5opipdjq0k.css",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/app.styles.fallback.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "131"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"i/CGAjzcO2Sh17ynYoEZNuyq5hmZqkR3m7Iza+SVFN8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 20:31:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "5opipdjq0k"
+        },
+        {
+          "Name": "label",
+          "Value": "app.styles.fallback.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-i/CGAjzcO2Sh17ynYoEZNuyq5hmZqkR3m7Iza+SVFN8="
+        }
+      ]
+    },
+    {
+      "Route": "app.styles.fallback.5opipdjq0k.css.gz",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/z64km9wfxl-5opipdjq0k.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "124"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"65jeFl34d2EoYGPhRFU+qwCaJdWd6Ujpu7Aclf2LJo0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 20:31:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "5opipdjq0k"
+        },
+        {
+          "Name": "label",
+          "Value": "app.styles.fallback.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-65jeFl34d2EoYGPhRFU+qwCaJdWd6Ujpu7Aclf2LJo0="
+        }
+      ]
+    },
+    {
+      "Route": "app.styles.fallback.css",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/z64km9wfxl-5opipdjq0k.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.008000000000"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "124"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"65jeFl34d2EoYGPhRFU+qwCaJdWd6Ujpu7Aclf2LJo0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 20:31:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"i/CGAjzcO2Sh17ynYoEZNuyq5hmZqkR3m7Iza+SVFN8=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-i/CGAjzcO2Sh17ynYoEZNuyq5hmZqkR3m7Iza+SVFN8="
+        }
+      ]
+    },
+    {
+      "Route": "app.styles.fallback.css",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/app.styles.fallback.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "131"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"i/CGAjzcO2Sh17ynYoEZNuyq5hmZqkR3m7Iza+SVFN8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 20:31:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-i/CGAjzcO2Sh17ynYoEZNuyq5hmZqkR3m7Iza+SVFN8="
+        }
+      ]
+    },
+    {
+      "Route": "app.styles.fallback.css.gz",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/z64km9wfxl-5opipdjq0k.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "124"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"65jeFl34d2EoYGPhRFU+qwCaJdWd6Ujpu7Aclf2LJo0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 20:31:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-65jeFl34d2EoYGPhRFU+qwCaJdWd6Ujpu7Aclf2LJo0="
+        }
+      ]
+    },
+    {
       "Route": "css/cows.css",
       "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/q91u3rw3q1-maqv4ybm5f.gz",
       "Selectors": [
@@ -3068,13 +3576,13 @@
       ]
     },
     {
-      "Route": "css/site.4u8ev0b2kr.css",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/mmkmu21ucp-4u8ev0b2kr.gz",
+      "Route": "css/site.css",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/mmkmu21ucp-iv6i76t74b.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000732064422"
+          "Quality": "0.000372023810"
         }
       ],
       "ResponseHeaders": [
@@ -3084,19 +3592,19 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1365"
+          "Value": "2687"
         },
         {
           "Name": "ETag",
-          "Value": "\"Vqp1BgCOUrDbrOKLfDo8wF2rArLypnE5TZfYxxHQDlw=\""
+          "Value": "\"OMC6MHrJE7tWZOFPWQdET5Ebec4/jm5bPl+fnJ3GnoQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:53:38 GMT"
         },
         {
           "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
+          "Value": "no-cache"
         },
         {
           "Name": "Content-Encoding",
@@ -3112,26 +3620,18 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"PNNWG7Yhh9tiNKxtuuo2bnFItb9SDWJTPG28c01yQn4=\""
+          "Value": "W/\"sj3X3BhtO0/f5AP1xcuX0hopan/8xX10WJ5GJRrDFWc=\""
         }
       ],
       "EndpointProperties": [
         {
-          "Name": "fingerprint",
-          "Value": "4u8ev0b2kr"
-        },
-        {
-          "Name": "label",
-          "Value": "css/site.css"
-        },
-        {
           "Name": "integrity",
-          "Value": "sha256-PNNWG7Yhh9tiNKxtuuo2bnFItb9SDWJTPG28c01yQn4="
+          "Value": "sha256-sj3X3BhtO0/f5AP1xcuX0hopan/8xX10WJ5GJRrDFWc="
         }
       ]
     },
     {
-      "Route": "css/site.4u8ev0b2kr.css",
+      "Route": "css/site.css",
       "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/css/site.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -3141,7 +3641,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5940"
+          "Value": "10681"
         },
         {
           "Name": "Content-Type",
@@ -3149,11 +3649,156 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"PNNWG7Yhh9tiNKxtuuo2bnFItb9SDWJTPG28c01yQn4=\""
+          "Value": "\"sj3X3BhtO0/f5AP1xcuX0hopan/8xX10WJ5GJRrDFWc=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:53:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-sj3X3BhtO0/f5AP1xcuX0hopan/8xX10WJ5GJRrDFWc="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.css.gz",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/mmkmu21ucp-iv6i76t74b.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2687"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OMC6MHrJE7tWZOFPWQdET5Ebec4/jm5bPl+fnJ3GnoQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 26 Oct 2025 13:53:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-OMC6MHrJE7tWZOFPWQdET5Ebec4/jm5bPl+fnJ3GnoQ="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.iv6i76t74b.css",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/mmkmu21ucp-iv6i76t74b.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000372023810"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2687"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OMC6MHrJE7tWZOFPWQdET5Ebec4/jm5bPl+fnJ3GnoQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 26 Oct 2025 13:53:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"sj3X3BhtO0/f5AP1xcuX0hopan/8xX10WJ5GJRrDFWc=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "iv6i76t74b"
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-sj3X3BhtO0/f5AP1xcuX0hopan/8xX10WJ5GJRrDFWc="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.iv6i76t74b.css",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/css/site.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "10681"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"sj3X3BhtO0/f5AP1xcuX0hopan/8xX10WJ5GJRrDFWc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 26 Oct 2025 13:53:38 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3163,7 +3808,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "4u8ev0b2kr"
+          "Value": "iv6i76t74b"
         },
         {
           "Name": "label",
@@ -3171,13 +3816,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-PNNWG7Yhh9tiNKxtuuo2bnFItb9SDWJTPG28c01yQn4="
+          "Value": "sha256-sj3X3BhtO0/f5AP1xcuX0hopan/8xX10WJ5GJRrDFWc="
         }
       ]
     },
     {
-      "Route": "css/site.4u8ev0b2kr.css.gz",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/mmkmu21ucp-4u8ev0b2kr.gz",
+      "Route": "css/site.iv6i76t74b.css.gz",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/mmkmu21ucp-iv6i76t74b.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3186,7 +3831,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1365"
+          "Value": "2687"
         },
         {
           "Name": "Content-Type",
@@ -3194,11 +3839,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Vqp1BgCOUrDbrOKLfDo8wF2rArLypnE5TZfYxxHQDlw=\""
+          "Value": "\"OMC6MHrJE7tWZOFPWQdET5Ebec4/jm5bPl+fnJ3GnoQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:53:38 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3216,7 +3861,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "4u8ev0b2kr"
+          "Value": "iv6i76t74b"
         },
         {
           "Name": "label",
@@ -3224,144 +3869,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-Vqp1BgCOUrDbrOKLfDo8wF2rArLypnE5TZfYxxHQDlw="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.css",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/mmkmu21ucp-4u8ev0b2kr.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.000732064422"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1365"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"Vqp1BgCOUrDbrOKLfDo8wF2rArLypnE5TZfYxxHQDlw=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"PNNWG7Yhh9tiNKxtuuo2bnFItb9SDWJTPG28c01yQn4=\""
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-PNNWG7Yhh9tiNKxtuuo2bnFItb9SDWJTPG28c01yQn4="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.css",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/css/site.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "5940"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"PNNWG7Yhh9tiNKxtuuo2bnFItb9SDWJTPG28c01yQn4=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-PNNWG7Yhh9tiNKxtuuo2bnFItb9SDWJTPG28c01yQn4="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.css.gz",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/mmkmu21ucp-4u8ev0b2kr.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1365"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"Vqp1BgCOUrDbrOKLfDo8wF2rArLypnE5TZfYxxHQDlw=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-Vqp1BgCOUrDbrOKLfDo8wF2rArLypnE5TZfYxxHQDlw="
+          "Value": "sha256-OMC6MHrJE7tWZOFPWQdET5Ebec4/jm5bPl+fnJ3GnoQ="
         }
       ]
     },
@@ -3664,13 +4172,669 @@
       ]
     },
     {
-      "Route": "js/site.9r0sxoj5vh.js",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/ke3rlbxb2m-9r0sxoj5vh.gz",
+      "Route": "images/ChatGPT Image Oct 25, 2025, 05_27_01 PM.eatnsyrf3w.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/ChatGPT Image Oct 25, 2025, 05_27_01 PM.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3125108"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+jdIY9ZtvZvjhBr5qzmvQpUjAaCOugmcmFmLOQ83rKQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 26 Oct 2025 08:55:29 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "eatnsyrf3w"
+        },
+        {
+          "Name": "label",
+          "Value": "images/ChatGPT Image Oct 25, 2025, 05_27_01 PM.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-+jdIY9ZtvZvjhBr5qzmvQpUjAaCOugmcmFmLOQ83rKQ="
+        }
+      ]
+    },
+    {
+      "Route": "images/ChatGPT Image Oct 25, 2025, 05_27_01 PM.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/ChatGPT Image Oct 25, 2025, 05_27_01 PM.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3125108"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+jdIY9ZtvZvjhBr5qzmvQpUjAaCOugmcmFmLOQ83rKQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 26 Oct 2025 08:55:29 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-+jdIY9ZtvZvjhBr5qzmvQpUjAaCOugmcmFmLOQ83rKQ="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/AnimalFence.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/AnimalFence.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3129717"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"BP/iL8Np5ckhjUc7/xM5pTxcHTRrj4zRTzWFEm1igVM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-BP/iL8Np5ckhjUc7/xM5pTxcHTRrj4zRTzWFEm1igVM="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/AnimalFence.w1810sjwux.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/AnimalFence.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3129717"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"BP/iL8Np5ckhjUc7/xM5pTxcHTRrj4zRTzWFEm1igVM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "w1810sjwux"
+        },
+        {
+          "Name": "label",
+          "Value": "images/farm-photos/AnimalFence.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-BP/iL8Np5ckhjUc7/xM5pTxcHTRrj4zRTzWFEm1igVM="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/Cow.eatnsyrf3w.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/Cow.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3125108"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+jdIY9ZtvZvjhBr5qzmvQpUjAaCOugmcmFmLOQ83rKQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "eatnsyrf3w"
+        },
+        {
+          "Name": "label",
+          "Value": "images/farm-photos/Cow.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-+jdIY9ZtvZvjhBr5qzmvQpUjAaCOugmcmFmLOQ83rKQ="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/Cow.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/Cow.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3125108"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+jdIY9ZtvZvjhBr5qzmvQpUjAaCOugmcmFmLOQ83rKQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-+jdIY9ZtvZvjhBr5qzmvQpUjAaCOugmcmFmLOQ83rKQ="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/Fence.dfv3nwneor.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/Fence.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2782382"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"J1d11JE+llChMsgekuhXgyst/v3h7gwFtL11nsV3PXE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dfv3nwneor"
+        },
+        {
+          "Name": "label",
+          "Value": "images/farm-photos/Fence.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-J1d11JE+llChMsgekuhXgyst/v3h7gwFtL11nsV3PXE="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/Fence.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/Fence.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2782382"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"J1d11JE+llChMsgekuhXgyst/v3h7gwFtL11nsV3PXE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-J1d11JE+llChMsgekuhXgyst/v3h7gwFtL11nsV3PXE="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/LargeView.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/LargeView.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3660855"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"3mJunyGH/4TcH1ru46zFOst/ND4CuWcTdbSXwN/RbkU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-3mJunyGH/4TcH1ru46zFOst/ND4CuWcTdbSXwN/RbkU="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/LargeView.qe5nqa68st.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/LargeView.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3660855"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"3mJunyGH/4TcH1ru46zFOst/ND4CuWcTdbSXwN/RbkU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "qe5nqa68st"
+        },
+        {
+          "Name": "label",
+          "Value": "images/farm-photos/LargeView.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-3mJunyGH/4TcH1ru46zFOst/ND4CuWcTdbSXwN/RbkU="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/SandyRoad.1jqa2vj1z2.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/SandyRoad.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3257471"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"M81zgpgxyE6IyGG6uz2vft7E/f/rO1PTHuOKVin+7wk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "1jqa2vj1z2"
+        },
+        {
+          "Name": "label",
+          "Value": "images/farm-photos/SandyRoad.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-M81zgpgxyE6IyGG6uz2vft7E/f/rO1PTHuOKVin+7wk="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/SandyRoad.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/SandyRoad.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3257471"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"M81zgpgxyE6IyGG6uz2vft7E/f/rO1PTHuOKVin+7wk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-M81zgpgxyE6IyGG6uz2vft7E/f/rO1PTHuOKVin+7wk="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/storageBack.6kmnvnjq9y.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/storageBack.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3005644"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CkPus04qwi2xlumM2JmFXY69q9ypZGwC1CoY8KxN5Eo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "6kmnvnjq9y"
+        },
+        {
+          "Name": "label",
+          "Value": "images/farm-photos/storageBack.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-CkPus04qwi2xlumM2JmFXY69q9ypZGwC1CoY8KxN5Eo="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/storageBack.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/storageBack.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3005644"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CkPus04qwi2xlumM2JmFXY69q9ypZGwC1CoY8KxN5Eo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-CkPus04qwi2xlumM2JmFXY69q9ypZGwC1CoY8KxN5Eo="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/TopOfDune.nr3a22m8we.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/TopOfDune.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3384585"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"beTq/MRZcujGRe+cCb34bqVyg1wmz/YOwb7Eo3U8Yr8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "nr3a22m8we"
+        },
+        {
+          "Name": "label",
+          "Value": "images/farm-photos/TopOfDune.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-beTq/MRZcujGRe+cCb34bqVyg1wmz/YOwb7Eo3U8Yr8="
+        }
+      ]
+    },
+    {
+      "Route": "images/farm-photos/TopOfDune.png",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/images/farm-photos/TopOfDune.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3384585"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"beTq/MRZcujGRe+cCb34bqVyg1wmz/YOwb7Eo3U8Yr8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Oct 2025 19:56:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-beTq/MRZcujGRe+cCb34bqVyg1wmz/YOwb7Eo3U8Yr8="
+        }
+      ]
+    },
+    {
+      "Route": "js/site.b1t4w82ske.js",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/ke3rlbxb2m-b1t4w82ske.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000305436775"
+          "Quality": "0.000224820144"
         }
       ],
       "ResponseHeaders": [
@@ -3680,15 +4844,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3273"
+          "Value": "4447"
         },
         {
           "Name": "ETag",
-          "Value": "\"PIPdIsueEF9UD9lkzq+s9qiclN+JRu9AzUZ08XMW1Jc=\""
+          "Value": "\"btPjA+pImPSea6MxA2CGaS5K6nijShLfv5ofHNADQ5A=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:57:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3708,13 +4872,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"K3y2rfS99RL9lY9KCZUGBmDQUmCKdABpiKCyOCAwQoI=\""
+          "Value": "W/\"ATQKcLlmG9T5m6HecqO1Ua8X0moDc4w9YxB++V1msC8=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "9r0sxoj5vh"
+          "Value": "b1t4w82ske"
         },
         {
           "Name": "label",
@@ -3722,12 +4886,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-K3y2rfS99RL9lY9KCZUGBmDQUmCKdABpiKCyOCAwQoI="
+          "Value": "sha256-ATQKcLlmG9T5m6HecqO1Ua8X0moDc4w9YxB++V1msC8="
         }
       ]
     },
     {
-      "Route": "js/site.9r0sxoj5vh.js",
+      "Route": "js/site.b1t4w82ske.js",
       "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/wwwroot/js/site.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -3737,7 +4901,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "17783"
+          "Value": "40880"
         },
         {
           "Name": "Content-Type",
@@ -3745,11 +4909,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"K3y2rfS99RL9lY9KCZUGBmDQUmCKdABpiKCyOCAwQoI=\""
+          "Value": "\"ATQKcLlmG9T5m6HecqO1Ua8X0moDc4w9YxB++V1msC8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:57:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3759,7 +4923,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "9r0sxoj5vh"
+          "Value": "b1t4w82ske"
         },
         {
           "Name": "label",
@@ -3767,13 +4931,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-K3y2rfS99RL9lY9KCZUGBmDQUmCKdABpiKCyOCAwQoI="
+          "Value": "sha256-ATQKcLlmG9T5m6HecqO1Ua8X0moDc4w9YxB++V1msC8="
         }
       ]
     },
     {
-      "Route": "js/site.9r0sxoj5vh.js.gz",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/ke3rlbxb2m-9r0sxoj5vh.gz",
+      "Route": "js/site.b1t4w82ske.js.gz",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/ke3rlbxb2m-b1t4w82ske.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3782,7 +4946,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3273"
+          "Value": "4447"
         },
         {
           "Name": "Content-Type",
@@ -3790,11 +4954,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"PIPdIsueEF9UD9lkzq+s9qiclN+JRu9AzUZ08XMW1Jc=\""
+          "Value": "\"btPjA+pImPSea6MxA2CGaS5K6nijShLfv5ofHNADQ5A=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:57:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3812,7 +4976,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "9r0sxoj5vh"
+          "Value": "b1t4w82ske"
         },
         {
           "Name": "label",
@@ -3820,18 +4984,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-PIPdIsueEF9UD9lkzq+s9qiclN+JRu9AzUZ08XMW1Jc="
+          "Value": "sha256-btPjA+pImPSea6MxA2CGaS5K6nijShLfv5ofHNADQ5A="
         }
       ]
     },
     {
       "Route": "js/site.js",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/ke3rlbxb2m-9r0sxoj5vh.gz",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/ke3rlbxb2m-b1t4w82ske.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000305436775"
+          "Quality": "0.000224820144"
         }
       ],
       "ResponseHeaders": [
@@ -3841,15 +5005,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3273"
+          "Value": "4447"
         },
         {
           "Name": "ETag",
-          "Value": "\"PIPdIsueEF9UD9lkzq+s9qiclN+JRu9AzUZ08XMW1Jc=\""
+          "Value": "\"btPjA+pImPSea6MxA2CGaS5K6nijShLfv5ofHNADQ5A=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:57:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3869,13 +5033,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"K3y2rfS99RL9lY9KCZUGBmDQUmCKdABpiKCyOCAwQoI=\""
+          "Value": "W/\"ATQKcLlmG9T5m6HecqO1Ua8X0moDc4w9YxB++V1msC8=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-K3y2rfS99RL9lY9KCZUGBmDQUmCKdABpiKCyOCAwQoI="
+          "Value": "sha256-ATQKcLlmG9T5m6HecqO1Ua8X0moDc4w9YxB++V1msC8="
         }
       ]
     },
@@ -3890,7 +5054,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "17783"
+          "Value": "40880"
         },
         {
           "Name": "Content-Type",
@@ -3898,11 +5062,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"K3y2rfS99RL9lY9KCZUGBmDQUmCKdABpiKCyOCAwQoI=\""
+          "Value": "\"ATQKcLlmG9T5m6HecqO1Ua8X0moDc4w9YxB++V1msC8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:57:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3912,13 +5076,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-K3y2rfS99RL9lY9KCZUGBmDQUmCKdABpiKCyOCAwQoI="
+          "Value": "sha256-ATQKcLlmG9T5m6HecqO1Ua8X0moDc4w9YxB++V1msC8="
         }
       ]
     },
     {
       "Route": "js/site.js.gz",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/ke3rlbxb2m-9r0sxoj5vh.gz",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/ke3rlbxb2m-b1t4w82ske.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3927,7 +5091,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3273"
+          "Value": "4447"
         },
         {
           "Name": "Content-Type",
@@ -3935,11 +5099,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"PIPdIsueEF9UD9lkzq+s9qiclN+JRu9AzUZ08XMW1Jc=\""
+          "Value": "\"btPjA+pImPSea6MxA2CGaS5K6nijShLfv5ofHNADQ5A=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:57:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3957,7 +5121,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-PIPdIsueEF9UD9lkzq+s9qiclN+JRu9AzUZ08XMW1Jc="
+          "Value": "sha256-btPjA+pImPSea6MxA2CGaS5K6nijShLfv5ofHNADQ5A="
         }
       ]
     },
@@ -21626,13 +22790,13 @@
       ]
     },
     {
-      "Route": "LiveStock.Web.bundle.scp.css",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/7w51d8v1ym-r6ehmpvcqu.gz",
+      "Route": "LiveStock.Web.2ijaluhlw2.bundle.scp.css",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/7w51d8v1ym-2ijaluhlw2.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001858736059"
+          "Quality": "0.000537923615"
         }
       ],
       "ResponseHeaders": [
@@ -21642,19 +22806,19 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "537"
+          "Value": "1858"
         },
         {
           "Name": "ETag",
-          "Value": "\"QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8=\""
+          "Value": "\"HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:03:00 GMT"
         },
         {
           "Name": "Cache-Control",
-          "Value": "no-cache"
+          "Value": "max-age=31536000, immutable"
         },
         {
           "Name": "Content-Encoding",
@@ -21670,18 +22834,26 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI=\""
+          "Value": "W/\"Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI=\""
         }
       ],
       "EndpointProperties": [
         {
+          "Name": "fingerprint",
+          "Value": "2ijaluhlw2"
+        },
+        {
+          "Name": "label",
+          "Value": "LiveStock.Web.bundle.scp.css"
+        },
+        {
           "Name": "integrity",
-          "Value": "sha256-7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI="
+          "Value": "sha256-Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI="
         }
       ]
     },
     {
-      "Route": "LiveStock.Web.bundle.scp.css",
+      "Route": "LiveStock.Web.2ijaluhlw2.bundle.scp.css",
       "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/scopedcss/projectbundle/LiveStock.Web.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -21691,7 +22863,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1082"
+          "Value": "6913"
         },
         {
           "Name": "Content-Type",
@@ -21699,121 +22871,21 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI=\""
+          "Value": "\"Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI="
-        }
-      ]
-    },
-    {
-      "Route": "LiveStock.Web.bundle.scp.css.gz",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/7w51d8v1ym-r6ehmpvcqu.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "537"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8="
-        }
-      ]
-    },
-    {
-      "Route": "LiveStock.Web.r6ehmpvcqu.bundle.scp.css",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/7w51d8v1ym-r6ehmpvcqu.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.001858736059"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "537"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:03:00 GMT"
         },
         {
           "Name": "Cache-Control",
           "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "r6ehmpvcqu"
+          "Value": "2ijaluhlw2"
         },
         {
           "Name": "label",
@@ -21821,13 +22893,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI="
+          "Value": "sha256-Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI="
         }
       ]
     },
     {
-      "Route": "LiveStock.Web.r6ehmpvcqu.bundle.scp.css",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/scopedcss/projectbundle/LiveStock.Web.bundle.scp.css",
+      "Route": "LiveStock.Web.2ijaluhlw2.bundle.scp.css.gz",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/7w51d8v1ym-2ijaluhlw2.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -21836,7 +22908,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1082"
+          "Value": "1858"
         },
         {
           "Name": "Content-Type",
@@ -21844,56 +22916,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI=\""
+          "Value": "\"HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "r6ehmpvcqu"
-        },
-        {
-          "Name": "label",
-          "Value": "LiveStock.Web.bundle.scp.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI="
-        }
-      ]
-    },
-    {
-      "Route": "LiveStock.Web.r6ehmpvcqu.bundle.scp.css.gz",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/7w51d8v1ym-r6ehmpvcqu.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "537"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:03:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -21911,7 +22938,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "r6ehmpvcqu"
+          "Value": "2ijaluhlw2"
         },
         {
           "Name": "label",
@@ -21919,18 +22946,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8="
+          "Value": "sha256-HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs="
         }
       ]
     },
     {
-      "Route": "LiveStock.Web.r6ehmpvcqu.styles.css",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/iqo59b6z2m-r6ehmpvcqu.gz",
+      "Route": "LiveStock.Web.2ijaluhlw2.styles.css",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/iqo59b6z2m-2ijaluhlw2.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001858736059"
+          "Quality": "0.000537923615"
         }
       ],
       "ResponseHeaders": [
@@ -21940,15 +22967,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "537"
+          "Value": "1858"
         },
         {
           "Name": "ETag",
-          "Value": "\"QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8=\""
+          "Value": "\"HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:03:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -21968,13 +22995,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI=\""
+          "Value": "W/\"Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "r6ehmpvcqu"
+          "Value": "2ijaluhlw2"
         },
         {
           "Name": "label",
@@ -21982,12 +23009,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI="
+          "Value": "sha256-Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI="
         }
       ]
     },
     {
-      "Route": "LiveStock.Web.r6ehmpvcqu.styles.css",
+      "Route": "LiveStock.Web.2ijaluhlw2.styles.css",
       "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/scopedcss/bundle/LiveStock.Web.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -21997,7 +23024,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1082"
+          "Value": "6913"
         },
         {
           "Name": "Content-Type",
@@ -22005,11 +23032,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI=\""
+          "Value": "\"Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:03:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -22019,7 +23046,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "r6ehmpvcqu"
+          "Value": "2ijaluhlw2"
         },
         {
           "Name": "label",
@@ -22027,13 +23054,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI="
+          "Value": "sha256-Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI="
         }
       ]
     },
     {
-      "Route": "LiveStock.Web.r6ehmpvcqu.styles.css.gz",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/iqo59b6z2m-r6ehmpvcqu.gz",
+      "Route": "LiveStock.Web.2ijaluhlw2.styles.css.gz",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/iqo59b6z2m-2ijaluhlw2.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -22042,7 +23069,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "537"
+          "Value": "1858"
         },
         {
           "Name": "Content-Type",
@@ -22050,11 +23077,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8=\""
+          "Value": "\"HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:03:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -22072,7 +23099,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "r6ehmpvcqu"
+          "Value": "2ijaluhlw2"
         },
         {
           "Name": "label",
@@ -22080,18 +23107,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8="
+          "Value": "sha256-HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs="
         }
       ]
     },
     {
-      "Route": "LiveStock.Web.styles.css",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/iqo59b6z2m-r6ehmpvcqu.gz",
+      "Route": "LiveStock.Web.bundle.scp.css",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/7w51d8v1ym-2ijaluhlw2.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001858736059"
+          "Quality": "0.000537923615"
         }
       ],
       "ResponseHeaders": [
@@ -22101,15 +23128,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "537"
+          "Value": "1858"
         },
         {
           "Name": "ETag",
-          "Value": "\"QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8=\""
+          "Value": "\"HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:03:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -22129,13 +23156,150 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI=\""
+          "Value": "W/\"Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI="
+          "Value": "sha256-Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI="
+        }
+      ]
+    },
+    {
+      "Route": "LiveStock.Web.bundle.scp.css",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/scopedcss/projectbundle/LiveStock.Web.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6913"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 26 Oct 2025 13:03:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI="
+        }
+      ]
+    },
+    {
+      "Route": "LiveStock.Web.bundle.scp.css.gz",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/7w51d8v1ym-2ijaluhlw2.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1858"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 26 Oct 2025 13:03:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs="
+        }
+      ]
+    },
+    {
+      "Route": "LiveStock.Web.styles.css",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/iqo59b6z2m-2ijaluhlw2.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000537923615"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1858"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 26 Oct 2025 13:03:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI="
         }
       ]
     },
@@ -22150,7 +23314,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1082"
+          "Value": "6913"
         },
         {
           "Name": "Content-Type",
@@ -22158,11 +23322,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI=\""
+          "Value": "\"Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:03:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -22172,13 +23336,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-7dOVjv3YLqbhq6Kxw1OARcgU04Mw+gQX/Geb8jAqSfI="
+          "Value": "sha256-Oj4UHchFIVVY+pypoyIDhb4NTjA3nGjGmUnGFMv+McI="
         }
       ]
     },
     {
       "Route": "LiveStock.Web.styles.css.gz",
-      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/iqo59b6z2m-r6ehmpvcqu.gz",
+      "AssetFile": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Web/obj/Debug/net9.0/compressed/iqo59b6z2m-2ijaluhlw2.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -22187,7 +23351,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "537"
+          "Value": "1858"
         },
         {
           "Name": "Content-Type",
@@ -22195,11 +23359,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8=\""
+          "Value": "\"HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 24 Oct 2025 12:04:25 GMT"
+          "Value": "Sun, 26 Oct 2025 13:03:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -22217,7 +23381,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-QIyuOpCxNP4h64u4fRJOqIhxB3KX4uNrXLPZxjQXNT8="
+          "Value": "sha256-HX0DdaGxKTnRsdSyKso2GqF85XMJBsRmOPm4Rky1vXs="
         }
       ]
     }
