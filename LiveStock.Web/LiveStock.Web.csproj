@@ -16,4 +16,9 @@
     <ProjectReference Include="..\LiveStock.Infrastructure\LiveStock.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\file\" />
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

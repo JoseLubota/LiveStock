@@ -205,7 +205,7 @@
                                                 <td>
                                                     @if (!string.IsNullOrEmpty(sheep.PhotoUrl))
                                                     {
-                                                        <img src="@sheep.PhotoUrl" alt="Sheep Photo" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;" />
+                                                        <img src="@sheep.PhotoUrl" alt="Sheep Photo" class="img-thumbnail" style="width: 100px; height: 70px; object-fit: cover;" />
                                                     }
                                                     else
                                                     {
@@ -230,7 +230,7 @@
                                                     }
                                                 </td>
                                                 <td>
-                                                    <span class="text-success">R@sheep.Price.ToString("N2")</span>
+                                                    <span class="text-success">R @sheep.Price.ToString("N2")</span>
                                                 </td>
                                                 <td>
                                                     @if (sheep.IsActive)

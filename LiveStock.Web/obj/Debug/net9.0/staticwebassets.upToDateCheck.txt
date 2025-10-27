@@ -56,6 +56,7 @@ D:\repos\LiveStock\LiveStock.Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilit
 D:\repos\LiveStock\LiveStock.Web\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
 D:\repos\LiveStock\LiveStock.Web\wwwroot\lib\jquery\dist\jquery.js
 D:\repos\LiveStock\LiveStock.Web\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+D:\repos\LiveStock\LiveStock.Web\wwwroot\uploads\sheep\file.txt
 D:\repos\LiveStock\LiveStock.Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
 D:\repos\LiveStock\LiveStock.Web\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
 D:\repos\LiveStock\LiveStock.Web\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
@@ -125,3 +126,5 @@ wwwroot\lib\jquery-validation\LICENSE.md
 wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js
 wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js
 wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
+wwwroot\uploads\sheep\303fe90f-3971-43fb-bc4e-ddf21d304eac.jpeg
+wwwroot\uploads\sheep\file.txt

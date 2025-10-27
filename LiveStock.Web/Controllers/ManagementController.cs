@@ -62,19 +62,20 @@ namespace LiveStock.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddSheep(string Breed, int Camp, string Gender, DateOnly BirthDate, string? Notes, IFormFile? Photo, decimal Price)
         {
-            int? PhotoID = null;
+            string photoURL = string.Empty;
             if (Photo != null)
             {
-                // Save photo in database
-                // Genererate and get photo ID
+                photoURL = await _sheepService.SaveSheepPhoto(Photo);
             }
 
             _sheepService.AddSheep(breed: Breed,
+                sheepID: _sheepService.GetAllSheep().Count() + 1,
                 birdthDate: BirthDate,
                 camp: Camp,
+                createdAt: DateTime.UtcNow,
                 gender: Gender,
                 price: Price,
-                photoID: PhotoID);
+                photoURL : photoURL);
 
             if (Notes != null)
             {
@@ -109,7 +110,7 @@ namespace LiveStock.Web.Controllers
             try
             {
                 _sheepService.DeleteSheep(id);
-                return RedirectToAction("    ", "Management");
+                return RedirectToAction("Sheep", "Management");
 
             }catch (Exception ex)
             {
@@ -126,7 +127,7 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateSheep(int sheepID, string Breed, int Camp, string Gender, DateOnly BirthDate, string? Notes, IFormFile? Photo, decimal Price)
+        public async Task<IActionResult> UpdateSheep(int sheepID, string Breed, int Camp, string Gender, DateOnly BirthDate, string? Notes, IFormFile? Photo, decimal Price)
         {
             Sheep newSheep = new Sheep();
             newSheep.SheepID = sheepID;
@@ -135,11 +136,12 @@ namespace LiveStock.Web.Controllers
             newSheep.Gender = Gender;
             newSheep.BirthDate = BirthDate;
             newSheep.Price = Price;
+            newSheep.UpdatedAt = DateTime.UtcNow;
 
             if (Photo != null)
             {
-                // Save photo in database
-                // Genererate and get photo ID
+                _sheepService.DeleteSheepPhoto(sheepID);
+                newSheep.PhotoUrl = await _sheepService.SaveSheepPhoto(Photo);
             }
             var currentSheep = _sheepService.getSheepByID(newSheep.SheepID);
             var newSheepList = new List<Sheep> { newSheep };
