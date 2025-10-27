@@ -1052,6 +1052,5 @@ D:\repos\LiveStock\LiveStock.Web\obj\Debug\net9.0\refint\LiveStock.Web.dll
 D:\repos\LiveStock\LiveStock.Web\obj\Debug\net9.0\LiveStock.Web.pdb
 D:\repos\LiveStock\LiveStock.Web\obj\Debug\net9.0\LiveStock.Web.genruntimeconfig.cache
 D:\repos\LiveStock\LiveStock.Web\obj\Debug\net9.0\ref\LiveStock.Web.dll
-D:\repos\LiveStock\LiveStock.Web\obj\Debug\net9.0\compressed\xsev18480e-5ipweew5fc.gz
 D:\repos\LiveStock\LiveStock.Web\obj\Debug\net9.0\compressed\iqo59b6z2m-jc1vxfly8d.gz
 D:\repos\LiveStock\LiveStock.Web\obj\Debug\net9.0\compressed\7w51d8v1ym-jc1vxfly8d.gz

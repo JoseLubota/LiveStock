@@ -3,20 +3,12 @@
   "WorkspaceRootPath": "D:\\repos\\LiveStock\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|d:\\repos\\livestock\\livestock.web\\views\\management\\sheep.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|solutionrelative:livestock.web\\views\\management\\sheep.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|d:\\repos\\livestock\\livestock.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|solutionrelative:livestock.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|d:\\repos\\livestock\\livestock.web\\controllers\\managementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|solutionrelative:livestock.web\\controllers\\managementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|d:\\repos\\livestock\\livestock.web\\views\\management\\sheep_edit_details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|solutionrelative:livestock.web\\views\\management\\sheep_edit_details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|d:\\repos\\livestock\\livestock.web\\controllers\\managementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|solutionrelative:livestock.web\\controllers\\managementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|d:\\repos\\livestock\\livestock.web\\service\\sheepservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -25,6 +17,14 @@
     {
       "AbsoluteMoniker": "D:0:0:{393951A5-4FAC-46D7-9802-1FCC96CB73C0}|LiveStock.Core\\LiveStock.Core.csproj|d:\\repos\\livestock\\livestock.core\\models\\sheep.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{393951A5-4FAC-46D7-9802-1FCC96CB73C0}|LiveStock.Core\\LiveStock.Core.csproj|solutionrelative:livestock.core\\models\\sheep.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|d:\\repos\\livestock\\livestock.web\\views\\management\\sheep.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|solutionrelative:livestock.web\\views\\management\\sheep.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|d:\\repos\\livestock\\livestock.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DA3EC039-2D2D-4407-9481-F62870DCAD5A}|LiveStock.Web\\LiveStock.Web.csproj|solutionrelative:livestock.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{393951A5-4FAC-46D7-9802-1FCC96CB73C0}|LiveStock.Core\\LiveStock.Core.csproj|d:\\repos\\livestock\\livestock.core\\models\\animal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -38,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 9,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -62,7 +62,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\repos\\LiveStock\\LiveStock.Web\\Program.cs",
               "RelativeDocumentMoniker": "LiveStock.Web\\Program.cs",
@@ -70,31 +70,30 @@
               "RelativeToolTip": "LiveStock.Web\\Program.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAAACIAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T23:13:24.346Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-26T23:13:24.346Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Sheep_Edit_Details.cshtml",
               "DocumentMoniker": "D:\\repos\\LiveStock\\LiveStock.Web\\Views\\Management\\Sheep_Edit_Details.cshtml",
               "RelativeDocumentMoniker": "LiveStock.Web\\Views\\Management\\Sheep_Edit_Details.cshtml",
               "ToolTip": "D:\\repos\\LiveStock\\LiveStock.Web\\Views\\Management\\Sheep_Edit_Details.cshtml",
               "RelativeToolTip": "LiveStock.Web\\Views\\Management\\Sheep_Edit_Details.cshtml",
-              "ViewState": "AgIAAIAAAAAAAAAAAAAAAJUAAAAyAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJUAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-10-26T20:33:56.403Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
               "Title": "Sheep.cs",
               "DocumentMoniker": "D:\\repos\\LiveStock\\LiveStock.Core\\Models\\Sheep.cs",
               "RelativeDocumentMoniker": "LiveStock.Core\\Models\\Sheep.cs",
               "ToolTip": "D:\\repos\\LiveStock\\LiveStock.Core\\Models\\Sheep.cs",
               "RelativeToolTip": "LiveStock.Core\\Models\\Sheep.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-26T20:26:46.751Z",
               "EditorCaption": ""
@@ -109,44 +108,42 @@
               "RelativeToolTip": "LiveStock.Core\\Models\\Animal.cs",
               "ViewState": "AgIAAA4AAAAAAAAAAAAwwB4AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T17:09:57.679Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-26T17:09:57.679Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Sheep.cshtml",
+              "DocumentMoniker": "D:\\repos\\LiveStock\\LiveStock.Web\\Views\\Management\\Sheep.cshtml",
+              "RelativeDocumentMoniker": "LiveStock.Web\\Views\\Management\\Sheep.cshtml",
+              "ToolTip": "D:\\repos\\LiveStock\\LiveStock.Web\\Views\\Management\\Sheep.cshtml",
+              "RelativeToolTip": "LiveStock.Web\\Views\\Management\\Sheep.cshtml",
+              "ViewState": "AgIAAOcAAAAAAAAAAAAAAAYBAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-26T20:07:37.9Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Sheep.cshtml",
-              "DocumentMoniker": "D:\\repos\\LiveStock\\LiveStock.Web\\Views\\Management\\Sheep.cshtml",
-              "RelativeDocumentMoniker": "LiveStock.Web\\Views\\Management\\Sheep.cshtml",
-              "ToolTip": "D:\\repos\\LiveStock\\LiveStock.Web\\Views\\Management\\Sheep.cshtml*",
-              "RelativeToolTip": "LiveStock.Web\\Views\\Management\\Sheep.cshtml*",
-              "ViewState": "AgIAAN4AAAAAAAAAAAAAAAQBAABqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-26T20:07:37.9Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "ManagementController.cs",
               "DocumentMoniker": "D:\\repos\\LiveStock\\LiveStock.Web\\Controllers\\ManagementController.cs",
               "RelativeDocumentMoniker": "LiveStock.Web\\Controllers\\ManagementController.cs",
               "ToolTip": "D:\\repos\\LiveStock\\LiveStock.Web\\Controllers\\ManagementController.cs",
               "RelativeToolTip": "LiveStock.Web\\Controllers\\ManagementController.cs",
-              "ViewState": "AgIAADUAAAAAAAAAAAAIwEcAAABBAAAAAAAAAA==",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAIwJ8AAABmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-26T17:21:30.348Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "sheepService.cs",
               "DocumentMoniker": "D:\\repos\\LiveStock\\LiveStock.Web\\Service\\sheepService.cs",
               "RelativeDocumentMoniker": "LiveStock.Web\\Service\\sheepService.cs",
-              "ToolTip": "D:\\repos\\LiveStock\\LiveStock.Web\\Service\\sheepService.cs",
-              "RelativeToolTip": "LiveStock.Web\\Service\\sheepService.cs",
-              "ViewState": "AgIAAKQAAAAAAAAAAAAmwIcBAAAAAAAAAAAAAA==",
+              "ToolTip": "D:\\repos\\LiveStock\\LiveStock.Web\\Service\\sheepService.cs*",
+              "RelativeToolTip": "LiveStock.Web\\Service\\sheepService.cs*",
+              "ViewState": "AgIAAJEAAAAAAAAAAAAiwM0AAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-26T16:54:36.11Z",
               "EditorCaption": ""

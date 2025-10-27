@@ -39,9 +39,9 @@ namespace LiveStock.Web.Service
                 cmd.ExecuteNonQuery();
             }
         }
-        public List<Sheep> GetAllSheep()
+        public Queue<Sheep> GetAllSheep()
         {
-            List<Sheep> sheepList = new List<Sheep>();
+            Queue<Sheep> sheepQueue = new Queue<Sheep>();
 
             using (SqlConnection con = new SqlConnection(_conString))
             {
@@ -71,12 +71,12 @@ namespace LiveStock.Web.Service
                                         ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
                              */
                         };
-                        sheepList.Add(sheep);
+                        sheepQueue.Enqueue(sheep);
                     }
                 }
             }
 
-            return sheepList;
+            return sheepQueue;
         }
         public void DeleteSheep(int sheepID)
         {
@@ -100,9 +100,9 @@ namespace LiveStock.Web.Service
             }
         }
 
-        public List<Sheep> getSheepByID(int sheepID)
+        public Queue<Sheep> getSheepByID(int sheepID)
         {
-            List<Sheep> sheepList = new List<Sheep>();
+            Queue<Sheep> sheepList = new Queue<Sheep>();
 
             using (SqlConnection con = new SqlConnection(_conString))
             {
@@ -132,7 +132,7 @@ namespace LiveStock.Web.Service
                                        ? (string?)null : reader.GetString(reader.GetOrdinal("PhotoUrl"))
 
                         };
-                        sheepList.Add(sheep);
+                        sheepList.Enqueue(sheep);
                     }
                 }
             }
@@ -140,9 +140,9 @@ namespace LiveStock.Web.Service
             return sheepList;
         }
 
-        public List<Sheep> FillVoidSheppFields(List<Sheep> currentShepp, List<Sheep> newSheppDetails)
+        public Queue<Sheep> FillVoidSheppFields(Queue<Sheep> currentShepp, Queue<Sheep> newSheppDetails)
         {
-            List<Sheep> result = [];
+            Queue<Sheep> result = [];
 
             foreach (var current in currentShepp)
             {
@@ -159,7 +159,7 @@ namespace LiveStock.Web.Service
                     current.UpdatedAt = updated.UpdatedAt == default ? current.UpdatedAt : updated.UpdatedAt;
                     current.PhotoUrl = string.IsNullOrEmpty(updated.PhotoUrl) ? current.PhotoUrl : updated.PhotoUrl;
                 }
-                result.Add(current);
+                result.Enqueue(current);
 
             }
 
@@ -170,7 +170,7 @@ namespace LiveStock.Web.Service
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = " UPDATE Sheep SET Breed = @breed, CampId = @camp, Gender = @gender,Price = @price, BirthDate = @birthDate, UpdatedAt = @updatedAt WHERE SheepID = @sheepID";
+                const string sql = " UPDATE Sheep SET Breed = @breed, CampId = @camp, Gender = @gender,Price = @price, BirthDate = @birthDate, UpdatedAt = @updatedAt, PhotoUrl = @photoUrl WHERE SheepID = @sheepID";
 
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
@@ -181,6 +181,7 @@ namespace LiveStock.Web.Service
                     cmd.Parameters.AddWithValue("@birthDate", updateSheep.BirthDate);
                     cmd.Parameters.AddWithValue("@gender", updateSheep.Gender);
                     cmd.Parameters.AddWithValue("@updatedAt", updateSheep.UpdatedAt);
+                    cmd.Parameters.AddWithValue("@photoUrl", updateSheep.PhotoUrl);
 
                     con.Open();
                     int rows = cmd.ExecuteNonQuery();
@@ -198,7 +199,7 @@ namespace LiveStock.Web.Service
             }
         }
 
-        public void SheepBulkActions(string action, string reason, List<int> sheepIDs)
+        public void SheepBulkActions(string action, string reason, HashSet<int> sheepIDs)
         {
             switch (action)
             {

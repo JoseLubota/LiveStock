@@ -144,7 +144,9 @@ namespace LiveStock.Web.Controllers
                 newSheep.PhotoUrl = await _sheepService.SaveSheepPhoto(Photo);
             }
             var currentSheep = _sheepService.getSheepByID(newSheep.SheepID);
-            var newSheepList = new List<Sheep> { newSheep };
+
+            var newSheepList = new Queue<Sheep>();
+            newSheepList.Enqueue(newSheep);
             var mergedSheepList = _sheepService.FillVoidSheppFields(currentSheep, newSheepList);
 
             _sheepService.UpdateSheep(mergedSheepList.First());
@@ -155,7 +157,7 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult SheepBulkActions(string action, string reason, List<int> selectedSheepID)
+        public IActionResult SheepBulkActions(string action, string reason, HashSet<int> selectedSheepID)
         {
             if(selectedSheepID == null || selectedSheepID.Count == 0)
             {
