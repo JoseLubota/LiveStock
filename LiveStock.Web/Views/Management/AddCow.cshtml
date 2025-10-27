@@ -118,8 +118,8 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label asp-for="BirthDate" class="form-label">Age:</label>
-                                            <input asp-for="BirthDate" class="form-control" type="number" min="0" placeholder="Enter age" required />
+                                            <label asp-for="BirthDate" class="form-label">Birth Date:</label>
+                                            <input asp-for="BirthDate" class="form-control" type="date" min="0" placeholder="Enter age" required />
                                             <span asp-validation-for="BirthDate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -176,7 +176,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Photo:</label>
-                                            <input type="file" class="form-control" name="photo" accept="image/*" />
+                                            <input type="file" class="form-control" name="Photo" accept="image/*" />
                                             <small class="text-muted">Upload a photo of the cow (optional)</small>
                                         </div>
                                     </div>
@@ -184,8 +184,8 @@
                                 
                                 <div class="mb-3" id="calvingDateDiv" style="display: none;">
                                     <label class="form-label">Expected Calving Date:</label>
-                                    <input type="date" class="form-control" name="expectedCalvingDate" />
-                                </div>
+                                    <input asp-for="ExpectedCalvingDate" type="date" class="form-control" name="expectedCalvingDate" />
+                                </div> 
                                 
                                 <div class="mb-3">
                                     <label asp-for="Notes" class="form-label">Notes (optional):</label>

@@ -141,7 +141,7 @@
                                         Total Value
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        $@Model.Sum(c => c.Price).ToString("N2")
+                                        R @Model.Sum(c => c.Price).ToString("N2")
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -190,7 +190,7 @@
                                         <th>Photo</th>
                                         <th>Ear Tag</th>
                                         <th>Breed</th>
-                                        <th>Age</th>
+                                        <th>Birth Date</th>
                                         <th>Camp</th>
                                         <th>Gender</th>
                                         <th>Price</th>
@@ -233,7 +233,7 @@
                                                 }
                                             </td>
                                             <td>
-                                                <span class="text-success">$@cow.Price.ToString("N2")</span>
+                                                <span class="text-success">R @cow.Price.ToString("N2")</span>
                                             </td>
                                             <td>
                                                 @if (cow.IsPregnant)

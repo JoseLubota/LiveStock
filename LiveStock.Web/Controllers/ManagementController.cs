@@ -13,11 +13,13 @@ namespace LiveStock.Web.Controllers
     {
         private readonly LiveStockDbContext _context;
         private readonly sheepService _sheepService;
+        private readonly cowService _cowService;
 
-        public ManagementController(LiveStockDbContext context, sheepService sheepService)
+        public ManagementController(LiveStockDbContext context, sheepService sheepService, cowService cowService)
         {
             _context = context;
             _sheepService = sheepService;
+            _cowService = cowService;
         }
 
         public IActionResult Dashboard()
@@ -30,8 +32,8 @@ namespace LiveStock.Web.Controllers
 
             var dashboardViewModel = new DashboardViewModel
             {
-                TotalSheep = _context.Sheep.Count(s => s.IsActive),
-                TotalCows = _context.Cows.Count(c => c.IsActive),
+                TotalSheep = _sheepService.GetAllSheep().Count(c => c.IsActive),
+                TotalCows = _cowService.GetAllCow().Count(c => c.IsActive),
                 TotalStaff = _context.Staff.Count(s => s.IsActive),
                 PendingTasks = _context.FarmTasks.Count(t => t.Status == "Pending"),
                 RecentRainfall = _context.RainfallRecords
@@ -52,6 +54,12 @@ namespace LiveStock.Web.Controllers
         }
         public async Task<IActionResult> Sheep()
         {
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var sheepList = _sheepService.GetAllSheep()
                 .OrderBy(s => s.SheepID)
                 .ToList();
@@ -185,10 +193,9 @@ namespace LiveStock.Web.Controllers
         #region Cow Management
         public async Task<IActionResult> Cows()
         {
-            var cows = await _context.Cows
-                .Include(c => c.Camp)
-                .Where(c => c.IsActive)
-                .ToListAsync();
+            var cows = _cowService.GetAllCow()
+                            .OrderBy(s => s.Id)
+                            .ToList();
 
             return View(cows);
         }
@@ -200,19 +207,31 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCow(Cow cow)
+        public async Task<IActionResult> AddCow(Cow cow, IFormFile Photo)
         {
-            if (ModelState.IsValid)
+            cow.PhotoUrl = string.Empty;
+            if (Photo != null)
+                cow.PhotoUrl = await _cowService.SaveCowPhoto(Photo);
+
+            _cowService.AddCow(breed: cow.Breed,
+                earTag: cow.EarTag,
+                birdthDate: cow.BirthDate,
+                camp: cow.CampId,
+                createdAt: DateTime.UtcNow,
+                gender: cow.Gender,
+                price: cow.Price,
+                photoURL: cow.PhotoUrl,
+                IsPregnant: cow.IsPregnant,
+                expectedCalvingDate: cow.ExpectedCalvingDate
+            );
+
+            if (Notes != null)
             {
-                cow.CreatedAt = DateTime.UtcNow;
-                cow.IsActive = true;
-                _context.Cows.Add(cow);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Cows));
+                // get sheep ID
+                // create a new note
             }
 
-            ViewBag.Camps = _context.Camps.OrderBy(c => c.CampNumber).ToList();
-            return View(cow);
+            return RedirectToAction("Sheep");
         }
 
         public async Task<IActionResult> CowDetails(int id)
