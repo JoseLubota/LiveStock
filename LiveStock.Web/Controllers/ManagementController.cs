@@ -71,7 +71,7 @@ namespace LiveStock.Web.Controllers
             }
 
             _sheepService.AddSheep(breed: Breed,
-                birdthDate: BirthDate,
+                birthDate: BirthDate,
                 camp: Camp,
                 gender: Gender,
                 price: Price,
