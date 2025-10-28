@@ -312,13 +312,13 @@ namespace LiveStock.Web.Service
 
                 // Table Setup
 
-                PdfPTable table = new PdfPTable(10);
+                PdfPTable table = new PdfPTable(9);
                 table.WidthPercentage = 100;
-                table.SetWidths(new float[] { 1.2f, 2f, 1.5f, 1.2f, 2f, 1.5f,1.2f, 1.2f, 2f, 2f });
+                table.SetWidths(new float[] {2f, 1.5f, 1.2f, 2f, 1.5f,1.2f, 1.2f, 2f, 2f });
 
                 // Headers
                 var headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, BaseColor.WHITE);
-                string[] headers = { "Id", "Ear Tag", "Breed", "Camp ID", "Gender", "Birth Date", "Price", "Active", "IsPregnant", "ExpectedCalvingDate" };
+                string[] headers = {"Ear Tag", "Breed", "Camp ID", "Gender", "Birth Date", "Price", "Active", "IsPregnant", "ExpectedCalvingDate" };
 
                 foreach (string header in headers)
                 {
@@ -335,7 +335,6 @@ namespace LiveStock.Web.Service
                 var dataFont = FontFactory.GetFont(FontFactory.HELVETICA, 9, BaseColor.BLACK);
                 foreach (var cow in cowQueue)
                 {
-                    table.AddCell(new Phrase(cow.Id));
                     table.AddCell(new Phrase(cow.EarTag, dataFont));
                     table.AddCell(new Phrase(cow.Breed, dataFont));
                     table.AddCell(new Phrase($"Camp {cow.CampId}", dataFont));
