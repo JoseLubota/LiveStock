@@ -17,25 +17,32 @@ namespace LiveStock.Web.Service
             _conString = configuration.GetConnectionString("AzureConString");
         }
 
-        public void AddSheep(string breed, DateOnly birthDate, int camp, string gender, decimal price, int? photoID)
+        public void AddSheep(string breed, DateOnly birthDate, int camp, DateTime createdAt, string gender, decimal price, string? photoURL)
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                string sql = @"INSERT INTO Sheep (Breed, BirthDate, CampId, Gender, Price, PhotoID, Status, IsActive)
-                              VALUES(@breed, @birthDate, @campId, @gender, @price, @photoID, @status, @isActive)";
+                con.Open();
+                
+                // Get the next SheepID
+                string getMaxIdSql = "SELECT ISNULL(MAX(SheepID), 0) + 1 FROM Sheep";
+                SqlCommand getMaxIdCmd = new SqlCommand(getMaxIdSql, con);
+                int nextSheepId = (int)getMaxIdCmd.ExecuteScalar();
+
+                string sql = @"INSERT INTO Sheep (SheepID, Breed, BirthDate, CampId, Gender, Price, PhotoUrl, Status, IsActive, CreatedAt)
+                              VALUES(@sheepId, @breed, @birthDate, @campId, @gender, @price, @photoUrl, @status, @isActive, @createdAt)";
 
                 SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@sheepid", sheepID);
+                cmd.Parameters.AddWithValue("@sheepId", nextSheepId);
                 cmd.Parameters.AddWithValue("@breed", breed);
                 cmd.Parameters.AddWithValue("@birthDate", birthDate.ToDateTime(new TimeOnly(0,0)));
                 cmd.Parameters.AddWithValue("@campId", camp);
                 cmd.Parameters.AddWithValue("@gender", gender);
                 cmd.Parameters.AddWithValue("@price", price);
-                cmd.Parameters.AddWithValue("@photoID", (object?)photoID ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@photoUrl", (object?)photoURL ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@status", "Active");
                 cmd.Parameters.AddWithValue("@isActive", true);
+                cmd.Parameters.AddWithValue("@createdAt", createdAt);
 
-                con.Open();
                 cmd.ExecuteNonQuery();
             }
         }
@@ -45,7 +52,7 @@ namespace LiveStock.Web.Service
 
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "SELECT Id, SheepID, Breed, CampId, Gender, Price, IsActive, BirthDate, PhotoID, Status FROM Sheep";
+                const string sql = "SELECT Id, SheepID, Breed, CampId, Gender, Price, IsActive, BirthDate, PhotoID, Status, CreatedAt, PhotoUrl FROM Sheep";
                 SqlCommand cmd = new SqlCommand(sql, con);
 
                 con.Open();

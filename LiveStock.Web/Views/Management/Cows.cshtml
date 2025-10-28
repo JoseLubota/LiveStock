@@ -295,80 +295,9 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var cow in Model)
-                                        {
-                                            <tr>
-                                                <td><input type="checkbox" name="selectedCowID" class="cow-select" value="@cow.Id" aria-label="Select cow @cow.Id" /></td>
-                                                <td>
-                                                    @if (!string.IsNullOrEmpty(cow.PhotoUrl))
-                                                    {
-                                                        <img src="@cow.PhotoUrl" alt="Cow Photo" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;" />
-                                                    }
-                                                    else
-                                                    {
-                                                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border-radius: 5px;">
-                                                            <i class="fas fa-cow"></i>
-                                                        </div>
-                                                    }
-                                                </td>
-                                                <td>@(cow.EarTag ?? "-")</td>
-                                                <td>@cow.Breed</td>
-                                                <td>@cow.BirthDate </td>
-                                                <td>
-                                                    <span class="badge bg-info">Camp @cow.Camp?.CampNumber</span>
-                                                </td>
-                                                <td>
-                                                    @if (cow.Gender == "Male")
-                                                    {
-                                                        <span class="badge bg-primary">@cow.Gender</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="badge bg-pink">@cow.Gender</span>
-                                                    }
-                                                </td>
-                                                <td>
-                                                    <span class="text-success">R @cow.Price.ToString("N2")</span>
-                                                </td>
-                                                <td>
-                                                    @if (cow.IsPregnant)
-                                                    {
-                                                        <span class="badge bg-warning">Pregnant</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="badge bg-secondary">No</span>
-                                                    }
-                                                </td>
-                                                <td>
-                                                    @if (cow.IsActive)
-                                                    {
-                                                        <span class="badge bg-success">Active</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="badge bg-danger">Inactive</span>
-                                                    }
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group" role="group">
-                                                        <a asp-action="CowDetails" asp-route-id="@cow.Id" class="btn btn-sm btn-info">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
-                                                        <a asp-action="CowEditDetails" asp-route-id="@cow.Id" class="btn btn-sm btn-warning">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-                                                        <a asp-action="RemoveCow" asp-route-id="@cow.Id" class="btn btn-sm btn-danger" onclick="removeCow(@cow.Id)">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                    }
+                                </tbody>
+                            </table>
                             </div>
                         }
                         else
@@ -413,7 +342,7 @@
                         <small class="text-muted">Select cows using checkboxes in the table below.</small>
                     </div>
                 </div>
-            </form>
+            
 
             <!-- Quick Actions -->
             <div class="row">

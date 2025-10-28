@@ -77,14 +77,14 @@ namespace LiveStock.Web.Controllers
                 photoURL = await _sheepService.SaveSheepPhoto(Photo);
             }
 
-            _sheepService.AddSheep(breed: Breed,
-                sheepID: _sheepService.GetAllSheep().Count() + 1,
-                birdthDate: BirthDate,
+            _sheepService.AddSheep(
+                breed: Breed,
+                birthDate: BirthDate,
                 camp: Camp,
                 createdAt: DateTime.UtcNow,
                 gender: Gender,
                 price: Price,
-                photoURL : photoURL);
+                photoURL: photoURL);
 
             if (Notes != null)
             {
@@ -863,10 +863,7 @@ namespace LiveStock.Web.Controllers
 
             return View(financialRecords);
         }
-<<<<<<< HEAD
-        
-=======
->>>>>>> origin/main
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -938,14 +935,8 @@ namespace LiveStock.Web.Controllers
             return RedirectToAction(nameof(Finance));
         }
 
-<<<<<<< HEAD
         #region Notes
         public IActionResult Notes(string? category)
-=======
-        /* Removed stray duplicate finance methods appended outside the controller class. */
-        #region Notes
-        public IActionResult Notes()
->>>>>>> origin/main
         {
             var userIdStr = HttpContext.Session.GetString("UserId");
             if (string.IsNullOrEmpty(userIdStr))
@@ -953,7 +944,6 @@ namespace LiveStock.Web.Controllers
                 return RedirectToAction("Login", "Account");
             }
             int userId = int.Parse(userIdStr);
-<<<<<<< HEAD
             var query = _context.Notes
                 .Where(n => n.CreatedByUserId == userId);
 
@@ -967,12 +957,6 @@ namespace LiveStock.Web.Controllers
                 .ToList();
 
             ViewBag.ActiveCategory = string.IsNullOrWhiteSpace(category) ? "All" : category;
-=======
-            var notes = _context.Notes
-                .Where(n => n.CreatedByUserId == userId)
-                .OrderByDescending(n => n.CreatedAt)
-                .ToList();
->>>>>>> origin/main
             return View(notes);
         }
 
@@ -1014,7 +998,6 @@ namespace LiveStock.Web.Controllers
             }
             return RedirectToAction("Notes");
         }
-<<<<<<< HEAD
         
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -1036,8 +1019,6 @@ namespace LiveStock.Web.Controllers
 
             return RedirectToAction(nameof(Notes));
         }
-=======
->>>>>>> origin/main
         #endregion
 
         // Livestock
@@ -1135,10 +1116,6 @@ namespace LiveStock.Web.Controllers
             }
             return RedirectToAction(nameof(Tasks));
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/main
         #endregion
     }
 }
