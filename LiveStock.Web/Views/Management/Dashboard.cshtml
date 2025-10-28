@@ -3,70 +3,76 @@
 @{
     ViewData["Title"] = "Dashboard - LiveStock Management";
     Layout = "_Layout";
+    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
 }
 
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar Navigation -->
         <nav class="col-md-3 col-lg-2 d-md-block bg-dark-green sidebar collapse">
-            <div class="position-sticky pt-3">
+            <div class="position-sticky pt-3 management-nav">
                 <ul class="nav flex-column">
                     <li class="nav-item d-flex align-items-center mb-3">
-                        <img src="/images/user-avatar.png" alt="User Avatar" class="rounded-circle me-2" style="width:40px;height:40px;object-fit:cover;">
                         <span class="text-white fw-bold">@Context.Session.GetString("UserName")</span>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white active" asp-action="Dashboard">
+                        <a class="nav-link text-white @(currentAction == "Dashboard" ? "active" : "")" asp-action="Dashboard" aria-current="@(currentAction == "Dashboard" ? "page" : null)">
                             <i class="fas fa-tachometer-alt me-2"></i>
                             Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" asp-action="Sheep">
+                        <a class="nav-link text-white @(currentAction == "Sheep" ? "active" : "")" asp-action="Sheep" aria-current="@(currentAction == "Sheep" ? "page" : null)">
                             <i class="fas fa-sheep me-2"></i>
                             Sheep Management
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" asp-action="Cows">
+                        <a class="nav-link text-white @(currentAction == "Cows" ? "active" : "")" asp-action="Cows" aria-current="@(currentAction == "Cows" ? "page" : null)">
                             <i class="fas fa-cow me-2"></i>
                             Cow Management
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" asp-action="Camps">
+                        <a class="nav-link text-white @(currentAction == "Camps" ? "active" : "")" asp-action="Camps" aria-current="@(currentAction == "Camps" ? "page" : null)">
                             <i class="fas fa-map-marker-alt me-2"></i>
                             Camps
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" asp-action="Staff">
+                        <a class="nav-link text-white @(currentAction == "Staff" ? "active" : "")" asp-action="Staff" aria-current="@(currentAction == "Staff" ? "page" : null)">
                             <i class="fas fa-users me-2"></i>
                             Staff Management
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" asp-action="Tasks">
+                        <a class="nav-link text-white @(currentAction == "Tasks" ? "active" : "")" asp-action="Tasks" aria-current="@(currentAction == "Tasks" ? "page" : null)">
                             <i class="fas fa-tasks me-2"></i>
                             Tasks
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" asp-action="Water">
+                        <a class="nav-link text-white @(currentAction == "Water" ? "active" : "")" asp-action="Water" aria-current="@(currentAction == "Water" ? "page" : null)">
                             <i class="fas fa-tint me-2"></i>
                             Water & Rainfall
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" asp-action="Assets">
+                        <a class="nav-link text-white @(currentAction == "Assets" ? "active" : "")" asp-action="Assets" aria-current="@(currentAction == "Assets" ? "page" : null)">
                             <i class="fas fa-tools me-2"></i>
                             Assets
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" asp-action="Finance">
+                        <a class="nav-link text-white @(currentAction == "Finance" ? "active" : "")" asp-action="Finance" aria-current="@(currentAction == "Finance" ? "page" : null)">
                             <i class="fas fa-dollar-sign me-2"></i>
                             Finance
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white @(currentAction == "Notes" ? "active" : "")" asp-action="Notes" aria-current="@(currentAction == "Notes" ? "page" : null)">
+                            <i class="fas fa-sticky-note me-2"></i>
+                            Notes
                         </a>
                     </li>
                     <li class="nav-item mt-3">
@@ -81,6 +87,18 @@
 
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="module-hero" style="background-image: url('@Url.Content("~/Images/IMG-20251025-WA0038.jpg")'); background-size: cover; background-position: center; border-radius: 12px; position: relative; margin-bottom: 1rem;">
+                <div class="module-overlay"></div>
+                <div class="module-hero-content">
+                    <h2 class="h3 mb-1">Farm Dashboard</h2>
+                    <p class="mb-0">Overview of livestock, staff, assets, and water.</p>
+                </div>
+            </div>
+            <style>
+                .module-hero { position: relative; min-height: 220px; }
+                .module-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); border-radius: 12px; }
+                .module-hero-content { position: relative; z-index: 1; color: #fff; padding: 1.25rem 1.5rem; }
+            </style>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Farm Dashboard</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
@@ -93,7 +111,7 @@
             <!-- Statistics Cards -->
             <div class="row mb-4">
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card border-left-primary shadow h-100 py-2 card-brand">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
@@ -111,7 +129,7 @@
                 </div>
 
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card border-left-success shadow h-100 py-2 card-brand">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
@@ -129,7 +147,7 @@
                 </div>
 
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card border-left-info shadow h-100 py-2 card-brand">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
@@ -147,7 +165,7 @@
                 </div>
 
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card border-left-warning shadow h-100 py-2 card-brand">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
@@ -168,8 +186,8 @@
             <!-- Charts Section -->
             <div class="row mb-4">
                 <div class="col-lg-6 mb-4">
-                    <div class="card shadow">
-                        <div class="card-header bg-info text-white">
+                    <div class="card shadow card-brand">
+                        <div class="card-header bg-medium-green text-white">
                             <h6 class="mb-0"><i class="fas fa-chart-line me-2"></i>Livestock Trends</h6>
                         </div>
                         <div class="card-body">
@@ -178,8 +196,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6 mb-4">
-                    <div class="card shadow">
-                        <div class="card-header bg-warning text-white">
+                    <div class="card shadow card-brand">
+                        <div class="card-header bg-orange-yellow text-white">
                             <h6 class="mb-0"><i class="fas fa-cloud-rain me-2"></i>Rainfall Trends</h6>
                         </div>
                         <div class="card-body">
@@ -192,12 +210,12 @@
             <!-- Recent Rainfall -->
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="card shadow mb-4">
+                    <div class="card shadow mb-4 card-brand">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Recent Rainfall</h6>
                         </div>
                         <div class="card-body">
-                            @if (Model.RecentRainfall.Any())
+                            @if (Model?.RecentRainfall != null && Model.RecentRainfall.Any())
                             {
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
@@ -212,7 +230,7 @@
                                             @foreach (var rainfall in Model.RecentRainfall)
                                             {
                                                 <tr>
-                                                    <td>Camp @rainfall.Camp.CampNumber</td>
+                                                    <td>Camp @(rainfall.Camp?.CampNumber ?? 0)</td>
                                                     <td>@rainfall.AmountMl ml</td>
                                                     <td>@rainfall.RainfallDate.ToString("MM/dd/yyyy")</td>
                                                 </tr>
@@ -230,29 +248,29 @@
                 </div>
 
                 <div class="col-lg-6">
-                    <div class="card shadow mb-4">
+                    <div class="card shadow mb-4 card-brand">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6 mb-3">
-                                    <a asp-action="AddSheep" class="btn btn-success btn-block w-100">
+                                    <a asp-action="AddSheep" class="btn btn-brand btn-block w-100">
                                         <i class="fas fa-plus me-2"></i>Add Sheep
                                     </a>
                                 </div>
                                 <div class="col-6 mb-3">
-                                    <a asp-action="AddCow" class="btn btn-info btn-block w-100">
+                                    <a asp-action="AddCow" class="btn btn-brand btn-block w-100">
                                         <i class="fas fa-plus me-2"></i>Add Cow
                                     </a>
                                 </div>
                                 <div class="col-6 mb-3">
-                                    <a asp-action="CreateTask" class="btn btn-warning btn-block w-100">
+                                    <a asp-action="CreateTask" class="btn btn-brand btn-block w-100">
                                         <i class="fas fa-plus me-2"></i>Create Task
                                     </a>
                                 </div>
                                 <div class="col-6 mb-3">
-                                    <a asp-action="AddStaff" class="btn btn-primary btn-block w-100">
+                                    <a asp-action="AddStaff" class="btn btn-brand btn-block w-100">
                                         <i class="fas fa-plus me-2"></i>Add Staff
                                     </a>
                                 </div>

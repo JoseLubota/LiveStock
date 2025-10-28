@@ -10,10 +10,12 @@ namespace LiveStock.Web.Controllers
     public class AccountController : Controller
     {
         private readonly adminService _adminService;
+        private readonly LiveStockDbContext _context;
 
-        public AccountController(adminService adminService)
+        public AccountController(adminService adminService, LiveStockDbContext context)
         {
             _adminService = adminService;
+            _context = context;
         }
 
         public IActionResult Login()
@@ -34,6 +36,21 @@ namespace LiveStock.Web.Controllers
                     return RedirectToAction("Dashboard", "Management");
                 }
 
+                // Demo staff login (shared credentials)
+                if (model.Email?.Trim().ToLower() == "staff@gmail.com" && model.Password == "staff123")
+                {
+                    // Pick the first active staff as session user context
+                    var staffId = await _context.Staff.Where(s => s.IsActive).Select(s => s.Id).FirstOrDefaultAsync();
+                    if (staffId == 0)
+                    {
+                        // If none found, create a minimal placeholder staff or fallback to 1
+                        // For demo, fallback to 1 to avoid null session; ensure a staff exists in DB
+                        staffId = 1;
+                    }
+                    HttpContext.Session.SetString("UserId", staffId.ToString());
+                    HttpContext.Session.SetString("UserRole", "Employee");
+                    return RedirectToAction("Dashboard", "Employee");
+                }
             }
             else
             {
@@ -49,4 +66,4 @@ namespace LiveStock.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
     }
-}  
+}

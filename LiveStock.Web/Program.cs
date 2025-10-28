@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using LiveStock.Infrastructure.Data;
 using LiveStock.Web.Service;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,10 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<adminService>();
 builder.Services.AddScoped<sheepService>();
+builder.Services.AddScoped<cowService>();
+builder.Services.AddScoped<IStaffService, staffService>();
 
-// Add Entity Framework with SQLite (macOS compatible)
+// Add Entity Framework with Azure SQL Server
 builder.Services.AddDbContext<LiveStockDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=LiveStock.db"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConString")));
 
 // Add Session support
 builder.Services.AddDistributedMemoryCache();
@@ -33,6 +37,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+// Serve images from the project Images folder
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Images")),
+    RequestPath = "/Images"
+});
 
 app.UseRouting();
 
@@ -45,11 +55,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-// Ensure database is created
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<LiveStockDbContext>();
-    context.Database.EnsureCreated();
-}
 
 app.Run();

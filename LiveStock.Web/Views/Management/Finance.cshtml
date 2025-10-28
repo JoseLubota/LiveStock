@@ -65,6 +65,12 @@
                             Finance
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Notes">
+                            <i class="fas fa-sticky-note me-2"></i>
+                            Notes
+                        </a>
+                    </li>
                     <li class="nav-item mt-3">
                         <a class="nav-link text-warning" asp-controller="Account" asp-action="Logout">
                             <i class="fas fa-sign-out-alt me-2"></i>
@@ -77,12 +83,28 @@
 
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="module-hero" style="background-image: url('@Url.Content("~/Images/IMG-20251025-WA0038.jpg")'); background-size: cover; background-position: center; border-radius: 12px; position: relative; margin-bottom: 1rem;">
+                <div class="module-overlay"></div>
+                <div class="module-hero-content">
+                    <h2 class="h3 mb-1">Finance Management</h2>
+                    <p class="mb-0">Track expenses, revenue, and categories.</p>
+                </div>
+            </div>
+            <style>
+                .module-hero { position: relative; min-height: 220px; }
+                .module-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); border-radius: 12px; }
+                .module-hero-content { position: relative; z-index: 1; color: #fff; padding: 1.25rem 1.5rem; }
+            </style>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Finance Management</h1>
                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addFinancialRecordModal">
                     <i class="fas fa-plus me-2"></i>Add Financial Record
                 </button>
             </div>
+            @if (TempData["FinanceError"] != null)
+            {
+                <div class="alert alert-danger">@TempData["FinanceError"]</div>
+            }
 
             <!-- Financial Summary Cards -->
             <div class="row mb-4">
@@ -95,7 +117,7 @@
                                         Total Income
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        $@Model.Where(f => f.Type == "Income").Sum(f => f.Amount).ToString("N2")
+                                        R @Model.Where(f => f.Type == "Income").Sum(f => f.Amount).ToString("N2")
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -115,7 +137,7 @@
                                         Total Expenses
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        $@Model.Where(f => f.Type == "Expense").Sum(f => f.Amount).ToString("N2")
+                                        R @Model.Where(f => f.Type == "Expense").Sum(f => f.Amount).ToString("N2")
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -135,7 +157,7 @@
                                         Net Profit
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        $@(Model.Where(f => f.Type == "Income").Sum(f => f.Amount) - Model.Where(f => f.Type == "Expense").Sum(f => f.Amount))
+                                        R @(Model.Where(f => f.Type == "Income").Sum(f => f.Amount) - Model.Where(f => f.Type == "Expense").Sum(f => f.Amount))
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -208,18 +230,22 @@
                                             <td>@(record.Category ?? "-")</td>
                                             <td>
                                                 <span class="@(record.Type == "Income" ? "text-success" : "text-danger")">
-                                                    $@record.Amount.ToString("N2")
+                                                    R @record.Amount.ToString("N2")
                                                 </span>
                                             </td>
                                             <td>@(record.Reference ?? "-")</td>
                                             <td>@(record.Notes ?? "-")</td>
                                             <td>
-                                                <button class="btn btn-sm btn-info" onclick="editFinancialRecord(@record.Id)">
+                                                <a class="btn btn-sm btn-info" asp-action="EditFinancialRecord" asp-route-id="@record.Id">
                                                     <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-danger" onclick="removeFinancialRecord(@record.Id)">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
+                                                </a>
+                                                <form asp-action="DeleteFinancialRecord" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@record.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to remove this financial record?');">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     }
@@ -246,12 +272,13 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="financialRecordForm">
+                <form asp-controller="Management" asp-action="AddFinancialRecord" method="post">
+                    @Html.AntiForgeryToken()
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Type:</label>
-                                <select class="form-control" name="type" required>
+                                <select class="form-control" name="Type" required>
                                     <option value="">Select Type</option>
                                     <option value="Income">Income</option>
                                     <option value="Expense">Expense</option>
@@ -261,7 +288,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Category:</label>
-                                <select class="form-control" name="category">
+                                <select class="form-control" name="Category">
                                     <option value="">Select Category</option>
                                     <option value="Livestock Sales">Livestock Sales</option>
                                     <option value="Feed">Feed</option>
@@ -276,22 +303,22 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Description:</label>
-                        <input type="text" class="form-control" name="description" required />
+                        <input type="text" class="form-control" name="Description" required />
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Amount:</label>
                                 <div class="input-group">
-                                    <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control" name="amount" step="0.01" min="0" required />
+                                    <span class="input-group-text">R</span>
+                                    <input type="number" class="form-control" name="Amount" step="0.01" min="0" required />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Transaction Date:</label>
-                                <input type="date" class="form-control" name="transactionDate" required />
+                                <input type="date" class="form-control" name="TransactionDate" required />
                             </div>
                         </div>
                     </div>
@@ -299,13 +326,13 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Reference:</label>
-                                <input type="text" class="form-control" name="reference" placeholder="Invoice #, Receipt #, etc." />
+                                <input type="text" class="form-control" name="Reference" placeholder="Invoice #, Receipt #, etc." />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Notes:</label>
-                                <textarea class="form-control" name="notes" rows="2"></textarea>
+                                <textarea class="form-control" name="Notes" rows="2"></textarea>
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-@model IEnumerable<LiveStock.Core.Models.RainfallRecord>
+@model LiveStock.Web.ViewModels.WaterViewModel
 
 @{
     ViewData["Title"] = "Water & Rainfall Management";
@@ -65,6 +65,12 @@
                             Finance
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Notes">
+                            <i class="fas fa-sticky-note me-2"></i>
+                            Notes
+                        </a>
+                    </li>
                     <li class="nav-item mt-3">
                         <a class="nav-link text-warning" asp-controller="Account" asp-action="Logout">
                             <i class="fas fa-sign-out-alt me-2"></i>
@@ -77,11 +83,20 @@
 
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="module-hero" style="background-image: url('@Url.Content("~/Images/IMG-20251025-WA0034.jpg")'); background-size: cover; background-position: center; border-radius: 12px; position: relative; margin-bottom: 1rem;">
+                <div class="module-overlay"></div>
+                <div class="module-hero-content">
+                    <h2 class="h3 mb-1">Water & Rainfall</h2>
+                    <p class="mb-0">Monitor water levels and rainfall records across camps.</p>
+                </div>
+            </div>
+            <style>
+                .module-hero { position: relative; min-height: 220px; }
+                .module-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); border-radius: 12px; }
+                .module-hero-content { position: relative; z-index: 1; color: #fff; padding: 1.25rem 1.5rem; }
+            </style>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Water & Rainfall Management</h1>
-                <div class="text-muted">
-                    <small>% of rainfall can be calculated by evenly dividing 15 camps by 2300 hectare</small>
-                </div>
             </div>
 
             <div class="row">
@@ -94,35 +109,27 @@
                         <div class="card-body">
                             <!-- 4x4 Grid of Camps -->
                             <div class="row">
-                                @for (int i = 1; i <= 16; i++)
+                                @foreach (var camp in Model.Camps)
                                 {
+                                    var latest = Model.RainfallRecords
+                                        .Where(r => r.CampId == camp.Id)
+                                        .OrderByDescending(r => r.RainfallDate)
+                                        .FirstOrDefault();
+                                    var lastDateStr = latest != null ? latest.RainfallDate.ToString("MM/dd/yyyy") : "No recent rainfall";
+                                    var amountStr = latest != null ? $"{latest.AmountMl:0.##}ml" : "0ml";
+                                    var waterLevelStr = (latest != null && latest.AmountMl > 0) ? "Good" : "Low";
                                     <div class="col-3 mb-2">
-                                        <button class="btn btn-outline-info w-100 camp-grid-btn" 
-                                                data-camp="@i" 
-                                                onclick="showCampDetails(@i)">
-                                            @i
+                                        <button class="btn btn-outline-info w-100 camp-grid-btn"
+                                                data-camp-number="@camp.CampNumber"
+                                                data-camp-id="@camp.Id"
+                                                data-last="@lastDateStr"
+                                                data-amount="@amountStr"
+                                                data-water="@waterLevelStr"
+                                                onclick="waterShowCampDetails(@camp.CampNumber, @camp.Id)">
+                                            @camp.CampNumber
                                         </button>
                                     </div>
                                 }
-                            </div>
-                            
-                            <!-- Water Report Section -->
-                            <div class="mt-4">
-                                <h6 class="text-info">Water Report</h6>
-                                <div class="table-responsive">
-                                    <table class="table table-sm">
-                                        <tbody>
-                                            <tr>
-                                                <td>10/07/2025:</td>
-                                                <td>Rain landed on camps 3, 5, 8 - 10ml per camp</td>
-                                            </tr>
-                                            <tr>
-                                                <td>12/08/2025:</td>
-                                                <td>Rain landed on camps 1 and 2 - 5ml per camp</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -149,7 +156,7 @@
                     <h6 class="mb-0"><i class="fas fa-history me-2"></i>Rainfall History</h6>
                 </div>
                 <div class="card-body">
-                    @if (Model.Any())
+                    @if (Model.RainfallRecords.Any())
                     {
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -162,10 +169,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var record in Model.OrderByDescending(r => r.RainfallDate))
+                                    @foreach (var record in Model.RainfallRecords.OrderByDescending(r => r.RainfallDate))
                                     {
                                         <tr>
-                                            <td>Camp @record.Camp.CampNumber</td>
+                                            <td>Camp @record.Camp?.CampNumber</td>
                                             <td>@record.RainfallDate.ToString("MM/dd/yyyy")</td>
                                             <td>@record.AmountMl ml</td>
                                             <td>@(record.Notes ?? "-")</td>
@@ -194,7 +201,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="rainfallForm">
+                <form id="waterRainfallForm">
                     <div class="mb-3">
                         <label class="form-label">Rainfall Amount:</label>
                         <div class="input-group">
@@ -221,8 +228,133 @@
 </div>
 
 <script>
+    let waterSelectedCampId = null;
+
+    function waterShowCampDetails(campNumber, campId) {
+        waterSelectedCampId = campId;
+        document.getElementById('campHeader').textContent = `Camp ${campNumber} Details`;
+        
+        const btn = document.querySelector(`[data-camp-number="${campNumber}"]`);
+        const lastRainfall = btn?.getAttribute('data-last') || 'No recent rainfall';
+        const amount = btn?.getAttribute('data-amount') || '0ml';
+        const waterLevel = btn?.getAttribute('data-water') || 'Unknown';
+        
+        const waterLevelClass = waterLevel === 'Good' ? 'text-success' : (waterLevel === 'Fair' ? 'text-warning' : 'text-danger');
+        
+        document.getElementById('campDetails').innerHTML = `
+        <div class="camp-info">
+            <h6 class="text-primary">Camp ${campNumber}</h6>
+            <div class="mb-2">
+                <strong>Last Rainfall:</strong><br>
+                <small>${lastRainfall}</small>
+            </div>
+            <div class="mb-2">
+                <strong>Amount:</strong> ${amount}
+            </div>
+            <div class="mb-3">
+                <strong>Water Level:</strong>
+                <span class="${waterLevelClass}">${waterLevel}</span>
+            </div>
+            <button class="btn btn-info btn-sm w-100" onclick="waterAddRainfallForCamp(${campNumber})">
+                <i class="fas fa-plus me-1"></i>Add Rainfall
+            </button>
+            <button class="btn btn-outline-danger btn-sm w-100 mt-2" onclick="waterClearRainfallForCamp(${campNumber})">
+                <i class="fas fa-trash me-1"></i>Clear Rainfall History
+            </button>
+        </div>
+        `;
+        document.querySelectorAll('.camp-grid-btn').forEach(btn => {
+            btn.classList.remove('btn-info');
+            btn.classList.add('btn-outline-info');
+        });
+        btn.classList.remove('btn-outline-info');
+        btn.classList.add('btn-info');
+    }
+
+    function waterAddRainfallForCamp(campNumber) {
+        document.getElementById('modalCampNumber').textContent = campNumber;
+        document.getElementById('waterRainfallForm').action = `/Management/AddRainfallForCamp`;
+        
+        // Add hidden input for camp ID
+        let existingInput = document.querySelector('#waterRainfallForm input[name="campId"]');
+        if (existingInput) {
+            existingInput.remove();
+        }
+        
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'campId';
+        hiddenInput.value = waterSelectedCampId; // Use DB Id, not camp number
+        document.getElementById('waterRainfallForm').appendChild(hiddenInput);
+        
+        // Set default date to today
+        document.querySelector('input[name="rainfallDate"]').value = new Date().toISOString().split('T')[0];
+        
+        const modal = new bootstrap.Modal(document.getElementById('addRainfallModal'));
+        modal.show();
+    }
+
+    function waterClearRainfallForCamp(campNumber) {
+        if (!waterSelectedCampId) {
+            alert('Please select a camp first.');
+            return;
+        }
+        if (!confirm(`Clear all rainfall history for Camp ${campNumber}?`)) {
+            return;
+        }
+        fetch('/Management/ClearRainfallForCamp', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: new URLSearchParams({ campId: waterSelectedCampId })
+        }).then(async (response) => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                const text = await response.text();
+                alert(text || 'Failed to clear rainfall history');
+            }
+        }).catch(err => {
+            console.error(err);
+            alert('Failed to clear rainfall history');
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-        showCampDetails(1);
+        const firstCampNumber = @((Model.Camps.FirstOrDefault()?.CampNumber) ?? 1);
+        const firstCampId = @((Model.Camps.FirstOrDefault()?.Id) ?? 0);
+        waterShowCampDetails(firstCampNumber, firstCampId);
+         
+         // Handle form submission
+         document.getElementById('waterRainfallForm').addEventListener('submit', function(e) {
+             e.preventDefault();
+             
+             const formData = new FormData(this);
+             
+             fetch(this.action, {
+                 method: 'POST',
+                 body: formData,
+                 headers: {
+                     'X-Requested-With': 'XMLHttpRequest',
+                     'Accept': 'application/json'
+                 },
+                 redirect: 'manual'
+             })
+             .then(response => {
+                 // Treat 2xx and manual redirects as success
+                 if (response.ok || response.type === 'opaqueredirect' || (response.status >= 300 && response.status < 400)) {
+                     location.reload();
+                 } else {
+                     alert('Error adding rainfall record');
+                 }
+             })
+             .catch(error => {
+                 console.error('Error:', error);
+                 alert('Error adding rainfall record');
+             });
+         });
     });
 </script>
 

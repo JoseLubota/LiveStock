@@ -65,6 +65,12 @@
                             Finance
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-action="Notes">
+                            <i class="fas fa-sticky-note me-2"></i>
+                            Notes
+                        </a>
+                    </li>
                     <li class="nav-item mt-3">
                         <a class="nav-link text-warning" asp-controller="Account" asp-action="Logout">
                             <i class="fas fa-sign-out-alt me-2"></i>
@@ -77,6 +83,18 @@
 
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="module-hero" style="background-image: url('@Url.Content("~/Images/IMG-20251025-WA0028.jpg")'); background-size: cover; background-position: center; border-radius: 12px; position: relative; margin-bottom: 1rem;">
+                <div class="module-overlay"></div>
+                <div class="module-hero-content">
+                    <h2 class="h3 mb-1">Camp Management</h2>
+                    <p class="mb-0">Quick overview of camps and livestock distribution.</p>
+                </div>
+            </div>
+            <style>
+                .module-hero { position: relative; min-height: 220px; }
+                .module-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); border-radius: 12px; }
+                .module-hero-content { position: relative; z-index: 1; color: #fff; padding: 1.25rem 1.5rem; }
+            </style>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Camp Management</h1>
                 <div class="text-muted">
@@ -135,7 +153,7 @@
                                        class="btn btn-outline-primary">
                                         <i class="fas fa-eye me-2"></i>View Details
                                     </a>
-                                    <button class="btn btn-outline-success" onclick="showMoveLivestockModal(@camp.Id)">
+                                    <button class="btn btn-outline-success" onclick="showMoveLivestockModal(@camp.Id, @camp.CampNumber)">
                                         <i class="fas fa-exchange-alt me-2"></i>Move Livestock
                                     </button>
                                 </div>
@@ -196,10 +214,11 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="moveLivestockForm">
+                <form id="moveLivestockForm" asp-action="MoveAnimal" method="post">
+                    <input type="hidden" name="fromCampId" id="fromCampId" />
                     <div class="mb-3">
                         <label class="form-label">From Camp:</label>
-                        <input type="text" class="form-control" id="fromCamp" readonly />
+                        <input type="text" class="form-control" id="fromCampText" readonly />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Animal Type:</label>
@@ -217,9 +236,9 @@
                         <label class="form-label">To Camp:</label>
                         <select class="form-control" name="toCampId" required>
                             <option value="">Select Destination Camp</option>
-                            @for (int i = 1; i <= 15; i++)
+                            @foreach (var c in Model.OrderBy(c => c.CampNumber))
                             {
-                                <option value="@i">Camp @i</option>
+                                <option value="@c.Id">Camp @c.CampNumber</option>
                             }
                         </select>
                     </div>
@@ -238,30 +257,12 @@
 </div>
 
 <script>
-    function showMoveLivestockModal(campId) {
-        document.getElementById('fromCamp').value = `Camp ${campId}`;
-        document.getElementById('moveLivestockModal').style.display = 'block';
-        
+    function showMoveLivestockModal(campId, campNumber) {
+        document.getElementById('fromCampId').value = campId;
+        document.getElementById('fromCampText').value = `Camp ${campNumber}`;
         const modal = new bootstrap.Modal(document.getElementById('moveLivestockModal'));
         modal.show();
     }
-
-    document.getElementById('moveLivestockForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(this);
-        const animalId = formData.get('animalId');
-        const animalType = formData.get('animalType');
-        const fromCampId = document.getElementById('fromCamp').value.replace('Camp ', '');
-        const toCampId = formData.get('toCampId');
-        const reason = formData.get('reason');
-        
-        alert(`${animalType} ${animalId} moved from Camp ${fromCampId} to Camp ${toCampId}`);
-        
-        bootstrap.Modal.getInstance(document.getElementById('moveLivestockModal')).hide();
-        
-        this.reset();
-    });
 </script>
 
 <style>
@@ -326,4 +327,4 @@
         border-color: var(--medium-green);
         box-shadow: 0 0 0 0.2rem rgba(78, 113, 69, 0.25);
     }
-</style> 
+</style>
