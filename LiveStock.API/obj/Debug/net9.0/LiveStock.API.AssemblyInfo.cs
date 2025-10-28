@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LiveStock.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b6e422841558306c46121f6c1f2273816be78a9a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+29d62a5031269fb55bf8866c5c3fdab1605249ec")]
 [assembly: System.Reflection.AssemblyProductAttribute("LiveStock.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LiveStock.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

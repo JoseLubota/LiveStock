@@ -37,6 +37,7 @@ namespace LiveStock.Web.Controllers
                 TotalStaff = _context.Staff.Count(s => s.IsActive),
                 PendingTasks = _context.FarmTasks.Count(t => t.Status == "Pending"),
                 RecentRainfall = _context.RainfallRecords
+                    .Include(r => r.Camp)
                     .OrderByDescending(r => r.RainfallDate)
                     .Take(5)
                     .ToList()
@@ -406,21 +407,83 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddRainfallForCamp(int campId, double amountMl, string? notes)
+        public async Task<IActionResult> AddRainfallForCamp(int campId, double amountMl, string? notes, DateTime rainfallDate)
         {
-            var rainfall = new RainfallRecord
+            try
             {
-                CampId = campId,
-                RainfallDate = DateTime.UtcNow,
-                AmountMl = amountMl,
-                Notes = notes,
-                CreatedAt = DateTime.UtcNow
-            };
+                var camp = await _context.Camps.FindAsync(campId);
+                if (camp == null)
+                {
+                    return NotFound($"Camp not found: {campId}");
+                }
 
-            _context.RainfallRecords.Add(rainfall);
-            await _context.SaveChangesAsync();
+                if (amountMl < 0)
+                {
+                    amountMl = 0; // sanitize negative input
+                }
 
-            return RedirectToAction(nameof(CampDetails), new { id = campId });
+                if (rainfallDate == default)
+                {
+                    rainfallDate = DateTime.UtcNow.Date;
+                }
+
+                var rainfall = new RainfallRecord
+                {
+                    CampId = campId,
+                    RainfallDate = rainfallDate,
+                    AmountMl = amountMl,
+                    Notes = notes,
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                _context.RainfallRecords.Add(rainfall);
+                await _context.SaveChangesAsync();
+
+                // If this is an AJAX request, return JSON instead of redirect
+                if (Request.Headers.ContainsKey("X-Requested-With") ||
+                    (Request.Headers.ContainsKey("Accept") && Request.Headers["Accept"].ToString().Contains("application/json")))
+                {
+                    return Ok(new { success = true, campId, amountMl, rainfallDate, notes });
+                }
+
+                return RedirectToAction(nameof(CampDetails), new { id = campId });
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[AddRainfallForCamp] Error: {ex.Message}");
+                return BadRequest("Failed to add rainfall record.");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ClearRainfallForCamp(int campId)
+        {
+            try
+            {
+                var camp = await _context.Camps.FindAsync(campId);
+                if (camp == null)
+                {
+                    return NotFound($"Camp not found: {campId}");
+                }
+
+                var records = _context.RainfallRecords.Where(r => r.CampId == campId);
+                _context.RainfallRecords.RemoveRange(records);
+                await _context.SaveChangesAsync();
+
+                // Support AJAX and regular form posts
+                if (Request.Headers.ContainsKey("X-Requested-With") ||
+                    (Request.Headers.ContainsKey("Accept") && Request.Headers["Accept"].ToString().Contains("application/json")))
+                {
+                    return Ok(new { success = true, campId });
+                }
+
+                return RedirectToAction(nameof(CampDetails), new { id = campId });
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[ClearRainfallForCamp] Error: {ex.Message}");
+                return BadRequest("Failed to clear rainfall history.");
+            }
         }
 
         [HttpPost]
@@ -470,6 +533,52 @@ namespace LiveStock.Web.Controllers
             }
 
             return View(staff);
+        }
+
+        public async Task<IActionResult> EditStaff(int id)
+        {
+            var staff = await _context.Staff.FindAsync(id);
+            if (staff == null || !staff.IsActive)
+            {
+                return NotFound();
+            }
+            return View(staff);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditStaff(Staff staff)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingStaff = await _context.Staff.FindAsync(staff.Id);
+                if (existingStaff != null && existingStaff.IsActive)
+                {
+                    existingStaff.Name = staff.Name;
+                    existingStaff.EmployeeId = staff.EmployeeId;
+                    existingStaff.PhoneNumber = staff.PhoneNumber;
+                    existingStaff.Email = staff.Email;
+                    existingStaff.Role = staff.Role;
+                    existingStaff.UpdatedAt = DateTime.UtcNow;
+                    
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Staff));
+                }
+            }
+            return View(staff);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteStaff(int id)
+        {
+            var staff = await _context.Staff.FindAsync(id);
+            if (staff != null && staff.IsActive)
+            {
+                // Soft delete - mark as inactive
+                staff.IsActive = false;
+                staff.UpdatedAt = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Staff));
         }
 
         public async Task<IActionResult> StaffTasks(int staffId)
@@ -590,12 +699,22 @@ namespace LiveStock.Web.Controllers
         #region Water/Rainfall Management
         public async Task<IActionResult> Water()
         {
+            var camps = await _context.Camps
+                .OrderBy(c => c.CampNumber)
+                .ToListAsync();
+
             var rainfallRecords = await _context.RainfallRecords
                 .Include(r => r.Camp)
                 .OrderByDescending(r => r.RainfallDate)
                 .ToListAsync();
 
-            return View(rainfallRecords);
+            var model = new LiveStock.Web.ViewModels.WaterViewModel
+            {
+                Camps = camps,
+                RainfallRecords = rainfallRecords
+            };
+
+            return View(model);
         }
 
         [HttpPost]

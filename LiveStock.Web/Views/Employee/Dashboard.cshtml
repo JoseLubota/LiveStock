@@ -6,6 +6,18 @@
 }
 
 <div class="container py-4">
+    <div class="module-hero" style="background-image: url('@Url.Content("~/Images/IMG-20251025-WA0031.jpg")'); background-size: cover; background-position: center; border-radius: 12px; position: relative; margin-bottom: 1rem;">
+        <div class="module-overlay"></div>
+        <div class="module-hero-content">
+            <h2 class="h3 mb-1">Employee Dashboard</h2>
+            <p class="mb-0">Your tasks, notes, and recent updates at a glance.</p>
+        </div>
+    </div>
+    <style>
+        .module-hero { position: relative; min-height: 220px; }
+        .module-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); border-radius: 12px; }
+        .module-hero-content { position: relative; z-index: 1; color: #fff; padding: 1.25rem 1.5rem; }
+    </style>
     <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
         <h1 class="h3">Employee Dashboard</h1>
         <a class="btn btn-outline-warning" asp-controller="Account" asp-action="Logout">

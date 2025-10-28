@@ -83,6 +83,18 @@
 
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="module-hero" style="background-image: url('@Url.Content("~/Images/IMG-20251025-WA0028.jpg")'); background-size: cover; background-position: center; border-radius: 12px; position: relative; margin-bottom: 1rem;">
+                <div class="module-overlay"></div>
+                <div class="module-hero-content">
+                    <h2 class="h3 mb-1">Camp Management</h2>
+                    <p class="mb-0">Quick overview of camps and livestock distribution.</p>
+                </div>
+            </div>
+            <style>
+                .module-hero { position: relative; min-height: 220px; }
+                .module-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); border-radius: 12px; }
+                .module-hero-content { position: relative; z-index: 1; color: #fff; padding: 1.25rem 1.5rem; }
+            </style>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Camp Management</h1>
                 <div class="text-muted">

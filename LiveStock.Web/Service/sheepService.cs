@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using LiveStock.Core.Models;
 using System.IO;
 using iTextSharp.text;
@@ -17,23 +17,23 @@ namespace LiveStock.Web.Service
             _conString = configuration.GetConnectionString("AzureConString");
         }
 
-        public void AddSheep(int sheepID, string breed, DateOnly birdthDate, int camp, string gender, decimal price, string photoURL, DateTime createdAt)
+        public void AddSheep(string breed, DateOnly birthDate, int camp, string gender, decimal price, int? photoID)
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                string sql = @"INSERT INTO Sheep (SheepId, Breed, BirthDate, CampId, Gender, Price, CreatedAt, IsActive, PhotoUrl)
-                              VALUES(@sheepid, @breed, @birthDate, @campId, @gender, @price, @createdAt, 1, @photoURL)";
+                string sql = @"INSERT INTO Sheep (Breed, BirthDate, CampId, Gender, Price, PhotoID, Status, IsActive)
+                              VALUES(@breed, @birthDate, @campId, @gender, @price, @photoID, @status, @isActive)";
 
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@sheepid", sheepID);
                 cmd.Parameters.AddWithValue("@breed", breed);
-                cmd.Parameters.AddWithValue("@birthDate", birdthDate);
+                cmd.Parameters.AddWithValue("@birthDate", birthDate.ToDateTime(new TimeOnly(0,0)));
                 cmd.Parameters.AddWithValue("@campId", camp);
                 cmd.Parameters.AddWithValue("@gender", gender);
                 cmd.Parameters.AddWithValue("@price", price);
-                cmd.Parameters.AddWithValue("@createdAt", createdAt);
-                cmd.Parameters.AddWithValue("@photoURL", photoURL);
-                //cmd.Parameters.AddWithValue("@photoID", (object?)photoID ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@photoID", (object?)photoID ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@status", "Active");
+                cmd.Parameters.AddWithValue("@isActive", true);
 
                 con.Open();
                 cmd.ExecuteNonQuery();
@@ -45,7 +45,7 @@ namespace LiveStock.Web.Service
 
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "SELECT * FROM Sheep";
+                const string sql = "SELECT Id, SheepID, Breed, CampId, Gender, Price, IsActive, BirthDate, PhotoID, Status FROM Sheep";
                 SqlCommand cmd = new SqlCommand(sql, con);
 
                 con.Open();
@@ -55,6 +55,7 @@ namespace LiveStock.Web.Service
                     {
                         var sheep = new Sheep
                         {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             SheepID = reader.GetInt32(reader.GetOrdinal("SheepID")),
                             Breed = reader.GetString(reader.GetOrdinal("Breed")),
                             CampId = reader.GetInt32(reader.GetOrdinal("CampId")),
@@ -82,9 +83,9 @@ namespace LiveStock.Web.Service
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "DELETE FROM Sheep WHERE SheepID = @sheepID";
+                const string sql = "DELETE FROM Sheep WHERE Id = @id";
                 SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@sheepID", sheepID);
+                cmd.Parameters.AddWithValue("@id", sheepID);
 
                 con.Open();
                 int rowsAffected = cmd.ExecuteNonQuery();
@@ -106,7 +107,7 @@ namespace LiveStock.Web.Service
 
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "SELECT * FROM Sheep WHERE SheepID = @sheepID";
+                const string sql = "SELECT Id, SheepID, Breed, CampId, Gender, Price, IsActive, BirthDate, PhotoID, Status FROM Sheep WHERE SheepID = @sheepID";
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@sheepID", sheepID);
 
@@ -117,6 +118,7 @@ namespace LiveStock.Web.Service
                     {
                         var sheep = new Sheep
                         {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             SheepID = reader.GetInt32(reader.GetOrdinal("SheepID")),
                             Breed = reader.GetString(reader.GetOrdinal("Breed")),
                             CampId = reader.GetInt32(reader.GetOrdinal("CampId")),
@@ -174,11 +176,11 @@ namespace LiveStock.Web.Service
 
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.AddWithValue("@sheepID", updateSheep.SheepID);
+                    cmd.Parameters.AddWithValue("@id", updateSheep.Id);
                     cmd.Parameters.AddWithValue("@breed", updateSheep.Breed);
                     cmd.Parameters.AddWithValue("@camp", updateSheep.CampId);
                     cmd.Parameters.AddWithValue("@price", updateSheep.Price);
-                    cmd.Parameters.AddWithValue("@birthDate", updateSheep.BirthDate);
+                    cmd.Parameters.AddWithValue("@birthDate", updateSheep.BirthDate.ToDateTime(new TimeOnly(0,0)));
                     cmd.Parameters.AddWithValue("@gender", updateSheep.Gender);
                     cmd.Parameters.AddWithValue("@updatedAt", updateSheep.UpdatedAt);
                     cmd.Parameters.AddWithValue("@photoUrl", updateSheep.PhotoUrl);
@@ -240,12 +242,12 @@ namespace LiveStock.Web.Service
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "UPDATE Sheep SET CampId = @campID WHERE SheepID = @sheepID";
+                const string sql = "UPDATE Sheep SET CampId = @campId WHERE Id = @id";
 
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.AddWithValue("@sheepID", id);
-                    cmd.Parameters.AddWithValue("@campID", campID);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@campId", campID);
 
                     con.Open();
                     int rows = cmd.ExecuteNonQuery();
@@ -259,11 +261,11 @@ namespace LiveStock.Web.Service
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "UPDATE Sheep SET IsActive = 0 WHERE SheepID = @sheepID";
+                const string sql = "UPDATE Sheep SET IsActive = 0 WHERE Id = @id";
 
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.AddWithValue("@sheepID", id);
+                    cmd.Parameters.AddWithValue("@id", id);
 
                     con.Open();
                     int rows = cmd.ExecuteNonQuery();
@@ -276,11 +278,11 @@ namespace LiveStock.Web.Service
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "UPDATE Sheep SET IsActive = 1 WHERE SheepID = @sheepID";
+                const string sql = "UPDATE Sheep SET IsActive = 1 WHERE Id = @id";
 
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.AddWithValue("@sheepID", id);
+                    cmd.Parameters.AddWithValue("@id", id);
 
                     con.Open();
                     int rows = cmd.ExecuteNonQuery();
@@ -413,4 +415,4 @@ namespace LiveStock.Web.Service
         }
 
     }
-} 
+}
