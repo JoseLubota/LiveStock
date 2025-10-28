@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LiveStock.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ece6684523f410707505a2708510db5d69c7b40")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b6e422841558306c46121f6c1f2273816be78a9a")]
 [assembly: System.Reflection.AssemblyProductAttribute("LiveStock.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LiveStock.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

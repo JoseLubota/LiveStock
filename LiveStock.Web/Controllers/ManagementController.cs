@@ -231,23 +231,108 @@ namespace LiveStock.Web.Controllers
                 // create a new note
             }
 
-            return RedirectToAction("Sheep");
+            return RedirectToAction("Cows");
         }
 
         public async Task<IActionResult> CowDetails(int id)
         {
-            var cow = await _context.Cows
-                .Include(c => c.Camp)
-                .Include(c => c.MedicalRecords.OrderByDescending(m => m.TreatmentDate))
-                .Include(c => c.CampMovements.OrderByDescending(m => m.MovementDate))
-                .FirstOrDefaultAsync(c => c.Id == id);
+            /*
+             *                 .Include(s => s.Camp)
+                .Include(s => s.MedicalRecords.OrderByDescending(m => m.TreatmentDate))
+                .Include(s => s.CampMovements.OrderByDescending(m => m.MovementDate))
+             */
+            var cow = _cowService.GetAllCow().FirstOrDefault(s => s.Id == id);
 
             if (cow == null)
             {
                 return NotFound();
             }
+            //sheep.MedicalRecords = _medicalRecordService.GetBySheepId(id);
+            //sheep.CampMovements = _campMovementService.GetBySheepId(id);
 
             return View(cow);
+        }
+        public IActionResult RemoveCow(int id)
+        {
+            try
+            {
+                _cowService.DeleteCow(id);
+                return RedirectToAction("Cows", "Management");
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult CowEditDetails(int id)
+        {
+            ViewBag.Camps = _context.Camps.OrderBy(c => c.CampNumber).ToList();
+            ViewBag.CowID = id;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCow(Cow cow, IFormFile? Photo)
+        {
+            Cow newCow = new ()
+            {
+                Id = cow.Id,
+                EarTag = cow.EarTag,
+                Breed = cow.Breed,
+                CampId = cow.CampId,
+                Gender = cow.Gender,
+                BirthDate = cow.BirthDate,
+                Price = cow.Price,
+                UpdatedAt = DateTime.UtcNow,
+                IsPregnant = cow.IsPregnant,
+                ExpectedCalvingDate = cow.ExpectedCalvingDate,
+            };
+
+
+            if (Photo != null)
+            {
+                _cowService.DeleteCowPhoto(cow.Id);
+                newCow.PhotoUrl = await _cowService.SaveCowPhoto(Photo);
+            }
+            var currentCow = _cowService.getCowByID(newCow.Id);
+
+            var newCowList = new Queue<Cow>();
+            newCowList.Enqueue(newCow);
+
+            var mergedCowList = _cowService.FillVoidCowFields(currentCow, newCowList);
+            _cowService.UpdateCow(mergedCowList.First());
+
+
+
+            return RedirectToAction("Cows");
+        }
+
+        [HttpPost]
+        public IActionResult CowBulkActions(string action, string reason, HashSet<int> selectedCowID)
+        {
+            if (selectedCowID == null || selectedCowID.Count == 0)
+            {
+                RedirectToAction("Cows");
+            }
+
+            _cowService.CowBulkActions(action, reason, selectedCowID);
+            return RedirectToAction("Cows");
+        }
+        [HttpPost]
+        public IActionResult GenerateCowReport()
+        {
+            var file = _cowService.GenerateCowReport();
+            return File(file, "application/pdf", "CowReport.pdf");
+        }
+        [HttpPost]
+        public IActionResult ExportCow()
+        {
+            var result = _cowService.ExportCow();
+
+            return File(result, "text/csv", "CowData.csv");
         }
         #endregion
 

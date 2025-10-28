@@ -85,86 +85,59 @@ namespace LiveStock.Web.Service
 
             return cowQueue;
         }
-        public void DeleteCow(int sheepID)
+        public void DeleteCow(int id)
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "DELETE FROM Sheep WHERE SheepID = @earTag";
+                const string sql = "DELETE FROM Cows WHERE Id = @id";
                 SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@earTag", sheepID);
+                cmd.Parameters.AddWithValue("@id", id);
 
                 con.Open();
                 int rowsAffected = cmd.ExecuteNonQuery();
 
                 if (rowsAffected == 0)
                 {
-                    Console.WriteLine($"No sheep found");
+                    Console.WriteLine($"No cow found");
                 }
                 else
                 {
-                    Console.WriteLine($"Sheep with ID {sheepID} deleted successfully.");
+                    Console.WriteLine($"Sheep with ID {id} deleted successfully.");
                 }
             }
         }
 
-        public Queue<Sheep> getCowByID(int sheepID)
+        public Queue<Cow> getCowByID(int ID)
         {
-            Queue<Sheep> sheepList = new Queue<Sheep>();
+            Cow cow = GetAllCow().FirstOrDefault(c => c.Id == ID);
+            Queue<Cow> cowQueue = [];
+            cowQueue.Enqueue(cow);
 
-            using (SqlConnection con = new SqlConnection(_conString))
-            {
-                const string sql = "SELECT * FROM Sheep WHERE SheepID = @earTag";
-                SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@earTag", sheepID);
-
-                con.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var sheep = new Sheep
-                        {
-                            SheepID = reader.GetInt32(reader.GetOrdinal("SheepID")),
-                            Breed = reader.GetString(reader.GetOrdinal("Breed")),
-                            CampId = reader.GetInt32(reader.GetOrdinal("CampId")),
-                            Gender = reader.GetString(reader.GetOrdinal("Gender")),
-                            Price = reader.GetDecimal(reader.GetOrdinal("Price")),
-                            IsActive = reader.GetBoolean(reader.GetOrdinal("IsActive")),
-                            BirthDate = DateOnly.FromDateTime(
-                                reader.GetDateTime(reader.GetOrdinal("BirthDate"))),
-                            CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
-                            UpdatedAt = reader.IsDBNull(reader.GetOrdinal("UpdatedAt"))
-                                        ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("UpdatedAt")),
-                            PhotoUrl = reader.IsDBNull(reader.GetOrdinal("PhotoUrl"))
-                                       ? (string?)null : reader.GetString(reader.GetOrdinal("PhotoUrl"))
-
-                        };
-                        sheepList.Enqueue(sheep);
-                    }
-                }
-            }
-
-            return sheepList;
+            return cowQueue;
         }
 
-        public Queue<Sheep> FillVoidCowFields(Queue<Sheep> currentShepp, Queue<Sheep> newSheppDetails)
+        public Queue<Cow> FillVoidCowFields(Queue<Cow> currentCow, Queue<Cow> newCowDetails)
         {
-            Queue<Sheep> result = [];
+            Queue<Cow> result = [];
 
-            foreach (var current in currentShepp)
+            foreach (var current in currentCow)
             {
-                var updated = newSheppDetails.FirstOrDefault(s => s.SheepID == current.SheepID);
+                Console.WriteLine($" New Cow Details has {newCowDetails.Count} entries");
+                var updated = newCowDetails.FirstOrDefault(s => s.Id == current.Id);
 
                 if (updated != null)
                 {
                     // Fill in missing fields
                     current.Breed = string.IsNullOrEmpty(updated.Breed) ? current.Breed : updated.Breed;
+                    current.EarTag = string.IsNullOrEmpty(updated.EarTag) ? current.EarTag : updated.EarTag;
                     current.Gender = string.IsNullOrEmpty(updated.Gender) ? current.Gender : updated.Gender;
                     current.CampId = updated.CampId == 0 ? current.CampId : updated.CampId;
                     current.Price = updated.Price == 0 ? current.Price : updated.Price;
                     current.BirthDate = updated.BirthDate == default ? current.BirthDate : updated.BirthDate;
                     current.UpdatedAt = updated.UpdatedAt == default ? current.UpdatedAt : updated.UpdatedAt;
                     current.PhotoUrl = string.IsNullOrEmpty(updated.PhotoUrl) ? current.PhotoUrl : updated.PhotoUrl;
+                    current.IsPregnant = updated.IsPregnant == default ? current.IsPregnant : updated.IsPregnant;
+                    current.ExpectedCalvingDate = updated.ExpectedCalvingDate == default ? current.ExpectedCalvingDate : updated.ExpectedCalvingDate;
                 }
                 result.Enqueue(current);
 
@@ -173,45 +146,48 @@ namespace LiveStock.Web.Service
             return result;
         }
 
-        public void UpdateCow(Sheep updateSheep)
+        public void UpdateCow(Cow updateCow)
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = " UPDATE Sheep SET Breed = @breed, CampId = @camp, Gender = @gender,Price = @price, BirthDate = @birthDate, UpdatedAt = @updatedAt, PhotoUrl = @photoUrl WHERE SheepID = @earTag";
+                const string sql = " UPDATE Cows SET EarTag = @earTag, Breed = @breed, CampId = @camp, Gender = @gender,Price = @price, BirthDate = @birthDate, UpdatedAt = @updatedAt, PhotoUrl = @photoUrl, IsPregnant = @ispregnant, ExpectedCalvingDate = @expectedCalvingDate WHERE Id = @id";
 
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.AddWithValue("@earTag", updateSheep.SheepID);
-                    cmd.Parameters.AddWithValue("@breed", updateSheep.Breed);
-                    cmd.Parameters.AddWithValue("@camp", updateSheep.CampId);
-                    cmd.Parameters.AddWithValue("@price", updateSheep.Price);
-                    cmd.Parameters.AddWithValue("@birthDate", updateSheep.BirthDate);
-                    cmd.Parameters.AddWithValue("@gender", updateSheep.Gender);
-                    cmd.Parameters.AddWithValue("@updatedAt", updateSheep.UpdatedAt);
-                    cmd.Parameters.AddWithValue("@photoUrl", updateSheep.PhotoUrl);
+                    cmd.Parameters.AddWithValue("@Id", updateCow.Id);
+                    cmd.Parameters.AddWithValue("@earTag", updateCow.EarTag);
+                    cmd.Parameters.AddWithValue("@breed", updateCow.Breed);
+                    cmd.Parameters.AddWithValue("@camp", updateCow.CampId);
+                    cmd.Parameters.AddWithValue("@price", updateCow.Price);
+                    cmd.Parameters.AddWithValue("@birthDate", updateCow.BirthDate);
+                    cmd.Parameters.AddWithValue("@gender", updateCow.Gender);
+                    cmd.Parameters.AddWithValue("@updatedAt", updateCow.UpdatedAt);
+                    cmd.Parameters.AddWithValue("@photoUrl", updateCow.PhotoUrl);
+                    cmd.Parameters.AddWithValue("@ispregnant", updateCow.IsPregnant);
+                    cmd.Parameters.AddWithValue("@expectedCalvingDate", updateCow.ExpectedCalvingDate.HasValue ? (object)updateCow.ExpectedCalvingDate.Value : DBNull.Value);
 
                     con.Open();
                     int rows = cmd.ExecuteNonQuery();
 
                     if (rows == 0)
                     {
-                        Console.WriteLine($"No sheep dound with the ID {updateSheep.SheepID}");
+                        Console.WriteLine($"No Cow found with the ID {updateCow.Id}");
                     }
                     else
                     {
-                        Console.WriteLine($"Updated {updateSheep.SheepID}");
+                        Console.WriteLine($"Updated {updateCow.Id}");
                     }
                 }
 
             }
         }
 
-        public void CowBulkActions(string action, string reason, HashSet<int> sheepIDs)
+        public void CowBulkActions(string action, string reason, HashSet<int> cowId)
         {
             switch (action)
             {
                 case "markSold":
-                    foreach (int id in sheepIDs)
+                    foreach (int id in cowId)
                     {
                         DeleteCow(id);
                     }
@@ -220,7 +196,7 @@ namespace LiveStock.Web.Service
                 case "move":
                     if (int.TryParse(reason, out int newCampId))
                     {
-                        foreach (int id in sheepIDs)
+                        foreach (int id in cowId)
                         {
                             MoveCowToCamp(id, newCampId);
                         }
@@ -229,14 +205,14 @@ namespace LiveStock.Web.Service
                     break;
 
                 case "markInactive":
-                    foreach (int id in sheepIDs)
+                    foreach (int id in cowId)
                     {
                         MarkCowAsInactive(id);
                     }
                     break;
 
                 case "markAactive":
-                    foreach (int id in sheepIDs)
+                    foreach (int id in cowId)
                     {
                         MarkCowAsActive(id);
                     }
@@ -247,16 +223,16 @@ namespace LiveStock.Web.Service
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "UPDATE Sheep SET CampId = @campID WHERE SheepID = @earTag";
+                const string sql = "UPDATE Cows SET CampId = @campID WHERE Id = @Id";
 
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.AddWithValue("@earTag", id);
+                    cmd.Parameters.AddWithValue("@Id", id);
                     cmd.Parameters.AddWithValue("@campID", campID);
 
                     con.Open();
                     int rows = cmd.ExecuteNonQuery();
-                    Console.WriteLine($"Move Sheep to camp {rows} affected");
+                    Console.WriteLine($"Move Cow to camp {rows} affected");
 
                 }
             }
@@ -266,15 +242,15 @@ namespace LiveStock.Web.Service
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "UPDATE Sheep SET IsActive = 0 WHERE SheepID = @earTag";
+                const string sql = "UPDATE Cows SET IsActive = 0 WHERE Id = @Id";
 
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.AddWithValue("@earTag", id);
+                    cmd.Parameters.AddWithValue("@Id", id);
 
                     con.Open();
                     int rows = cmd.ExecuteNonQuery();
-                    Console.WriteLine($"Mark Sheep as inactive {rows} affected");
+                    Console.WriteLine($"Mark Cows as inactive {rows} affected");
                 }
             }
         }
@@ -283,7 +259,7 @@ namespace LiveStock.Web.Service
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "UPDATE Sheep SET IsActive = 1 WHERE Id = @id";
+                const string sql = "UPDATE Cows SET IsActive = 1 WHERE Id = @id";
 
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
@@ -291,21 +267,20 @@ namespace LiveStock.Web.Service
 
                     con.Open();
                     int rows = cmd.ExecuteNonQuery();
-                    Console.WriteLine($"Mark Sheep as active {rows} affected");
+                    Console.WriteLine($"Mark Cows as active {rows} affected");
                 }
             }
         }
-        public byte[] ExportSheep()
+        public byte[] ExportCow()
         {
             var sheepList = GetAllCow();
 
             var csvBuilder = new System.Text.StringBuilder();
 
-            csvBuilder.AppendLine("Ear Tag,Breed,CampId,Gender,BirthDate,Price,IsActive");
+            csvBuilder.AppendLine("Id,Ear Tag,Breed,CampId,Gender,BirthDate,Price,IsActive,IsPregnant,ExpectedCalvingDate");
             foreach (var item in sheepList)
             {
-                csvBuilder.AppendLine($"{item.EarTag},{item.Breed},{item.CampId},{item.Gender},{item.BirthDate},{item.Price},{item.IsActive}");
-
+                csvBuilder.AppendLine($"{item.EarTag},{item.EarTag},{item.Breed},{item.CampId},{item.Gender},{item.BirthDate},{item.Price},{item.IsActive},{item.IsPregnant},{item.ExpectedCalvingDate}");
             }
 
             var bytes = System.Text.Encoding.UTF8.GetBytes(csvBuilder.ToString());
@@ -315,7 +290,7 @@ namespace LiveStock.Web.Service
         public byte[] GenerateCowReport()
         {
 
-            var sheepList = GetAllCow();
+            var cowQueue = GetAllCow();
             using (var mstream = new MemoryStream())
             {
                 Document doc = new Document(PageSize.A4, 50, 50, 50, 50);
@@ -326,24 +301,24 @@ namespace LiveStock.Web.Service
                 var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 20, BaseColor.BLACK);
                 var subTitleFont = FontFactory.GetFont(FontFactory.HELVETICA, 12, BaseColor.DARK_GRAY);
 
-                Paragraph title = new Paragraph("Sheep Report", titleFont);
+                Paragraph title = new Paragraph("Cow Report", titleFont);
                 title.Alignment = Element.ALIGN_CENTER;
                 doc.Add(title);
 
                 doc.Add(new Paragraph("\n"));
                 doc.Add(new Paragraph($"Date Generated: {DateTime.Now:MMMM-dd, yyyy HH:mm}", subTitleFont));
-                doc.Add(new Paragraph($"Total Sheep: {sheepList.Count}", subTitleFont));
+                doc.Add(new Paragraph($"Total Cows: {cowQueue.Count}", subTitleFont));
                 doc.Add(new Paragraph("\n\n"));
 
                 // Table Setup
 
-                PdfPTable table = new PdfPTable(7);
+                PdfPTable table = new PdfPTable(10);
                 table.WidthPercentage = 100;
-                table.SetWidths(new float[] { 1.2f, 2f, 1.5f, 1.2f, 2f, 1.5f, 1.2f });
+                table.SetWidths(new float[] { 1.2f, 2f, 1.5f, 1.2f, 2f, 1.5f,1.2f, 1.2f, 2f, 2f });
 
                 // Headers
                 var headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, BaseColor.WHITE);
-                string[] headers = { "Ear Tag", "Breed", "Camp ID", "Gender", "Birth Date", "Price", "Active" };
+                string[] headers = { "Id", "Ear Tag", "Breed", "Camp ID", "Gender", "Birth Date", "Price", "Active", "IsPregnant", "ExpectedCalvingDate" };
 
                 foreach (string header in headers)
                 {
@@ -358,15 +333,18 @@ namespace LiveStock.Web.Service
                 // Data
 
                 var dataFont = FontFactory.GetFont(FontFactory.HELVETICA, 9, BaseColor.BLACK);
-                foreach (var sheep in sheepList)
+                foreach (var cow in cowQueue)
                 {
-                    table.AddCell(new Phrase(sheep.EarTag, dataFont));
-                    table.AddCell(new Phrase(sheep.Breed, dataFont));
-                    table.AddCell(new Phrase($"Camp {sheep.CampId}", dataFont));
-                    table.AddCell(new Phrase(sheep.Gender, dataFont));
-                    table.AddCell(new Phrase(sheep.BirthDate.ToString("MMMM-dd-yyyy"), dataFont));
-                    table.AddCell(new Phrase($"R {sheep.Price:N2}", dataFont));
-                    table.AddCell(new Phrase(sheep.IsActive ? "Yes" : "No", dataFont));
+                    table.AddCell(new Phrase(cow.Id));
+                    table.AddCell(new Phrase(cow.EarTag, dataFont));
+                    table.AddCell(new Phrase(cow.Breed, dataFont));
+                    table.AddCell(new Phrase($"Camp {cow.CampId}", dataFont));
+                    table.AddCell(new Phrase(cow.Gender, dataFont));
+                    table.AddCell(new Phrase(cow.BirthDate.ToString("MMMM-dd-yyyy"), dataFont));
+                    table.AddCell(new Phrase($"R {cow.Price:N2}", dataFont));
+                    table.AddCell(new Phrase(cow.IsActive ? "Yes" : "No", dataFont));
+                    table.AddCell(new Phrase(cow.IsPregnant ? "Yes" : "No", dataFont));
+                    table.AddCell(new Phrase(cow.ExpectedCalvingDate?.ToString("MMMM-dd-yyyy"), dataFont));
                 }
                 doc.Add(table);
 
