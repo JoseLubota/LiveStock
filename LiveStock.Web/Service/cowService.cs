@@ -1,5 +1,9 @@
-﻿using iTextSharp.text;
-using iTextSharp.text.pdf;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using iText.Kernel.Colors;
+// Note: Avoid importing iText.Kernel.Geom to prevent 'Path' ambiguity with System.IO.Path
 using LiveStock.Core.Models;
 using Microsoft.Data.SqlClient;
 
@@ -293,66 +297,63 @@ namespace LiveStock.Web.Service
             var cowQueue = GetAllCow();
             using (var mstream = new MemoryStream())
             {
-                Document doc = new Document(PageSize.A4, 50, 50, 50, 50);
-                PdfWriter.GetInstance(doc, mstream);
-                doc.Open();
+                var writer = new PdfWriter(mstream);
+                var pdf = new PdfDocument(writer);
+                var doc = new Document(pdf, iText.Kernel.Geom.PageSize.A4);
+                doc.SetMargins(50, 50, 50, 50);
 
                 // Title
-                var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 20, BaseColor.BLACK);
-                var subTitleFont = FontFactory.GetFont(FontFactory.HELVETICA, 12, BaseColor.DARK_GRAY);
-
-                Paragraph title = new Paragraph("Cow Report", titleFont);
-                title.Alignment = Element.ALIGN_CENTER;
+                var title = new Paragraph("Cow Report")
+                    .SetTextAlignment(TextAlignment.CENTER)
+                    .SetFontSize(20)
+                    .SetBold();
                 doc.Add(title);
 
                 doc.Add(new Paragraph("\n"));
-                doc.Add(new Paragraph($"Date Generated: {DateTime.Now:MMMM-dd, yyyy HH:mm}", subTitleFont));
-                doc.Add(new Paragraph($"Total Cows: {cowQueue.Count}", subTitleFont));
+                doc.Add(new Paragraph($"Date Generated: {DateTime.Now:MMMM-dd, yyyy HH:mm}")
+                    .SetFontSize(12)
+                    .SetFontColor(ColorConstants.GRAY));
+                doc.Add(new Paragraph($"Total Cows: {cowQueue.Count}")
+                    .SetFontSize(12)
+                    .SetFontColor(ColorConstants.GRAY));
                 doc.Add(new Paragraph("\n\n"));
 
                 // Table Setup
-
-                PdfPTable table = new PdfPTable(9);
-                table.WidthPercentage = 100;
-                table.SetWidths(new float[] {2f, 1.5f, 1.2f, 2f, 1.5f,1.2f, 1.2f, 2f, 2f });
+                var table = new Table(new float[] {2f, 1.5f, 1.2f, 2f, 1.5f, 1.2f, 1.2f, 2f, 2f });
+                table.SetWidth(UnitValue.CreatePercentValue(100));
 
                 // Headers
-                var headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, BaseColor.WHITE);
                 string[] headers = {"Ear Tag", "Breed", "Camp ID", "Gender", "Birth Date", "Price", "Active", "IsPregnant", "ExpectedCalvingDate" };
-
                 foreach (string header in headers)
                 {
-                    PdfPCell cell = new PdfPCell(new Phrase(header, headerFont))
-                    {
-                        BackgroundColor = new BaseColor(52, 73, 94),
-                        HorizontalAlignment = Element.ALIGN_CENTER,
-                        Padding = 6
-                    };
+                    var cell = new Cell()
+                        .Add(new Paragraph(header).SetBold().SetFontColor(ColorConstants.WHITE))
+                        .SetBackgroundColor(new DeviceRgb(52, 73, 94))
+                        .SetTextAlignment(TextAlignment.CENTER)
+                        .SetPadding(6);
                     table.AddCell(cell);
                 }
                 // Data
-
-                var dataFont = FontFactory.GetFont(FontFactory.HELVETICA, 9, BaseColor.BLACK);
                 foreach (var cow in cowQueue)
                 {
-                    table.AddCell(new Phrase(cow.EarTag, dataFont));
-                    table.AddCell(new Phrase(cow.Breed, dataFont));
-                    table.AddCell(new Phrase($"Camp {cow.CampId}", dataFont));
-                    table.AddCell(new Phrase(cow.Gender, dataFont));
-                    table.AddCell(new Phrase(cow.BirthDate.ToString("MMMM-dd-yyyy"), dataFont));
-                    table.AddCell(new Phrase($"R {cow.Price:N2}", dataFont));
-                    table.AddCell(new Phrase(cow.IsActive ? "Yes" : "No", dataFont));
-                    table.AddCell(new Phrase(cow.IsPregnant ? "Yes" : "No", dataFont));
-                    table.AddCell(new Phrase(cow.ExpectedCalvingDate?.ToString("MMMM-dd-yyyy"), dataFont));
+                    table.AddCell(new Cell().Add(new Paragraph(cow.EarTag)));
+                    table.AddCell(new Cell().Add(new Paragraph(cow.Breed)));
+                    table.AddCell(new Cell().Add(new Paragraph($"Camp {cow.CampId}")));
+                    table.AddCell(new Cell().Add(new Paragraph(cow.Gender)));
+                    table.AddCell(new Cell().Add(new Paragraph(cow.BirthDate.ToString("MMMM-dd-yyyy"))));
+                    table.AddCell(new Cell().Add(new Paragraph($"R {cow.Price:N2}")));
+                    table.AddCell(new Cell().Add(new Paragraph(cow.IsActive ? "Yes" : "No")));
+                    table.AddCell(new Cell().Add(new Paragraph(cow.IsPregnant ? "Yes" : "No")));
+                    table.AddCell(new Cell().Add(new Paragraph(cow.ExpectedCalvingDate?.ToString("MMMM-dd-yyyy"))));
                 }
                 doc.Add(table);
 
                 // Footer
                 doc.Add(new Paragraph("\n\n"));
-                Paragraph footer = new Paragraph("", subTitleFont)
-                {
-                    Alignment = Element.ALIGN_CENTER
-                };
+                var footer = new Paragraph("")
+                    .SetTextAlignment(TextAlignment.CENTER)
+                    .SetFontSize(12)
+                    .SetFontColor(ColorConstants.GRAY);
                 doc.Add(footer);
                 doc.Close();
 
