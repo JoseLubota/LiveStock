@@ -553,7 +553,10 @@
     }
 
     function viewCampMap(campId) {
-        alert(`View map for camp ${campId} - Feature coming soon!`);
+        const modal = new bootstrap.Modal(document.getElementById('campMapModal'));
+        const iframe = document.getElementById('campMapIframe');
+        iframe.src = 'https://maps.google.com/maps?q=' + encodeURIComponent('@Model.Name') + '&output=embed';
+        modal.show();
     }
 
     function addLivestock(campId) {
@@ -690,4 +693,21 @@
     </div>
 </div>
 </script>
-</style>
+<!-- Camp Map Modal -->
+<div class="modal fade" id="campMapModal" tabindex="-1" aria-labelledby="campMapModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="campMapModalLabel">Camp Map</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0" style="height: 70vh;">
+        <iframe id="campMapIframe" src="" width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="modal-footer">
+        <small class="text-muted">Map shows search results for camp name.</small>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+ </div>

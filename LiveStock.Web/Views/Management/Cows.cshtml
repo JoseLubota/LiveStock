@@ -393,7 +393,8 @@
 
 <script>
     function editCow(cowId) {
-        alert(`Edit cow ${cowId} - Feature coming soon!`);
+        // Navigate to CowEditDetails view for editing
+        window.location.href = '@Url.Action("CowEditDetails")' + '?id=' + cowId;
     }
 
     function removeCow(cowId) {
@@ -403,13 +404,7 @@
         }
     }
 
-    function exportCowData() {
-        alert('Export feature coming soon!');
-    }
-
-    function generateReport() {
-        alert('Report generation feature coming soon!');
-    }
+    // Export and report are handled by the forms above
 
     // Bulk actions logic
     function performBulkAction() {

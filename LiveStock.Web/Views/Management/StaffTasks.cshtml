@@ -268,14 +268,25 @@
                                                 <div class="btn-group" role="group">
                                                     @if (task.Status != "Completed")
                                                     {
-                                                        <button class="btn btn-sm btn-success" onclick="completeTask(@task.Id)">
-                                                            <i class="fas fa-check"></i>
-                                                        </button>
-                                                        <button class="btn btn-sm btn-info" onclick="updateTaskStatus(@task.Id)">
+                                                        <form asp-action="CompleteTask" method="post" class="d-inline">
+                                                            <input type="hidden" name="taskId" value="@task.Id" />
+                                                            <button type="submit" class="btn btn-sm btn-success" title="Mark Completed">
+                                                                <i class="fas fa-check"></i>
+                                                            </button>
+                                                        </form>
+                                                        <button class="btn btn-sm btn-info" title="Update Status" onclick="openStatusModal(@task.Id, '@task.Status')">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                     }
-                                                    <button class="btn btn-sm btn-warning" onclick="viewTaskDetails(@task.Id)">
+                                                    <button class="btn btn-sm btn-warning" title="View Details"
+                                                            onclick="openDetailsModal(this)"
+                                                            data-task-id="@task.Id"
+                                                            data-desc="@task.Description"
+                                                            data-notes="@task.Notes"
+                                                            data-importance="@task.Importance"
+                                                            data-status="@task.Status"
+                                                            data-duedate="@task.DueDate.ToString("MM/dd/yyyy")"
+                                                            data-createdby="@task.CreatedBy?.Name">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
                                                 </div>
@@ -374,19 +385,37 @@
 </div>
 
 <script>
-    function completeTask(taskId) {
-        if (confirm('Mark this task as completed?')) {
-            alert(`Task ${taskId} marked as completed!`);
-            location.reload();
+    // Status update modal handlers
+    function openStatusModal(taskId, currentStatus) {
+        const modal = new bootstrap.Modal(document.getElementById('taskStatusModal'));
+        document.getElementById('statusTaskId').value = taskId;
+        const select = document.getElementById('statusSelect');
+        if (currentStatus) {
+            select.value = currentStatus;
         }
+        modal.show();
     }
 
-    function updateTaskStatus(taskId) {
-        alert(`Update status for task ${taskId} - Feature coming soon!`);
-    }
+    // Details modal handler
+    function openDetailsModal(button) {
+        const id = button.getAttribute('data-task-id');
+        const desc = button.getAttribute('data-desc') || '';
+        const notes = button.getAttribute('data-notes') || '';
+        const importance = button.getAttribute('data-importance') || '';
+        const status = button.getAttribute('data-status') || '';
+        const dueDate = button.getAttribute('data-duedate') || '';
+        const createdBy = button.getAttribute('data-createdby') || '';
 
-    function viewTaskDetails(taskId) {
-        alert(`View details for task ${taskId} - Feature coming soon!`);
+        document.getElementById('detailsTaskId').textContent = `#${id}`;
+        document.getElementById('detailsDesc').textContent = desc;
+        document.getElementById('detailsNotes').textContent = notes || '—';
+        document.getElementById('detailsImportance').textContent = importance;
+        document.getElementById('detailsStatus').textContent = status;
+        document.getElementById('detailsDueDate').textContent = dueDate;
+        document.getElementById('detailsCreatedBy').textContent = createdBy || 'Unknown';
+
+        const modal = new bootstrap.Modal(document.getElementById('taskDetailsModal'));
+        modal.show();
     }
 </script>
 
@@ -449,3 +478,55 @@
         border-bottom: none;
     }
 </style> 
+
+<!-- Task Status Modal -->
+<div class="modal fade" id="taskStatusModal" tabindex="-1" aria-labelledby="taskStatusModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="taskStatusModalLabel">Update Task Status</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form asp-action="UpdateTaskStatus" method="post">
+        <div class="modal-body">
+          <input type="hidden" id="statusTaskId" name="taskId" />
+          <div class="mb-3">
+            <label for="statusSelect" class="form-label">Status</label>
+            <select id="statusSelect" name="status" class="form-select" required>
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+ </div>
+
+<!-- Task Details Modal -->
+<div class="modal fade" id="taskDetailsModal" tabindex="-1" aria-labelledby="taskDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="taskDetailsModalLabel">Task <span id="detailsTaskId"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-2"><strong>Description:</strong> <span id="detailsDesc"></span></div>
+        <div class="mb-2"><strong>Notes:</strong> <span id="detailsNotes"></span></div>
+        <div class="mb-2"><strong>Importance:</strong> <span id="detailsImportance"></span></div>
+        <div class="mb-2"><strong>Status:</strong> <span id="detailsStatus"></span></div>
+        <div class="mb-2"><strong>Due Date:</strong> <span id="detailsDueDate"></span></div>
+        <div class="mb-2"><strong>Created By:</strong> <span id="detailsCreatedBy"></span></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+ </div>

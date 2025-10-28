@@ -274,7 +274,7 @@
                                                         <button class="btn btn-sm btn-warning" onclick="editSheep(@sheep.SheepID)">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
-                                                        <button class="btn btn-sm btn-danger" onclick="removeSheep(@sheep.SheepID)">
+                                                        <button class="btn btn-sm btn-danger" onclick="removeSheep(@sheep.Id)">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </div>
@@ -379,19 +379,14 @@
 </div>
 
 <script>
+    function editSheep(sheepId) {
+        window.location.href = '@Url.Action("Sheep_Edit_Details")/' + sheepId;
+    }
+
     function removeSheep(sheepId) {
         if (confirm('Are you sure you want to remove this sheep? This action cannot be undone.')) {
-            alert(`Sheep ${sheepId} removed successfully`);
-            location.reload();
+            window.location.href = '@Url.Action("RemoveSheep")/' + sheepId;
         }
-    }
-
-    function exportSheepData() {
-        alert('Export feature coming soon!');
-    }
-
-    function generateReport() {
-        alert('Report generation feature coming soon!');
     }
 </script>
 

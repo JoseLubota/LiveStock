@@ -112,6 +112,25 @@ namespace LiveStock.Web.Controllers
             //sheep.MedicalRecords = _medicalRecordService.GetBySheepId(id);
             //sheep.CampMovements = _campMovementService.GetBySheepId(id);
 
+            // Load related data via EF for details view
+            try
+            {
+                sheep.MedicalRecords = await _context.MedicalRecords
+                    .Where(m => m.AnimalType == "Sheep" && m.AnimalId == id)
+                    .OrderByDescending(m => m.TreatmentDate)
+                    .ToListAsync();
+
+                sheep.CampMovements = await _context.CampMovements
+                    .Include(cm => cm.FromCamp)
+                    .Include(cm => cm.ToCamp)
+                    .Where(cm => cm.AnimalType == "Sheep" && cm.AnimalId == id)
+                    .OrderByDescending(cm => cm.MovementDate)
+                    .ToListAsync();
+            }
+            catch {}
+
+            ViewBag.Camps = await _context.Camps.OrderBy(c => c.CampNumber).ToListAsync();
+
             return View(sheep);
         }
         public IActionResult RemoveSheep(int id)
@@ -251,6 +270,25 @@ namespace LiveStock.Web.Controllers
             //sheep.MedicalRecords = _medicalRecordService.GetBySheepId(id);
             //sheep.CampMovements = _campMovementService.GetBySheepId(id);
 
+            // Load related data via EF for details view
+            try
+            {
+                cow.MedicalRecords = await _context.MedicalRecords
+                    .Where(m => m.AnimalType == "Cow" && m.AnimalId == id)
+                    .OrderByDescending(m => m.TreatmentDate)
+                    .ToListAsync();
+
+                cow.CampMovements = await _context.CampMovements
+                    .Include(cm => cm.FromCamp)
+                    .Include(cm => cm.ToCamp)
+                    .Where(cm => cm.AnimalType == "Cow" && cm.AnimalId == id)
+                    .OrderByDescending(cm => cm.MovementDate)
+                    .ToListAsync();
+            }
+            catch {}
+
+            ViewBag.Camps = await _context.Camps.OrderBy(c => c.CampNumber).ToListAsync();
+
             return View(cow);
         }
         public IActionResult RemoveCow(int id)
@@ -312,6 +350,93 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> AddMedicalRecord(int animalId, string animalType, DateTime TreatmentDate, string Treatment, string? Veterinarian, decimal? Cost, string? Notes)
+        {
+            if (string.IsNullOrWhiteSpace(animalType) || string.IsNullOrWhiteSpace(Treatment))
+            {
+                return BadRequest("Missing required fields");
+            }
+
+            var record = new MedicalRecord
+            {
+                AnimalId = animalId,
+                AnimalType = animalType,
+                TreatmentDate = TreatmentDate,
+                Treatment = Treatment,
+                Veterinarian = Veterinarian,
+                Cost = Cost,
+                Notes = Notes,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.MedicalRecords.Add(record);
+            await _context.SaveChangesAsync();
+
+            if (animalType == "Sheep")
+                return RedirectToAction(nameof(SheepDetails), new { id = animalId });
+            if (animalType == "Cow")
+                return RedirectToAction(nameof(CowDetails), new { id = animalId });
+            return RedirectToAction(nameof(Dashboard));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateSheepPhoto(int id, IFormFile Photo)
+        {
+            if (Photo == null)
+            {
+                return BadRequest("No photo uploaded");
+            }
+
+            _sheepService.DeleteSheepPhoto(id);
+            var url = await _sheepService.SaveSheepPhoto(Photo);
+
+            var sheep = await _context.Sheep.FindAsync(id);
+            if (sheep == null)
+            {
+                return NotFound();
+            }
+            sheep.PhotoUrl = url;
+            sheep.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(SheepDetails), new { id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCowPhoto(int id, IFormFile Photo)
+        {
+            if (Photo == null)
+            {
+                return BadRequest("No photo uploaded");
+            }
+
+            _cowService.DeleteCowPhoto(id);
+            var url = await _cowService.SaveCowPhoto(Photo);
+
+            var cow = await _context.Cows.FindAsync(id);
+            if (cow == null)
+            {
+                return NotFound();
+            }
+            cow.PhotoUrl = url;
+            cow.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(CowDetails), new { id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePregnancyStatus(int id, bool isPregnant, DateTime? expectedCalvingDate)
+        {
+            var cow = await _context.Cows.FindAsync(id);
+            if (cow == null)
+            {
+                return NotFound();
+            }
+            cow.IsPregnant = isPregnant;
+            cow.ExpectedCalvingDate = isPregnant ? expectedCalvingDate : null;
+            cow.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(CowDetails), new { id });
+        }
         public IActionResult CowBulkActions(string action, string reason, HashSet<int> selectedCowID)
         {
             if (selectedCowID == null || selectedCowID.Count == 0)
@@ -403,6 +528,15 @@ namespace LiveStock.Web.Controllers
             }
 
             await _context.SaveChangesAsync();
+            // Redirect to the relevant details page when moving from animal details
+            if (Request.Headers.ContainsKey("Referer") && Request.Headers["Referer"].ToString().Contains("SheepDetails"))
+            {
+                return RedirectToAction(nameof(SheepDetails), new { id = animalId });
+            }
+            if (Request.Headers.ContainsKey("Referer") && Request.Headers["Referer"].ToString().Contains("CowDetails"))
+            {
+                return RedirectToAction(nameof(CowDetails), new { id = animalId });
+            }
             return RedirectToAction(nameof(CampDetails), new { id = toCampId });
         }
 
@@ -692,6 +826,35 @@ namespace LiveStock.Web.Controllers
                 await _context.SaveChangesAsync();
             }
 
+            return RedirectToAction(nameof(Tasks));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateTaskStatus(int taskId, string status)
+        {
+            var task = await _context.FarmTasks.FindAsync(taskId);
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            var allowed = new[] { "Pending", "In Progress", "Completed" };
+            if (!allowed.Contains(status))
+            {
+                return BadRequest("Invalid status");
+            }
+
+            task.Status = status;
+            if (status == "Completed")
+            {
+                task.CompletedAt = DateTime.UtcNow;
+            }
+            else
+            {
+                task.CompletedAt = null;
+            }
+
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Tasks));
         }
         #endregion
