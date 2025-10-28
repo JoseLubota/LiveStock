@@ -22,6 +22,7 @@ namespace LiveStock.Infrastructure.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<Asset> Assets { get; set; }
         public DbSet<FinancialRecord> FinancialRecords { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -88,6 +89,17 @@ namespace LiveStock.Infrastructure.Data
             modelBuilder.Entity<FinancialRecord>()
                 .Property(f => f.Amount)
                 .HasPrecision(18, 2);
+
+            // Note constraints
+            modelBuilder.Entity<Note>()
+                .Property(n => n.Category)
+                .HasMaxLength(50);
+            modelBuilder.Entity<Note>()
+                .Property(n => n.Title)
+                .HasMaxLength(100);
+            modelBuilder.Entity<Note>()
+                .Property(n => n.Content)
+                .HasMaxLength(4000);
 
             // Seed initial data
             SeedData(modelBuilder);
@@ -194,4 +206,4 @@ namespace LiveStock.Infrastructure.Data
             );
         }
     }
-} 
+}

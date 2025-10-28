@@ -426,6 +426,259 @@ namespace LiveStock.Web.Controllers
 
             return View(financialRecords);
         }
+        
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddFinancialRecord(LiveStock.Core.Models.FinancialRecord record)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["FinanceError"] = "Please correct the form and try again.";
+                return RedirectToAction(nameof(Finance));
+            }
+            record.CreatedAt = DateTime.UtcNow;
+            record.UpdatedAt = DateTime.UtcNow;
+            _context.FinancialRecords.Add(record);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Finance));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteFinancialRecord(int id)
+        {
+            var existing = await _context.FinancialRecords.FindAsync(id);
+            if (existing == null)
+            {
+                TempData["FinanceError"] = "Record not found.";
+                return RedirectToAction(nameof(Finance));
+            }
+            _context.FinancialRecords.Remove(existing);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Finance));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditFinancialRecord(int id)
+        {
+            var record = await _context.FinancialRecords.FindAsync(id);
+            if (record == null)
+            {
+                return RedirectToAction(nameof(Finance));
+            }
+            return View(record);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditFinancialRecord(LiveStock.Core.Models.FinancialRecord record)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(record);
+            }
+
+            var existing = await _context.FinancialRecords.FindAsync(record.Id);
+            if (existing == null)
+            {
+                return RedirectToAction(nameof(Finance));
+            }
+
+            existing.Type = record.Type;
+            existing.Description = record.Description;
+            existing.Amount = record.Amount;
+            existing.TransactionDate = record.TransactionDate;
+            existing.Category = record.Category;
+            existing.Reference = record.Reference;
+            existing.Notes = record.Notes;
+            existing.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Finance));
+        }
+
+        #region Notes
+        public IActionResult Notes(string? category)
+        {
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            int userId = int.Parse(userIdStr);
+            var query = _context.Notes
+                .Where(n => n.CreatedByUserId == userId);
+
+            if (!string.IsNullOrWhiteSpace(category) && !string.Equals(category, "All", StringComparison.OrdinalIgnoreCase))
+            {
+                query = query.Where(n => n.Category == category);
+            }
+
+            var notes = query
+                .OrderByDescending(n => n.CreatedAt)
+                .ToList();
+
+            ViewBag.ActiveCategory = string.IsNullOrWhiteSpace(category) ? "All" : category;
+            return View(notes);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateNote([Bind("Title,Content,Category")] Note input)
+        {
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (!ModelState.IsValid)
+            {
+                // Keep employees on dashboard when invalid
+                var roleInvalid = HttpContext.Session.GetString("UserRole");
+                if (string.Equals(roleInvalid, "Employee", StringComparison.OrdinalIgnoreCase))
+                {
+                    return RedirectToAction("Dashboard", "Employee");
+                }
+                return RedirectToAction("Notes");
+            }
+            int userId = int.Parse(userIdStr);
+            var note = new Note
+            {
+                Title = input.Title,
+                Content = input.Content,
+                Category = input.Category,
+                CreatedByUserId = userId,
+                CreatedAt = DateTime.UtcNow
+            };
+            _context.Notes.Add(note);
+            _context.SaveChanges();
+
+            var role = HttpContext.Session.GetString("UserRole");
+            if (string.Equals(role, "Employee", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("Dashboard", "Employee");
+            }
+            return RedirectToAction("Notes");
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteNote(int id)
+        {
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            int userId = int.Parse(userIdStr);
+
+            var note = _context.Notes.FirstOrDefault(n => n.Id == id && n.CreatedByUserId == userId);
+            if (note != null)
+            {
+                _context.Notes.Remove(note);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction(nameof(Notes));
+        }
+        #endregion
+
+        // Livestock
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddLivestockToCamp(int campId, string animalType, string Breed, DateOnly BirthDate, string Gender, decimal Price, string? EarTag, bool? IsPregnant, DateTime? ExpectedCalvingDate, string? Notes)
+        {
+            if (animalType == "Sheep")
+            {
+                var sheep = new Sheep
+                {
+                    Breed = Breed,
+                    BirthDate = BirthDate,
+                    CampId = campId,
+                    Gender = Gender,
+                    Price = Price,
+                    Status = "Active",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true,
+                    Notes = Notes
+                };
+
+                _context.Sheep.Add(sheep);
+                await _context.SaveChangesAsync();
+            }
+            else if (animalType == "Cow")
+            {
+                var cow = new Cow
+                {
+                    Breed = Breed,
+                    BirthDate = BirthDate,
+                    CampId = campId,
+                    Gender = Gender,
+                    Price = Price,
+                    Status = "Active",
+                    EarTag = EarTag,
+                    IsPregnant = IsPregnant ?? false,
+                    ExpectedCalvingDate = ExpectedCalvingDate,
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true,
+                    Notes = Notes
+                };
+
+                _context.Cows.Add(cow);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                return BadRequest("Unsupported animal type.");
+            }
+
+            return RedirectToAction(nameof(CampDetails), new { id = campId });
+        }
+
+        // Chat/Staff Communication
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendMessage(string content, int? recipientId)
+        {
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                TempData["MessageError"] = "Message cannot be empty.";
+                return RedirectToAction(nameof(Tasks));
+            }
+
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            int senderId;
+            if (!int.TryParse(userIdStr, out senderId))
+            {
+                senderId = await _context.Staff.Where(s => s.IsActive).Select(s => s.Id).FirstOrDefaultAsync();
+            }
+
+            if (senderId == 0)
+            {
+                TempData["MessageError"] = "No active staff found to send message.";
+                return RedirectToAction(nameof(Tasks));
+            }
+
+            var message = new LiveStock.Core.Models.Message
+            {
+                SenderId = senderId,
+                RecipientId = recipientId,
+                Content = content,
+                IsBroadcast = recipientId == null,
+                SentAt = DateTime.UtcNow
+            };
+
+            _context.Messages.Add(message);
+            await _context.SaveChangesAsync();
+
+            var role = HttpContext.Session.GetString("UserRole");
+            if (string.Equals(role, "Employee", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("Dashboard", "Employee");
+            }
+            return RedirectToAction(nameof(Tasks));
+        }
         #endregion
     }
-} 
+}
