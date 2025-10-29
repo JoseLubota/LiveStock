@@ -94,9 +94,9 @@ namespace LiveStock.Web.Service
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "DELETE FROM Sheep WHERE Id = @id";
+                const string sql = "DELETE FROM Sheep WHERE SheepId = @SheepId";
                 SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@id", sheepID);
+                cmd.Parameters.AddWithValue("@SheepId", sheepID);
 
                 con.Open();
                 int rowsAffected = cmd.ExecuteNonQuery();
@@ -118,9 +118,9 @@ namespace LiveStock.Web.Service
 
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "SELECT Id, SheepID, Breed, CampId, Gender, Price, IsActive, BirthDate, PhotoID, Status FROM Sheep WHERE SheepID = @sheepID";
+                const string sql = "SELECT Id, SheepID, Breed, CampId, Gender, Price, IsActive, BirthDate, Status, CreatedAt, UpdatedAt, PhotoUrl FROM Sheep WHERE SheepID = @SheepID";
                 SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@sheepID", sheepID);
+                cmd.Parameters.AddWithValue("@SheepID", sheepID);
 
                 con.Open();
                 using (SqlDataReader reader = cmd.ExecuteReader())
@@ -187,14 +187,14 @@ namespace LiveStock.Web.Service
 
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.AddWithValue("@id", updateSheep.Id);
                     cmd.Parameters.AddWithValue("@breed", updateSheep.Breed);
                     cmd.Parameters.AddWithValue("@camp", updateSheep.CampId);
                     cmd.Parameters.AddWithValue("@price", updateSheep.Price);
                     cmd.Parameters.AddWithValue("@birthDate", updateSheep.BirthDate.ToDateTime(new TimeOnly(0,0)));
                     cmd.Parameters.AddWithValue("@gender", updateSheep.Gender);
-                    cmd.Parameters.AddWithValue("@updatedAt", updateSheep.UpdatedAt);
                     cmd.Parameters.AddWithValue("@photoUrl", updateSheep.PhotoUrl);
+                    cmd.Parameters.AddWithValue("@sheepID", updateSheep.SheepID);
+                    cmd.Parameters.AddWithValue("@updatedAt", DateTime.UtcNow);
 
                     con.Open();
                     int rows = cmd.ExecuteNonQuery();

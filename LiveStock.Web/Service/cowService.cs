@@ -140,7 +140,7 @@ namespace LiveStock.Web.Service
                     current.BirthDate = updated.BirthDate == default ? current.BirthDate : updated.BirthDate;
                     current.UpdatedAt = updated.UpdatedAt == default ? current.UpdatedAt : updated.UpdatedAt;
                     current.PhotoUrl = string.IsNullOrEmpty(updated.PhotoUrl) ? current.PhotoUrl : updated.PhotoUrl;
-                    current.IsPregnant = updated.IsPregnant == default ? current.IsPregnant : updated.IsPregnant;
+                    current.IsPregnant = current.IsPregnant == default ? updated.IsPregnant : current.IsPregnant;
                     current.ExpectedCalvingDate = updated.ExpectedCalvingDate == default ? current.ExpectedCalvingDate : updated.ExpectedCalvingDate;
                 }
                 result.Enqueue(current);

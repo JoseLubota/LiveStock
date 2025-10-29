@@ -171,16 +171,14 @@ namespace LiveStock.Web.Controllers
                 _sheepService.DeleteSheepPhoto(sheepID);
                 newSheep.PhotoUrl = await _sheepService.SaveSheepPhoto(Photo);
             }
+            // Load current record using domain SheepID
             var currentSheep = _sheepService.getSheepByID(newSheep.SheepID);
 
             var newSheepList = new Queue<Sheep>();
             newSheepList.Enqueue(newSheep);
             var mergedSheepList = _sheepService.FillVoidSheppFields(currentSheep, newSheepList);
-
-            _sheepService.UpdateSheep(mergedSheepList.First());
-
-
-            
+            var merged = mergedSheepList.FirstOrDefault();
+            _sheepService.UpdateSheep(merged);
             return RedirectToAction("Sheep");
         }
 

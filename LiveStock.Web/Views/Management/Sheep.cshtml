@@ -231,7 +231,7 @@
                                         @foreach (var sheep in Model)
                                         {
                                             <tr data-status="@sheep.Status" data-camp="@sheep.CampId">
-                                                <td><input type="checkbox" class="sheep-select" name="selectedSheepID" value="@sheep.SheepID" aria-label="Select sheep @sheep.SheepID" /></td>
+                                                <td><input type="checkbox" class="sheep-select" name="selectedSheepID" value="@sheep.Id" aria-label="Select sheep @sheep.Id" /></td>
                                                 <td>
                                                     @if (!string.IsNullOrEmpty(sheep.PhotoUrl))
                                                     {
@@ -271,12 +271,12 @@
                                                         <a asp-action="SheepDetails" asp-route-id="@sheep.SheepID" class="btn btn-sm btn-info">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
-                                                        <button class="btn btn-sm btn-warning" onclick="editSheep(@sheep.SheepID)">
+                                                        <a  asp-action="Sheep_Edit_Details" asp-route-id="@sheep.SheepID" class="btn btn-sm btn-warning">
                                                             <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <button class="btn btn-sm btn-danger" onclick="removeSheep(@sheep.Id)">
+                                                        </a>
+                                                        <a  asp-action="RemoveSheep" asp-route-id="@sheep.SheepID" class="btn btn-sm btn-danger">
                                                             <i class="fas fa-trash"></i>
-                                                        </button>
+                                                        </a>
                                                     </div>
                                                 </td>
                                             </tr>
