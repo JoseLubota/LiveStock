@@ -187,162 +187,163 @@
             </div>
 
             <!-- Cow List -->
-            <div class="card shadow mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h6 class="mb-0"><i class="fas fa-list me-2"></i>Cow Inventory</h6>
-                </div>
-                <div class="card-body">
-                    @if (Model.Any())
-                    {
-                        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                            <input id="cowSearch" class="form-control form-control-sm w-auto" placeholder="Search cows..." data-role="table-search" data-target="#cowsTable" />
-                            <span class="ms-2 small text-muted">Status:</span>
-                            @{ var cowStatuses = Model.Select(c => c.Status).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList(); }
-                            @foreach (var st in cowStatuses)
-                            {
-                                <button type="button" class="btn btn-sm btn-outline-secondary filter-chip" data-target="#cowsTable" data-filter="status" data-value="@st">@st</button>
-                            }
-                            <span class="ms-2 small text-muted">Camp:</span>
-                            @{ var cowCamps = Model.Select(c => c.CampId).Distinct().ToList(); }
-                            @foreach (var camp in cowCamps)
-                            {
-                                <button type="button" class="btn btn-sm btn-outline-secondary filter-chip" data-target="#cowsTable" data-filter="camp" data-value="@camp">Camp @camp</button>
-                            }
-                            <span class="ms-2 small text-muted">Pregnant:</span>
-                            <button type="button" class="btn btn-sm btn-outline-secondary filter-chip" data-target="#cowsTable" data-filter="pregnant" data-value="Yes">Yes</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary filter-chip" data-target="#cowsTable" data-filter="pregnant" data-value="No">No</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary density-toggle" data-target="#cowsTable">Compact density</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary clear-filters" data-target="#cowsTable">Clear filters</button>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="cowsTable" class="table table-striped table-hover table-sticky">
-                                <thead>
-                                    <tr>
-                                        <th><input type="checkbox" id="selectAllCows" aria-label="Select all cows" /></th>
-                                        <th>Photo</th>
-                                        <th>Ear Tag</th>
-                                        <th>Breed</th>
-                                        <th>Age</th>
-                                        <th>Camp</th>
-                                        <th>Gender</th>
-                                        <th>Price</th>
-                                        <th>Pregnant</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var cow in Model)
-                                    {
-                                        <tr data-status="@cow.Status" data-camp="@cow.CampId" data-pregnant="@(cow.IsPregnant ? "Yes" : "No")">
-                                            <td><input type="checkbox" class="cow-select" value="@cow.Id" aria-label="Select cow @cow.EarTag" /></td>
-                                            <td>
-                                                @if (!string.IsNullOrEmpty(cow.PhotoUrl))
-                                                {
-                                                    <img src="@cow.PhotoUrl" alt="Cow Photo" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;" />
-                                                }
-                                                else
-                                                {
-                                                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border-radius: 5px;">
-                                                        <i class="fas fa-cow"></i>
-                                                    </div>
-                                                }
-                                            </td>
-                                            <td>@(cow.EarTag ?? "-")</td>
-                                            <td>@cow.Breed</td>
-                                            <td>@cow.BirthDate years</td>
-                                            <td>
-                                                <span class="badge bg-info">Camp @cow.Camp?.CampNumber</span>
-                                            </td>
-                                            <td>
-                                                @if (cow.Gender == "Male")
-                                                {
-                                                    <span class="badge bg-primary">@cow.Gender</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="badge bg-pink">@cow.Gender</span>
-                                                }
-                                            </td>
-                                            <td>
-                                                <span class="text-success">$@cow.Price.ToString("N2")</span>
-                                            </td>
-                                            <td>
-                                                @if (cow.IsPregnant)
-                                                {
-                                                    <span class="badge bg-warning">Pregnant</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="badge bg-secondary">No</span>
-                                                }
-                                            </td>
-                                            <td>
-                                                @{ var s = cow.Status ?? (cow.IsActive ? "Active" : "Inactive"); var cls = (s.IndexOf("active", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-success" : (s.IndexOf("vacc", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-info" : (s.IndexOf("pending", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-warning" : (s.IndexOf("inactive", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-danger" : "bg-secondary"; }
-                                                <span class="badge @cls">@s</span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group" role="group">
-                                                    <a asp-action="CowDetails" asp-route-id="@cow.Id" class="btn btn-sm btn-info">
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
-                                                    <button class="btn btn-sm btn-warning" onclick="editCow(@cow.Id)">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-danger" onclick="removeCow(@cow.Id)">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="text-center py-5">
-                                <i class="fas fa-cow fa-4x text-muted mb-3"></i>
-                                <h5 class="text-muted">No Cows Found</h5>
-                                <p class="text-muted">Start building your herd by adding your first cow!</p>
-                                <a asp-action="AddCow" class="btn btn-success">
-                                    <i class="fas fa-plus me-2"></i>Add Your First Cow
-                                </a>
-                            </div>
-                        }
-                    </div>
-                </div>
-
-                <!-- Bulk actions for cows -->
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-secondary text-white">
-                        <h6 class="mb-0"><i class="fas fa-tasks me-2"></i>Bulk Actions</h6>
+            <form asp-controller="Management" asp-action="CowBulkActions" id="bulkActionsFormCow" method="post">
+                    <div class="card shadow mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0"><i class="fas fa-list me-2"></i>Cow Inventory</h6>
                     </div>
                     <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-md-4 mb-2">
-                                    <select class="form-select" name="action" id="bulkActionType" aria-label="Bulk action type">
-                                        <option selected disabled>Choose action</option>
-                                        <option value="move">Move to Camp</option>
-                                        <option value="markSold">Mark as Sold</option>
-                                        <option value="markInactive">Mark as Inactive</option>
-                                        <option value="markAactive">Mark as Active</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 mb-2">
-                                    <input type="text" class="form-control" id="bulkActionValue" name="reason" placeholder="Camp # or Reason" aria-label="Action value">
-                                </div>
-                                <div class="col-md-4 mb-2">
-                                    <button type="submit" class="btn btn-warning w-100" onclick="performBulkAction()">
-                                        <i class="fas fa-bolt"></i> Apply
-                                    </button>
-                                </div>
+                        @if (Model.Any())
+                        {
+                            <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                                <input id="cowSearch" class="form-control form-control-sm w-auto" placeholder="Search cows..." data-role="table-search" data-target="#cowsTable" />
+                                <span class="ms-2 small text-muted">Status:</span>
+                                @{ var cowStatuses = Model.Select(c => c.Status).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList(); }
+                                @foreach (var st in cowStatuses)
+                                {
+                                    <button type="button" class="btn btn-sm btn-outline-secondary filter-chip" data-target="#cowsTable" data-filter="status" data-value="@st">@st</button>
+                                }
+                                <span class="ms-2 small text-muted">Camp:</span>
+                                @{ var cowCamps = Model.Select(c => c.CampId).Distinct().ToList(); }
+                                @foreach (var camp in cowCamps)
+                                {
+                                    <button type="button" class="btn btn-sm btn-outline-secondary filter-chip" data-target="#cowsTable" data-filter="camp" data-value="@camp">Camp @camp</button>
+                                }
+                                <span class="ms-2 small text-muted">Pregnant:</span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary filter-chip" data-target="#cowsTable" data-filter="pregnant" data-value="Yes">Yes</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary filter-chip" data-target="#cowsTable" data-filter="pregnant" data-value="No">No</button>
+                                <button type="button" class="btn btn-sm btn-outline-primary density-toggle" data-target="#cowsTable">Compact density</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary clear-filters" data-target="#cowsTable">Clear filters</button>
                             </div>
-                        <small class="text-muted">Select cows using checkboxes in the table below.</small>
+                            <div class="table-responsive">
+                                <table id="cowsTable" class="table table-striped table-hover table-sticky">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" id="selectAllCows" aria-label="Select all cows" /></th>
+                                            <th>Photo</th>
+                                            <th>Ear Tag</th>
+                                            <th>Breed</th>
+                                            <th>Age</th>
+                                            <th>Camp</th>
+                                            <th>Gender</th>
+                                            <th>Price</th>
+                                            <th>Pregnant</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var cow in Model)
+                                        {
+                                            <tr data-status="@cow.Status" data-camp="@cow.CampId" data-pregnant="@(cow.IsPregnant ? "Yes" : "No")">
+                                                <td><input type="checkbox" name="selectedCowID" class="cow-select" value="@cow.Id" aria-label="Select cow @cow.EarTag" /></td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(cow.PhotoUrl))
+                                                    {
+                                                        <img src="@cow.PhotoUrl" alt="Cow Photo" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border-radius: 5px;">
+                                                            <i class="fas fa-cow"></i>
+                                                        </div>
+                                                    }
+                                                </td>
+                                                <td>@(cow.EarTag ?? "-")</td>
+                                                <td>@cow.Breed</td>
+                                                <td>@cow.BirthDate years</td>
+                                                <td>
+                                                    <span class="badge bg-info">Camp @cow.CampId</span>
+                                                </td>
+                                                <td>
+                                                    @if (cow.Gender == "Male")
+                                                    {
+                                                        <span class="badge bg-primary">@cow.Gender</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-pink">@cow.Gender</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <span class="text-success">R @cow.Price.ToString("N2")</span>
+                                                </td>
+                                                <td>
+                                                    @if (cow.IsPregnant)
+                                                    {
+                                                        <span class="badge bg-warning">Pregnant</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-secondary">No</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @{ var s = cow.Status ?? (cow.IsActive ? "Active" : "Inactive"); var cls = (s.IndexOf("active", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-success" : (s.IndexOf("vacc", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-info" : (s.IndexOf("pending", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-warning" : (s.IndexOf("inactive", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-danger" : "bg-secondary"; }
+                                                    <span class="badge @cls">@s</span>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group" role="group">
+                                                        <a asp-action="CowDetails" asp-route-id="@cow.Id" class="btn btn-sm btn-info">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                        <a asp-action="CowEditDetails" asp-route-id="@cow.Id" class="btn btn-sm btn-warning" onclick="editCow(@cow.Id)">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a asp-action="RemoveCow" asp-route-id="@cow.Id" class="btn btn-sm btn-danger" onclick="removeCow(@cow.Id)">
+                                                            <i class="fas fa-trash"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center py-5">
+                                    <i class="fas fa-cow fa-4x text-muted mb-3"></i>
+                                    <h5 class="text-muted">No Cows Found</h5>
+                                    <p class="text-muted">Start building your herd by adding your first cow!</p>
+                                    <a asp-action="AddCow" class="btn btn-success">
+                                        <i class="fas fa-plus me-2"></i>Add Your First Cow
+                                    </a>
+                                </div>
+                            }
+                        </div>
                     </div>
-                </div>
-            
+
+                    <!-- Bulk actions for cows -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header bg-secondary text-white">
+                            <h6 class="mb-0"><i class="fas fa-tasks me-2"></i>Bulk Actions</h6>
+                        </div>
+                        <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 mb-2">
+                                        <select class="form-select" name="action" id="bulkActionType" aria-label="Bulk action type">
+                                            <option selected disabled>Choose action</option>
+                                            <option value="move">Move to Camp</option>
+                                            <option value="markSold">Mark as Sold</option>
+                                            <option value="markInactive">Mark as Inactive</option>
+                                            <option value="markAactive">Mark as Active</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <input type="text" class="form-control" id="bulkActionValue" name="reason" placeholder="Camp # or Reason" aria-label="Action value">
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <button type="submit" class="btn btn-warning w-100" onclick="performBulkAction()">
+                                            <i class="fas fa-bolt"></i> Apply
+                                        </button>
+                                    </div>
+                                </div>
+                            <small class="text-muted">Select cows using checkboxes in the table below.</small>
+                        </div>
+                    </div>
+            </form>
 
             <!-- Quick Actions -->
             <div class="row">
