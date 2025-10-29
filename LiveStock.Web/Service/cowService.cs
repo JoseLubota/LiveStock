@@ -18,15 +18,15 @@ namespace LiveStock.Web.Service
             _conString = configuration.GetConnectionString("AzureConString");
         }
 
-        public void AddCow(string earTag, string breed, DateOnly birdthDate, int camp, string gender, decimal price, string photoURL, DateTime createdAt, bool IsPregnant, DateTime? expectedCalvingDate)
+        public void AddCow(string earTag, string breed, DateOnly birdthDate, int camp, string gender, decimal price, string photoURL, DateTime createdAt, bool IsPregnant, DateTime? expectedCalvingDate, string? notes)
         {
             if (!IsPregnant)
                 IsPregnant = false;
 
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                string sql = @"INSERT INTO Cows (EarTag, Breed, BirthDate, CampId, Gender, Price, CreatedAt, IsActive, PhotoUrl, IsPregnant, ExpectedCalvingDate)
-                              VALUES(@earTag, @breed, @birthDate, @campId, @gender, @price, @createdAt, 1, @photoURL, @ispregnant, @expectedCalvingDate)";
+                string sql = @"INSERT INTO Cows (EarTag, Breed, BirthDate, CampId, Gender, Price, CreatedAt, IsActive, PhotoUrl, IsPregnant, ExpectedCalvingDate, Notes)
+                              VALUES(@earTag, @breed, @birthDate, @campId, @gender, @price, @createdAt, 1, @photoURL, @ispregnant, @expectedCalvingDate, @notes)";
 
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@earTag", earTag);
@@ -39,6 +39,8 @@ namespace LiveStock.Web.Service
                 cmd.Parameters.AddWithValue("@photoURL", photoURL);
                 cmd.Parameters.AddWithValue("@ispregnant", IsPregnant);
                 cmd.Parameters.AddWithValue("@expectedCalvingDate", expectedCalvingDate.HasValue ? (object)expectedCalvingDate.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@notes", (object?)notes ?? DBNull.Value);
+
                 //cmd.Parameters.AddWithValue("@photoID", (object?)photoID ?? DBNull.Value);
 
                 con.Open();
@@ -72,6 +74,8 @@ namespace LiveStock.Web.Service
                             CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
                             PhotoUrl = reader.IsDBNull(reader.GetOrdinal("PhotoUrl"))
                                        ? (string?)null : reader.GetString(reader.GetOrdinal("PhotoUrl")),
+                            Notes = reader.IsDBNull(reader.GetOrdinal("Notes"))
+                                       ? (string?)null : reader.GetString(reader.GetOrdinal("Notes")),
                             IsPregnant = reader.GetBoolean(reader.GetOrdinal("IsPregnant")),
                             ExpectedCalvingDate = reader.IsDBNull(reader.GetOrdinal("ExpectedCalvingDate"))
                                        ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("ExpectedCalvingDate")),
@@ -142,6 +146,7 @@ namespace LiveStock.Web.Service
                     current.PhotoUrl = string.IsNullOrEmpty(updated.PhotoUrl) ? current.PhotoUrl : updated.PhotoUrl;
                     current.IsPregnant = current.IsPregnant == default ? updated.IsPregnant : current.IsPregnant;
                     current.ExpectedCalvingDate = updated.ExpectedCalvingDate == default ? current.ExpectedCalvingDate : updated.ExpectedCalvingDate;
+                    current.Notes = string.IsNullOrEmpty(updated.Notes) ? current.Notes : updated.Notes;
                 }
                 result.Enqueue(current);
 
@@ -154,7 +159,7 @@ namespace LiveStock.Web.Service
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = " UPDATE Cows SET EarTag = @earTag, Breed = @breed, CampId = @camp, Gender = @gender,Price = @price, BirthDate = @birthDate, UpdatedAt = @updatedAt, PhotoUrl = @photoUrl, IsPregnant = @ispregnant, ExpectedCalvingDate = @expectedCalvingDate WHERE Id = @id";
+                const string sql = " UPDATE Cows SET EarTag = @earTag, Breed = @breed, CampId = @camp, Gender = @gender,Price = @price, BirthDate = @birthDate, UpdatedAt = @updatedAt, PhotoUrl = @photoUrl, IsPregnant = @ispregnant, ExpectedCalvingDate = @expectedCalvingDate, Notes = @notes WHERE Id = @id";
 
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
@@ -168,6 +173,7 @@ namespace LiveStock.Web.Service
                     cmd.Parameters.AddWithValue("@updatedAt", updateCow.UpdatedAt);
                     cmd.Parameters.AddWithValue("@photoUrl", updateCow.PhotoUrl);
                     cmd.Parameters.AddWithValue("@ispregnant", updateCow.IsPregnant);
+                    cmd.Parameters.AddWithValue("@notes", updateCow.Notes);
                     cmd.Parameters.AddWithValue("@expectedCalvingDate", updateCow.ExpectedCalvingDate.HasValue ? (object)updateCow.ExpectedCalvingDate.Value : DBNull.Value);
 
                     con.Open();

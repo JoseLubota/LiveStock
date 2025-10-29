@@ -14,12 +14,14 @@ namespace LiveStock.Web.Controllers
         private readonly LiveStockDbContext _context;
         private readonly sheepService _sheepService;
         private readonly cowService _cowService;
+        private readonly INoteService _noteService;
 
-        public ManagementController(LiveStockDbContext context, sheepService sheepService, cowService cowService)
+        public ManagementController(LiveStockDbContext context, sheepService sheepService, cowService cowService, INoteService noteService)
         {
             _context = context;
             _sheepService = sheepService;
             _cowService = cowService;
+            _noteService = noteService;
         }
 
         public IActionResult Dashboard()
@@ -240,13 +242,19 @@ namespace LiveStock.Web.Controllers
                 price: cow.Price,
                 photoURL: cow.PhotoUrl,
                 IsPregnant: cow.IsPregnant,
-                expectedCalvingDate: cow.ExpectedCalvingDate
+                expectedCalvingDate: cow.ExpectedCalvingDate,
+                notes : cow.Notes
             );
 
-            if (Notes != null)
+            if (cow.Notes != null)
             {
-                // get sheep ID
-                // create a new note
+                await _noteService.CreateNoteAsync(
+                    userId : int.Parse(HttpContext.Session.GetString("UserId")),
+                    title : $"Added New Cow - {cow.EarTag}",
+                    content : cow.Notes,
+                    category : "Cow",
+                    createdAt : DateTime.UtcNow
+                );
             }
 
             return RedirectToAction("Cows");
@@ -326,6 +334,7 @@ namespace LiveStock.Web.Controllers
                 UpdatedAt = DateTime.UtcNow,
                 IsPregnant = cow.IsPregnant,
                 ExpectedCalvingDate = cow.ExpectedCalvingDate,
+                Notes = cow.Notes
             };
 
 
@@ -341,6 +350,17 @@ namespace LiveStock.Web.Controllers
 
             var mergedCowList = _cowService.FillVoidCowFields(currentCow, newCowList);
             _cowService.UpdateCow(mergedCowList.First());
+
+            if (newCow.Notes != null)
+            {
+                await _noteService.CreateNoteAsync(
+                    userId : int.Parse(HttpContext.Session.GetString("UserId")),
+                    title : $"Updated Cow - {mergedCowList.First().EarTag}",
+                    content : newCow.Notes,
+                    category : "Cow",
+                    createdAt : DateTime.UtcNow
+                );
+            }
 
 
 
@@ -1095,7 +1115,7 @@ namespace LiveStock.Web.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Finance));
         }
-
+                
         #region Notes
         public IActionResult Notes(string? category)
         {
@@ -1181,7 +1201,6 @@ namespace LiveStock.Web.Controllers
             return RedirectToAction(nameof(Notes));
         }
         #endregion
-
         // Livestock
         [HttpPost]
         [ValidateAntiForgeryToken]

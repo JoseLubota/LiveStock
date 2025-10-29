@@ -15,6 +15,7 @@ if (builder.Environment.IsDevelopment())
 builder.Services.AddScoped<adminService>();
 builder.Services.AddScoped<sheepService>();
 builder.Services.AddScoped<cowService>();
+builder.Services.AddScoped<INoteService,noteService>();
 builder.Services.AddScoped<IStaffService, staffService>();
 
 // Add Entity Framework with Azure SQL Server
