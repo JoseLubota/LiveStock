@@ -515,6 +515,7 @@ D:\repos\LiveStock\LiveStock.API\obj\Debug\net9.0\staticwebassets.build.json
 D:\repos\LiveStock\LiveStock.API\obj\Debug\net9.0\staticwebassets.build.json.cache
 D:\repos\LiveStock\LiveStock.API\obj\Debug\net9.0\staticwebassets.development.json
 D:\repos\LiveStock\LiveStock.API\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+D:\repos\LiveStock\LiveStock.API\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 D:\repos\LiveStock\LiveStock.API\obj\Debug\net9.0\LiveStoc.C5B78C29.Up2Date
 D:\repos\LiveStock\LiveStock.API\obj\Debug\net9.0\LiveStock.API.dll
 D:\repos\LiveStock\LiveStock.API\obj\Debug\net9.0\refint\LiveStock.API.dll

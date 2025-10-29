@@ -43,11 +43,21 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 // Serve images from the project Images folder
-app.UseStaticFiles(new StaticFileOptions
+/*
+var imagePath = Path.Combine(builder.Environment.ContentRootPath, "Images");
+if (Directory.Exists(imagePath))
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Images")),
-    RequestPath = "/Images"
-});
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Images")),
+        RequestPath = "/Images"
+    });
+}
+else
+{
+    Console.WriteLine($"[Warning] 'Images' folder not found at {imagePath}");
+}
+ */
 
 app.UseRouting();
 

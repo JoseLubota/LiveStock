@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Image\IMG-20251025-WA0032.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="itext7" Version="7.2.5" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
@@ -23,7 +27,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="logs\" />
     <Folder Include="wwwroot\uploads\cow\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Image\IMG-20251025-WA0032.jpg" />
   </ItemGroup>
 
 </Project>
