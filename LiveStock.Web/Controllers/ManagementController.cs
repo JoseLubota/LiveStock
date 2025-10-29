@@ -79,19 +79,25 @@ namespace LiveStock.Web.Controllers
                 photoURL = await _sheepService.SaveSheepPhoto(Photo);
             }
 
-            _sheepService.AddSheep(
+            var newSheepId = _sheepService.AddSheep(
                 breed: Breed,
                 birthDate: BirthDate,
                 camp: Camp,
                 createdAt: DateTime.UtcNow,
                 gender: Gender,
                 price: Price,
+                notes: Notes,
                 photoURL: photoURL);
 
-            if (Notes != null)
+            if (!string.IsNullOrWhiteSpace(Notes))
             {
-                // get sheep ID
-                // create a new note
+                await _noteService.CreateNoteAsync(
+                    userId: int.Parse(HttpContext.Session.GetString("UserId")),
+                    title: $"Added New Sheep - {newSheepId}",
+                    content: Notes,
+                    category: "Sheep",
+                    createdAt: DateTime.UtcNow
+                );
             }
 
             return RedirectToAction("Sheep");
@@ -167,6 +173,7 @@ namespace LiveStock.Web.Controllers
             newSheep.BirthDate = BirthDate;
             newSheep.Price = Price;
             newSheep.UpdatedAt = DateTime.UtcNow;
+            newSheep.Notes = Notes;
 
             if (Photo != null)
             {
@@ -181,6 +188,17 @@ namespace LiveStock.Web.Controllers
             var mergedSheepList = _sheepService.FillVoidSheppFields(currentSheep, newSheepList);
             var merged = mergedSheepList.FirstOrDefault();
             _sheepService.UpdateSheep(merged);
+
+            if (!string.IsNullOrWhiteSpace(newSheep.Notes))
+            {
+                await _noteService.CreateNoteAsync(
+                    userId: int.Parse(HttpContext.Session.GetString("UserId")),
+                    title: $"Updated Sheep - {merged.SheepID}",
+                    content: newSheep.Notes,
+                    category: "Sheep",
+                    createdAt: DateTime.UtcNow
+                );
+            }
             return RedirectToAction("Sheep");
         }
 
