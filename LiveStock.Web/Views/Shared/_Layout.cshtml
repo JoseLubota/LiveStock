@@ -1,3 +1,7 @@
+@{
+    var userIdStr = Context.Session.GetString("UserId");
+    int userID = int.TryParse(userIdStr, out var uid) ? uid : 0;
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,12 +29,20 @@
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index"></a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav align-items-center">
-                        <li class="nav-item">
-                            <a class="btn btn-warning" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                        </li>
+                    @if(userID == 0){
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item">
+                                <a class="btn btn-warning" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                        </ul>
+                    }else{
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item">
+                                <a class="btn btn-warning" asp-area="" asp-controller="Management" asp-action="Dashboard">Dashboard</a>
+                            </li>
+                        </ul>
+                    }
 
-                    </ul>
                 </div>
             </div>
         </nav>
