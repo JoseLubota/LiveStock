@@ -1,22 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LiveStock.Infrastructure.Data;
+using Microsoft.AspNetCore.Http;
 using LiveStock.Core.Models;
 using LiveStock.Web.Models;
 using LiveStock.Web.ViewModels;
 using LiveStock.Web.Service;
-using Microsoft.IdentityModel.Tokens;
 
 namespace LiveStock.Web.Controllers
 {
     public class ManagementController : Controller
     {
-        private readonly LiveStockDbContext _context;
+        private readonly LiveStock.Infrastructure.Data.LiveStockDbContext _context;
         private readonly sheepService _sheepService;
         private readonly cowService _cowService;
         private readonly INoteService _noteService;
 
-        public ManagementController(LiveStockDbContext context, sheepService sheepService, cowService cowService, INoteService noteService)
+        public ManagementController(LiveStock.Infrastructure.Data.LiveStockDbContext context, sheepService sheepService, cowService cowService, INoteService noteService)
         {
             _context = context;
             _sheepService = sheepService;
@@ -141,12 +140,17 @@ namespace LiveStock.Web.Controllers
 
             return View(sheep);
         }
-        public IActionResult RemoveSheep(int id)
+        public async Task<IActionResult> RemoveSheep(int id)
         {
             try
             {
+                // Delete dependent medical records to avoid FK conflicts, then hard-delete sheep
+                await _context.MedicalRecords
+                    .Where(m => m.AnimalType == "Sheep" && m.SheepId == id)
+                    .ExecuteDeleteAsync();
+
                 _sheepService.DeleteSheep(id);
-                return RedirectToAction("Sheep", "Management");
+                return RedirectToAction(nameof(Sheep));
 
             }catch (Exception ex)
             {
@@ -207,11 +211,11 @@ namespace LiveStock.Web.Controllers
         {
             if(selectedId == null || selectedId.Count == 0)
             {
-                RedirectToAction("Sheep");
+                return RedirectToAction(nameof(Sheep));
             }
  
             _sheepService.SheepBulkActions(action, reason, selectedId);
-            return RedirectToAction("Sheep");
+            return RedirectToAction(nameof(Sheep));
         }
         [HttpPost]
         public IActionResult GenerateSheepReport()
@@ -232,7 +236,7 @@ namespace LiveStock.Web.Controllers
         public async Task<IActionResult> Cows()
         {
             var cows = _cowService.GetAllCow()
-                            .OrderBy(s => s.Id)
+                            .OrderBy(c => c.Id)
                             .ToList();
 
             return View(cows);
@@ -315,12 +319,18 @@ namespace LiveStock.Web.Controllers
 
             return View(cow);
         }
-        public IActionResult RemoveCow(int id)
+        public async Task<IActionResult> RemoveCow(int id)
         {
             try
             {
+                // Delete related medical records first to avoid foreign key conflicts
+                await _context.MedicalRecords
+                    .Where(m => m.AnimalType == "Cow" && m.CowId == id)
+                    .ExecuteDeleteAsync();
+
+                // Hard delete the cow
                 _cowService.DeleteCow(id);
-                return RedirectToAction("Cows", "Management");
+                return RedirectToAction(nameof(Cows));
 
             }
             catch (Exception ex)
@@ -447,11 +457,11 @@ namespace LiveStock.Web.Controllers
         {
             if (selectedCowID == null || selectedCowID.Count == 0)
             {
-                RedirectToAction("Cows");
+                return RedirectToAction(nameof(Cows));
             }
 
             _cowService.CowBulkActions(action, reason, selectedCowID);
-            return RedirectToAction("Cows");
+            return RedirectToAction(nameof(Cows));
         }
         [HttpPost]
         public IActionResult GenerateCowReport()
@@ -785,9 +795,10 @@ namespace LiveStock.Web.Controllers
             if (!int.TryParse(userIdStr, out createdById))
             {
                 // Fallback: use the assigned staff or first active staff if session is missing
+                var fallbackStaff = activeStaff.FirstOrDefault();
                 createdById = task.AssignedToId != 0
                     ? task.AssignedToId
-                    : (activeStaff.FirstOrDefault()?.Id ?? 0);
+                    : (fallbackStaff != null ? fallbackStaff.Id : 0);
             }
 
             Console.WriteLine($"[CreateTask] Setting CreatedById to: {createdById}");
@@ -832,6 +843,12 @@ namespace LiveStock.Web.Controllers
                 await _context.SaveChangesAsync();
             }
 
+            // Keep employees on their dashboard; admins go to Tasks
+            var role = HttpContext.Session.GetString("UserRole");
+            if (string.Equals(role, "Employee", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("Dashboard", "Employee");
+            }
             return RedirectToAction(nameof(Tasks));
         }
 
@@ -860,6 +877,33 @@ namespace LiveStock.Web.Controllers
                 task.CompletedAt = null;
             }
 
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Tasks));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteTask(int taskId)
+        {
+            // Only admins can delete tasks
+            var role = HttpContext.Session.GetString("UserRole");
+            if (!string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                return Forbid();
+            }
+
+            var task = await _context.FarmTasks.FindAsync(taskId);
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            // Restrict deletion to completed tasks only
+            if (!string.Equals(task.Status, "Completed", StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest("Only completed tasks can be deleted.");
+            }
+
+            _context.FarmTasks.Remove(task);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Tasks));
         }

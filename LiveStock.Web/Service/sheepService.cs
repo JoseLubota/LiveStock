@@ -59,7 +59,7 @@ namespace LiveStock.Web.Service
 
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "SELECT Id, Breed, CampId, Gender, Price, IsActive, BirthDate, PhotoID, Status, CreatedAt, UpdatedAt, Notes, PhotoUrl FROM Sheep";
+                const string sql = "SELECT Id, Breed, CampId, Gender, Price, IsActive, BirthDate, Status, CreatedAt, UpdatedAt, Notes, PhotoUrl FROM Sheep";
                 SqlCommand cmd = new SqlCommand(sql, con);
 
                 con.Open();
