@@ -64,7 +64,7 @@ namespace LiveStock.Web.Controllers
             }
 
             var sheepList = _sheepService.GetAllSheep()
-                .OrderBy(s => s.SheepID)
+                .OrderBy(s => s.Id)
                 .ToList();
 
             return View(sheepList);
@@ -111,7 +111,7 @@ namespace LiveStock.Web.Controllers
                 .Include(s => s.MedicalRecords.OrderByDescending(m => m.TreatmentDate))
                 .Include(s => s.CampMovements.OrderByDescending(m => m.MovementDate))
              */
-            var sheep = _sheepService.GetAllSheep().FirstOrDefault(s => s.SheepID == id);
+            var sheep = _sheepService.GetAllSheep().FirstOrDefault(s => s.Id == id);
 
             if (sheep == null)
             {
@@ -124,7 +124,7 @@ namespace LiveStock.Web.Controllers
             try
             {
                 sheep.MedicalRecords = await _context.MedicalRecords
-                    .Where(m => m.AnimalType == "Sheep" && m.AnimalId == id)
+                    .Where(m => m.AnimalType == "Sheep" && m.SheepId == id)
                     .OrderByDescending(m => m.TreatmentDate)
                     .ToListAsync();
 
@@ -158,15 +158,15 @@ namespace LiveStock.Web.Controllers
         public IActionResult Sheep_Edit_Details(int id)
         {
             ViewBag.Camps = _context.Camps.OrderBy(c => c.CampNumber).ToList();
-            ViewBag.SheepID = id;
+            ViewBag.Id = id;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateSheep(int sheepID, string Breed, int Camp, string Gender, DateOnly BirthDate, string? Notes, IFormFile? Photo, decimal Price)
+        public async Task<IActionResult> UpdateSheep(int id, string Breed, int Camp, string Gender, DateOnly BirthDate, string? Notes, IFormFile? Photo, decimal Price)
         {
             Sheep newSheep = new Sheep();
-            newSheep.SheepID = sheepID;
+            newSheep.Id = id;
             newSheep.Breed = Breed;
             newSheep.CampId = Camp;
             newSheep.Gender = Gender;
@@ -177,11 +177,11 @@ namespace LiveStock.Web.Controllers
 
             if (Photo != null)
             {
-                _sheepService.DeleteSheepPhoto(sheepID);
+                _sheepService.DeleteSheepPhoto(id);
                 newSheep.PhotoUrl = await _sheepService.SaveSheepPhoto(Photo);
             }
             // Load current record using domain SheepID
-            var currentSheep = _sheepService.getSheepByID(newSheep.SheepID);
+            var currentSheep = _sheepService.getSheepById(newSheep.Id);
 
             var newSheepList = new Queue<Sheep>();
             newSheepList.Enqueue(newSheep);
@@ -193,7 +193,7 @@ namespace LiveStock.Web.Controllers
             {
                 await _noteService.CreateNoteAsync(
                     userId: int.Parse(HttpContext.Session.GetString("UserId")),
-                    title: $"Updated Sheep - {merged.SheepID}",
+                    title: $"Updated Sheep - {merged.Id}",
                     content: newSheep.Notes,
                     category: "Sheep",
                     createdAt: DateTime.UtcNow
@@ -203,14 +203,14 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult SheepBulkActions(string action, string reason, HashSet<int> selectedSheepID)
+        public IActionResult SheepBulkActions(string action, string reason, HashSet<int> selectedId)
         {
-            if(selectedSheepID == null || selectedSheepID.Count == 0)
+            if(selectedId == null || selectedId.Count == 0)
             {
                 RedirectToAction("Sheep");
             }
  
-            _sheepService.SheepBulkActions(action, reason, selectedSheepID);
+            _sheepService.SheepBulkActions(action, reason, selectedId);
             return RedirectToAction("Sheep");
         }
         [HttpPost]
@@ -298,7 +298,7 @@ namespace LiveStock.Web.Controllers
             try
             {
                 cow.MedicalRecords = await _context.MedicalRecords
-                    .Where(m => m.AnimalType == "Cow" && m.AnimalId == id)
+                    .Where(m => m.AnimalType == "Cow" && m.CowId == id)
                     .OrderByDescending(m => m.TreatmentDate)
                     .ToListAsync();
 
@@ -340,7 +340,7 @@ namespace LiveStock.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateCow(Cow cow, IFormFile? Photo)
         {
-            Cow newCow = new ()
+            Cow newCow = new()
             {
                 Id = cow.Id,
                 EarTag = cow.EarTag,
@@ -372,11 +372,11 @@ namespace LiveStock.Web.Controllers
             if (newCow.Notes != null)
             {
                 await _noteService.CreateNoteAsync(
-                    userId : int.Parse(HttpContext.Session.GetString("UserId")),
-                    title : $"Updated Cow - {mergedCowList.First().EarTag}",
-                    content : newCow.Notes,
-                    category : "Cow",
-                    createdAt : DateTime.UtcNow
+                    userId: int.Parse(HttpContext.Session.GetString("UserId")),
+                    title: $"Updated Cow - {mergedCowList.First().EarTag}",
+                    content: newCow.Notes,
+                    category: "Cow",
+                    createdAt: DateTime.UtcNow
                 );
             }
 
@@ -384,37 +384,7 @@ namespace LiveStock.Web.Controllers
 
             return RedirectToAction("Cows");
         }
-
-        [HttpPost]
-        public async Task<IActionResult> AddMedicalRecord(int animalId, string animalType, DateTime TreatmentDate, string Treatment, string? Veterinarian, decimal? Cost, string? Notes)
-        {
-            if (string.IsNullOrWhiteSpace(animalType) || string.IsNullOrWhiteSpace(Treatment))
-            {
-                return BadRequest("Missing required fields");
-            }
-
-            var record = new MedicalRecord
-            {
-                AnimalId = animalId,
-                AnimalType = animalType,
-                TreatmentDate = TreatmentDate,
-                Treatment = Treatment,
-                Veterinarian = Veterinarian,
-                Cost = Cost,
-                Notes = Notes,
-                CreatedAt = DateTime.UtcNow
-            };
-
-            _context.MedicalRecords.Add(record);
-            await _context.SaveChangesAsync();
-
-            if (animalType == "Sheep")
-                return RedirectToAction(nameof(SheepDetails), new { id = animalId });
-            if (animalType == "Cow")
-                return RedirectToAction(nameof(CowDetails), new { id = animalId });
-            return RedirectToAction(nameof(Dashboard));
-        }
-
+        
         [HttpPost]
         public async Task<IActionResult> UpdateSheepPhoto(int id, IFormFile Photo)
         {
@@ -1314,6 +1284,40 @@ namespace LiveStock.Web.Controllers
             }
             return RedirectToAction(nameof(Tasks));
         }
+        #endregion
+
+        #region Medicine
+                [HttpPost]
+        public async Task<IActionResult> AddMedicalRecord(string animalType, DateTime TreatmentDate, string Treatment, string? Veterinarian, decimal? Cost, string? Notes, int? SheepId, int? CowId)
+        {
+            if (string.IsNullOrWhiteSpace(animalType) || string.IsNullOrWhiteSpace(Treatment))
+            {
+                return BadRequest("Missing required fields");
+            }
+
+            var record = new MedicalRecord
+            {
+                AnimalType = animalType,
+                TreatmentDate = TreatmentDate,
+                Treatment = Treatment,
+                Veterinarian = Veterinarian,
+                Cost = Cost,
+                Notes = Notes,
+                CreatedAt = DateTime.UtcNow,
+                SheepId = SheepId,
+                CowId = CowId
+            };
+
+            _context.MedicalRecords.Add(record);
+            await _context.SaveChangesAsync();
+
+            if (animalType == "Sheep")
+                return RedirectToAction(nameof(SheepDetails), new { id = SheepId });
+            if (animalType == "Cow")
+                return RedirectToAction(nameof(CowDetails), new { id = CowId });
+            return RedirectToAction(nameof(Dashboard));
+        }
+
         #endregion
     }
 }

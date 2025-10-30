@@ -1,9 +1,9 @@
-﻿@model LiveStock.Core.Models.Sheep
+@model LiveStock.Core.Models.Sheep
 
 @{
     ViewData["Title"] = "Edit Sheep Detils";
     Layout = "_Layout";
-    int sheepID = ViewBag.SheepID;
+    int id = ViewBag.Id;
 }
 
 <div class="container-fluid">
@@ -99,7 +99,7 @@
                         </div>
                         <div class="card-body">
                             <form asp-action="UpdateSheep" method="post" enctype="multipart/form-data">
-                                <input value="@sheepID" name="sheepID" hidden type="number"/>
+<input value="@id" name="id" hidden type="number"/>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -243,4 +243,4 @@
             border-color: var(--medium-green);
             box-shadow: 0 0 0 0.2rem rgba(78, 113, 69, 0.25);
         }
-</style> 
+</style>

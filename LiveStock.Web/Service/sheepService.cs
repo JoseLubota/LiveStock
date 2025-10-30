@@ -32,11 +32,11 @@ namespace LiveStock.Web.Service
                 SqlCommand getMaxIdCmd = new SqlCommand(getMaxIdSql, con);
                 int nextSheepId = (int)getMaxIdCmd.ExecuteScalar();
 
-                string sql = @"INSERT INTO Sheep (SheepID, Breed, BirthDate, CampId, Gender, Price, Notes, PhotoUrl, Status, IsActive, CreatedAt)
+                string sql = @"INSERT INTO Sheep (Id, Breed, BirthDate, CampId, Gender, Price, Notes, PhotoUrl, Status, IsActive, CreatedAt)
                               VALUES(@sheepId, @breed, @birthDate, @campId, @gender, @price, @notes, @photoUrl, @status, @isActive, @createdAt)";
 
                 SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@sheepId", nextSheepId);
+                cmd.Parameters.AddWithValue("@Id", nextSheepId);
                 cmd.Parameters.AddWithValue("@breed", breed);
                 cmd.Parameters.AddWithValue("@birthDate", birthDate.ToDateTime(new TimeOnly(0,0)));
                 cmd.Parameters.AddWithValue("@campId", camp);
@@ -59,7 +59,7 @@ namespace LiveStock.Web.Service
 
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "SELECT Id, SheepID, Breed, CampId, Gender, Price, IsActive, BirthDate, PhotoID, Status, CreatedAt, UpdatedAt, Notes, PhotoUrl FROM Sheep";
+                const string sql = "SELECT Id, Breed, CampId, Gender, Price, IsActive, BirthDate, PhotoID, Status, CreatedAt, UpdatedAt, Notes, PhotoUrl FROM Sheep";
                 SqlCommand cmd = new SqlCommand(sql, con);
 
                 con.Open();
@@ -70,7 +70,6 @@ namespace LiveStock.Web.Service
                         var sheep = new Sheep
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            SheepID = reader.GetInt32(reader.GetOrdinal("SheepID")),
                             Breed = reader.GetString(reader.GetOrdinal("Breed")),
                             CampId = reader.GetInt32(reader.GetOrdinal("CampId")),
                             Gender = reader.GetString(reader.GetOrdinal("Gender")),
@@ -95,13 +94,13 @@ namespace LiveStock.Web.Service
 
             return sheepQueue;
         }
-        public void DeleteSheep(int sheepID)
+        public void DeleteSheep(int id)
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "DELETE FROM Sheep WHERE SheepId = @SheepId";
+                const string sql = "DELETE FROM Sheep WHERE Id = @Id";
                 SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@SheepId", sheepID);
+                cmd.Parameters.AddWithValue("@Id", id);
 
                 con.Open();
                 int rowsAffected = cmd.ExecuteNonQuery();
@@ -112,20 +111,20 @@ namespace LiveStock.Web.Service
                 }
                 else
                 {
-                    Console.WriteLine($"Sheep with ID {sheepID} deleted successfully.");
+                    Console.WriteLine($"Sheep with ID {id} deleted successfully.");
                 }
             }
         }
 
-        public Queue<Sheep> getSheepByID(int sheepID)
+        public Queue<Sheep> getSheepById(int id)
         {
             Queue<Sheep> sheepList = new Queue<Sheep>();
 
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = "SELECT Id, SheepID, Breed, CampId, Gender, Price, IsActive, BirthDate, Status, CreatedAt, UpdatedAt, Notes, PhotoUrl FROM Sheep WHERE SheepID = @SheepID";
+                const string sql = "SELECT Id, Breed, CampId, Gender, Price, IsActive, BirthDate, Status, CreatedAt, UpdatedAt, Notes, PhotoUrl FROM Sheep WHERE Id = @Id";
                 SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@SheepID", sheepID);
+                cmd.Parameters.AddWithValue("@Id", id);
 
                 con.Open();
                 using (SqlDataReader reader = cmd.ExecuteReader())
@@ -135,7 +134,6 @@ namespace LiveStock.Web.Service
                         var sheep = new Sheep
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            SheepID = reader.GetInt32(reader.GetOrdinal("SheepID")),
                             Breed = reader.GetString(reader.GetOrdinal("Breed")),
                             CampId = reader.GetInt32(reader.GetOrdinal("CampId")),
                             Gender = reader.GetString(reader.GetOrdinal("Gender")),
@@ -165,7 +163,7 @@ namespace LiveStock.Web.Service
 
             foreach (var current in currentShepp)
             {
-                var updated = newSheppDetails.FirstOrDefault(s => s.SheepID == current.SheepID);
+                var updated = newSheppDetails.FirstOrDefault(s => s.Id == current.Id);
 
                 if (updated != null)
                 {
@@ -190,7 +188,7 @@ namespace LiveStock.Web.Service
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
-                const string sql = " UPDATE Sheep SET Breed = @breed, CampId = @camp, Gender = @gender, Price = @price, BirthDate = @birthDate, UpdatedAt = @updatedAt, Notes = @notes, PhotoUrl = @photoUrl WHERE SheepID = @sheepID";
+                const string sql = " UPDATE Sheep SET Breed = @breed, CampId = @camp, Gender = @gender, Price = @price, BirthDate = @birthDate, UpdatedAt = @updatedAt, Notes = @notes, PhotoUrl = @photoUrl WHERE Id = @id";
 
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
@@ -201,7 +199,7 @@ namespace LiveStock.Web.Service
                     cmd.Parameters.AddWithValue("@gender", updateSheep.Gender);
                     cmd.Parameters.AddWithValue("@notes", (object?)updateSheep.Notes ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@photoUrl", updateSheep.PhotoUrl);
-                    cmd.Parameters.AddWithValue("@sheepID", updateSheep.SheepID);
+                    cmd.Parameters.AddWithValue("@id", updateSheep.Id);
                     cmd.Parameters.AddWithValue("@updatedAt", DateTime.UtcNow);
 
                     con.Open();
@@ -209,23 +207,23 @@ namespace LiveStock.Web.Service
 
                     if (rows == 0)
                     {
-                        Console.WriteLine($"No sheep dound with the ID {updateSheep.SheepID}");
+                        Console.WriteLine($"No sheep dound with the ID {updateSheep.Id}");
                     }
                     else
                     {
-                        Console.WriteLine($"Updated {updateSheep.SheepID}");
+                        Console.WriteLine($"Updated {updateSheep.Id}");
                     }
                 }
 
             }
         }
 
-        public void SheepBulkActions(string action, string reason, HashSet<int> sheepIDs)
+        public void SheepBulkActions(string action, string reason, HashSet<int> ids)
         {
             switch (action)
             {
                 case "markSold":
-                    foreach (int id in sheepIDs)
+                    foreach (int id in ids)
                     {
                         DeleteSheep(id);
                     }
@@ -234,7 +232,7 @@ namespace LiveStock.Web.Service
                 case "move":
                     if (int.TryParse(reason, out int newCampId))
                     {
-                        foreach (int id in sheepIDs)
+                        foreach (int id in ids)
                         {
                             MoveSheepToCamp(id, newCampId);
                         }
@@ -243,14 +241,14 @@ namespace LiveStock.Web.Service
                     break;
 
                 case "markInactive":
-                    foreach (int id in sheepIDs)
+                    foreach (int id in ids)
                     {
                         MarkSheepAsInactive(id);
                     }
                     break;
 
                 case "markAactive":
-                    foreach (int id in sheepIDs)
+                    foreach (int id in ids)
                     {
                         MarkSheepAsActive(id);
                     }
@@ -315,10 +313,10 @@ namespace LiveStock.Web.Service
 
             var csvBuilder = new System.Text.StringBuilder();
 
-            csvBuilder.AppendLine("SheepID,Breed,CampId,Gender,BirthDate,Price,IsActive");
+            csvBuilder.AppendLine("Id,Breed,CampId,Gender,BirthDate,Price,IsActive");
             foreach (var item in sheepList)
             {
-                csvBuilder.AppendLine($"{item.SheepID},{item.Breed},{item.CampId},{item.Gender},{item.BirthDate},{item.Price},{item.IsActive}");
+                csvBuilder.AppendLine($"{item.Id},{item.Breed},{item.CampId},{item.Gender},{item.BirthDate},{item.Price},{item.IsActive}");
 
             }
 
@@ -371,7 +369,7 @@ namespace LiveStock.Web.Service
                 // Data
                 foreach(var sheep in sheepList)
                 {
-                    table.AddCell(new Cell().Add(new Paragraph(sheep.SheepID.ToString())));
+                    table.AddCell(new Cell().Add(new Paragraph(sheep.Id.ToString())));
                     table.AddCell(new Cell().Add(new Paragraph(sheep.Breed)));
                     table.AddCell(new Cell().Add(new Paragraph($"Camp {sheep.CampId}")));
                     table.AddCell(new Cell().Add(new Paragraph(sheep.Gender)));
@@ -411,9 +409,9 @@ namespace LiveStock.Web.Service
             
             return "/uploads/sheep/" + fileName;
         }
-        public void DeleteSheepPhoto(int sheepID)
+        public void DeleteSheepPhoto(int id)
         {
-            var sheepList = getSheepByID(sheepID);
+            var sheepList = getSheepById(id);
             if (sheepList == null || sheepList.Count == 0)
                 return;
 

@@ -5,10 +5,7 @@ namespace LiveStock.Core.Models
     public class MedicalRecord
     {
         public int Id { get; set; }
-        
-        [Required]
-        public int AnimalId { get; set; }
-        
+                
         [Required]
         public string AnimalType { get; set; } = string.Empty; // "Sheep" or "Cow"
         
@@ -24,7 +21,10 @@ namespace LiveStock.Core.Models
         public string? Veterinarian { get; set; }
         
         public decimal? Cost { get; set; }
-        
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        
+        public int? SheepId { get; set; }
+        public int? CowId { get; set; }
     }
 } 

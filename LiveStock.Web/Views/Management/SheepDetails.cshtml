@@ -89,7 +89,7 @@
                     <a asp-action="Sheep" class="btn btn-secondary me-2">
                         <i class="fas fa-arrow-left me-2"></i>Back to Sheep List
                     </a>
-                    <button class="btn btn-warning me-2" onclick="editSheep(@Model.SheepID)">
+                    <button class="btn btn-warning me-2" onclick="editSheep(@Model.Id)">
                         <i class="fas fa-edit me-2"></i>Edit
                     </button>
                         <button class="btn btn-danger" onclick="removeSheep(@Model.Id)">
@@ -358,7 +358,7 @@
       </div>
       <form asp-action="AddMedicalRecord" method="post">
         <div class="modal-body">
-          <input type="hidden" name="animalId" value="@Model.Id" />
+          <input type="hidden" name="sheepId" value="@Model.Id" />
           <input type="hidden" name="animalType" value="Sheep" />
           <div class="mb-3">
             <label class="form-label">Treatment Date</label>
