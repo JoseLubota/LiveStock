@@ -16,11 +16,17 @@ namespace LiveStock.Web.Service
     {
         private readonly LiveStockDbContext _context;
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Initializes note service with EF DbContext"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public noteService(LiveStockDbContext context)
         {
             _context = context;
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Returns notes for a user, filtered by category and limited by take"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<List<Note>> GetUserNotesAsync(int userId, string? category = null, int? take = null)
         {
             var query = _context.Notes
@@ -41,12 +47,18 @@ namespace LiveStock.Web.Service
             return await query.ToListAsync();
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Gets a single note by id that belongs to the given user"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<Note?> GetNoteByIdAsync(int id, int userId)
         {
             return await _context.Notes
                 .FirstOrDefaultAsync(n => n.Id == id && n.CreatedByUserId == userId);
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Creates a new note for the user and saves it to the database"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<Note?> CreateNoteAsync(int userId, string title, string content, string category, DateTime? createdAt = null)
         {
             if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(content) || string.IsNullOrWhiteSpace(category))
@@ -74,6 +86,9 @@ namespace LiveStock.Web.Service
             return note;
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Deletes the user's note by id and persists the change"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<bool> DeleteNoteAsync(int id, int userId)
         {
             var note = await _context.Notes

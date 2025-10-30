@@ -16,6 +16,9 @@ namespace LiveStock.Web.Controllers
         private readonly cowService _cowService;
         private readonly INoteService _noteService;
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Initializes management controller with DbContext and livestock/note services"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public ManagementController(LiveStockDbContext context, sheepService sheepService, cowService cowService, INoteService noteService)
         {
             _context = context;
@@ -23,7 +26,9 @@ namespace LiveStock.Web.Controllers
             _cowService = cowService;
             _noteService = noteService;
         }
-
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Displays the management dashboard with livestock, staff, task, and rainfall summaries"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult Dashboard()
         {
             var userId = HttpContext.Session.GetString("UserId");
@@ -49,12 +54,17 @@ namespace LiveStock.Web.Controllers
         }
 
         #region Sheep Management
-
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Shows the Add Sheep form with available camps"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult AddSheep()
         {
             ViewBag.Camps = _context.Camps.OrderBy(c => c.CampNumber).ToList();
             return View();
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Lists all active sheep ordered by Id"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> Sheep()
         {
             var userId = HttpContext.Session.GetString("UserId");
@@ -71,6 +81,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Creates a new sheep, handles optional photo upload, and records note"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_    
         public async Task<IActionResult> AddSheep(string Breed, int Camp, string Gender, DateOnly BirthDate, string? Notes, IFormFile? Photo, decimal Price)
         {
             string photoURL = string.Empty;
@@ -104,23 +118,18 @@ namespace LiveStock.Web.Controllers
 
         }
          
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Shows sheep details including medical records and camp movements"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> SheepDetails(int id)
         {
-            /*
-             *                 .Include(s => s.Camp)
-                .Include(s => s.MedicalRecords.OrderByDescending(m => m.TreatmentDate))
-                .Include(s => s.CampMovements.OrderByDescending(m => m.MovementDate))
-             */
             var sheep = _sheepService.GetAllSheep().FirstOrDefault(s => s.Id == id);
 
             if (sheep == null)
             {
                 return NotFound();
-             }
-            //sheep.MedicalRecords = _medicalRecordService.GetBySheepId(id);
-            //sheep.CampMovements = _campMovementService.GetBySheepId(id);
-
-            // Load related data via EF for details view
+            }
+             
             try
             {
                 sheep.MedicalRecords = await _context.MedicalRecords
@@ -141,6 +150,9 @@ namespace LiveStock.Web.Controllers
 
             return View(sheep);
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Deletes a sheep after removing related medical records to avoid FK conflicts"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> RemoveSheep(int id)
         {
             try
@@ -160,6 +172,9 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpGet]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Prepares sheep edit view with camps and selected sheep context"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult Sheep_Edit_Details(int id)
         {
             ViewBag.Camps = _context.Camps.OrderBy(c => c.CampNumber).ToList();
@@ -168,6 +183,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates sheep details, manages photo upload/deletion, and records update note"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> UpdateSheep(int id, string Breed, int Camp, string Gender, DateOnly BirthDate, string? Notes, IFormFile? Photo, decimal Price)
         {
             Sheep newSheep = new Sheep();
@@ -208,6 +227,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Performs batch actions (e.g., deactivate, move) on selected sheep"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult SheepBulkActions(string action, string reason, HashSet<int> selectedId)
         {
             if(selectedId == null || selectedId.Count == 0)
@@ -219,12 +242,20 @@ namespace LiveStock.Web.Controllers
             return RedirectToAction(nameof(Sheep));
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Generates a PDF report of sheep and returns it as a file"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult GenerateSheepReport()
         {
             var file = _sheepService.GenerateSheepReport();
             return File(file, "application/pdf", "SheepReport.pdf");
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Exports sheep data to CSV and returns the file"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult ExportSheep()
         {
             var result = _sheepService.ExportSheep();
@@ -234,6 +265,9 @@ namespace LiveStock.Web.Controllers
         #endregion
 
         #region Cow Management
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Lists all cows ordered by Id"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> Cows()
         {
             var cows = _cowService.GetAllCow()
@@ -243,6 +277,9 @@ namespace LiveStock.Web.Controllers
             return View(cows);
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Shows the Add Cow form with camp selection"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult AddCow()
         {
             ViewBag.Camps = _context.Camps.OrderBy(c => c.CampNumber).ToList();
@@ -250,6 +287,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Adds a new cow, handles photo upload, and records note when present"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> AddCow(Cow cow, IFormFile Photo)
         {
             cow.PhotoUrl = string.Empty;
@@ -283,23 +324,17 @@ namespace LiveStock.Web.Controllers
             return RedirectToAction("Cows");
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Shows cow details including medical records and camp movements"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> CowDetails(int id)
         {
-            /*
-             *                 .Include(s => s.Camp)
-                .Include(s => s.MedicalRecords.OrderByDescending(m => m.TreatmentDate))
-                .Include(s => s.CampMovements.OrderByDescending(m => m.MovementDate))
-             */
             var cow = _cowService.GetAllCow().FirstOrDefault(s => s.Id == id);
 
             if (cow == null)
             {
                 return NotFound();
             }
-            //sheep.MedicalRecords = _medicalRecordService.GetBySheepId(id);
-            //sheep.CampMovements = _campMovementService.GetBySheepId(id);
-
-            // Load related data via EF for details view
             try
             {
                 cow.MedicalRecords = await _context.MedicalRecords
@@ -320,6 +355,9 @@ namespace LiveStock.Web.Controllers
 
             return View(cow);
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Deletes a cow after removing related medical records to avoid FK conflicts"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> RemoveCow(int id)
         {
             try
@@ -341,6 +379,9 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpGet]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Prepares cow edit view with camps and selected cow context"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult CowEditDetails(int id)
         {
             ViewBag.Camps = _context.Camps.OrderBy(c => c.CampNumber).ToList();
@@ -349,6 +390,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates cow details, manages photo upload/deletion, and records update note"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> UpdateCow(Cow cow, IFormFile? Photo)
         {
             Cow newCow = new()
@@ -397,6 +442,10 @@ namespace LiveStock.Web.Controllers
         }
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Uploads a new sheep photo, updates its URL, and saves changes"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> UpdateSheepPhoto(int id, IFormFile Photo)
         {
             if (Photo == null)
@@ -419,6 +468,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Uploads a new cow photo, updates its URL, and saves changes"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> UpdateCowPhoto(int id, IFormFile Photo)
         {
             if (Photo == null)
@@ -441,6 +494,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates cow pregnancy status and expected calving date"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> UpdatePregnancyStatus(int id, bool isPregnant, DateTime? expectedCalvingDate)
         {
             var cow = await _context.Cows.FindAsync(id);
@@ -454,6 +511,10 @@ namespace LiveStock.Web.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(CowDetails), new { id });
         }
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Performs batch actions (e.g., deactivate, move) on selected cows"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult CowBulkActions(string action, string reason, HashSet<int> selectedCowID)
         {
             if (selectedCowID == null || selectedCowID.Count == 0)
@@ -465,12 +526,20 @@ namespace LiveStock.Web.Controllers
             return RedirectToAction(nameof(Cows));
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Generates a PDF report of cows and returns it as a file"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult GenerateCowReport()
         {
             var file = _cowService.GenerateCowReport();
             return File(file, "application/pdf", "CowReport.pdf");
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Exports cow data to CSV and returns the file"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult ExportCow()
         {
             var result = _cowService.ExportCow();
@@ -480,6 +549,9 @@ namespace LiveStock.Web.Controllers
         #endregion
 
         #region Camp Management
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Displays all camps with their animals ordered by camp number"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> Camps()
         {
             var camps = await _context.Camps
@@ -491,6 +563,9 @@ namespace LiveStock.Web.Controllers
             return View(camps);
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Shows camp details including animals and rainfall history"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> CampDetails(int id)
         {
             var camp = await _context.Camps
@@ -509,6 +584,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Moves a sheep or cow between camps and records the movement"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> MoveAnimal(int animalId, string animalType, int fromCampId, int toCampId, string? reason)
         {
             var movement = new CampMovement
@@ -558,6 +637,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Adds a rainfall record to a camp; supports AJAX and redirects"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> AddRainfallForCamp(int campId, double amountMl, string? notes, DateTime rainfallDate)
         {
             try
@@ -607,6 +690,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Clears all rainfall records for a camp; supports AJAX and redirects"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> ClearRainfallForCamp(int campId)
         {
             try
@@ -638,6 +725,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates camp properties (name, number, hectares, description) and saves"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> UpdateCamp(int id, string Name, int CampNumber, double Hectares, string? Description)
         {
             var camp = await _context.Camps.FindAsync(id);
@@ -657,6 +748,9 @@ namespace LiveStock.Web.Controllers
         #endregion
 
         #region Staff Management
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Lists active staff members"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> Staff()
         {
             var staff = await _context.Staff
@@ -666,12 +760,19 @@ namespace LiveStock.Web.Controllers
             return View(staff);
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Shows the Add Staff form"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult AddStaff()
         {
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Adds a staff member, sets defaults, and saves"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> AddStaff(Staff staff)
         {
             if (ModelState.IsValid)
@@ -686,6 +787,9 @@ namespace LiveStock.Web.Controllers
             return View(staff);
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Shows the edit view for a staff member"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> EditStaff(int id)
         {
             var staff = await _context.Staff.FindAsync(id);
@@ -697,6 +801,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates staff details and persists changes"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> EditStaff(Staff staff)
         {
             if (ModelState.IsValid)
@@ -719,6 +827,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Soft-deletes a staff member by marking them inactive"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> DeleteStaff(int id)
         {
             var staff = await _context.Staff.FindAsync(id);
@@ -732,6 +844,9 @@ namespace LiveStock.Web.Controllers
             return RedirectToAction(nameof(Staff));
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Shows tasks assigned to the specified staff member"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> StaffTasks(int staffId)
         {
             var tasks = await _context.FarmTasks
@@ -746,6 +861,9 @@ namespace LiveStock.Web.Controllers
         #endregion
 
         #region Task Management
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Displays all farm tasks along with staff and recent messages"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> Tasks()
         {
             var tasks = await _context.FarmTasks
@@ -764,6 +882,9 @@ namespace LiveStock.Web.Controllers
             return View(tasks);
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Shows the Create Task form with active staff list"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult CreateTask()
         {
             ViewBag.Staff = _context.Staff.Where(s => s.IsActive).ToList();
@@ -771,6 +892,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Creates a new task; sets CreatedById, timestamps, validates, and saves"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> CreateTask(FarmTask task)
         {
             // Debug logging - what did we receive?
@@ -834,6 +959,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Marks a task as completed and redirects appropriately by role"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> CompleteTask(int taskId)
         {
             var task = await _context.FarmTasks.FindAsync(taskId);
@@ -854,6 +983,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates a task's status and sets or clears completion timestamp"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> UpdateTaskStatus(int taskId, string status)
         {
             var task = await _context.FarmTasks.FindAsync(taskId);
@@ -883,6 +1016,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Deletes a completed task (admin-only) and redirects to task list"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> DeleteTask(int taskId)
         {
             // Only admins can delete tasks
@@ -911,6 +1048,9 @@ namespace LiveStock.Web.Controllers
         #endregion
 
         #region Water/Rainfall Management
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Displays water overview with camps and rainfall records"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> Water()
         {
             var camps = await _context.Camps
@@ -932,6 +1072,10 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Adds a rainfall measurement to a camp and saves"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> AddRainfall(int campId, double amountMl)
         {
             var rainfall = new RainfallRecord
@@ -950,6 +1094,9 @@ namespace LiveStock.Web.Controllers
         #endregion
 
         #region Assets & Finance
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Displays assets ordered by category and name"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> Assets()
         {
             var assets = await _context.Assets
@@ -962,6 +1109,9 @@ namespace LiveStock.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Adds an asset after validation; logs and redirects to list"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> AddAsset(Asset asset)
         {
             Console.WriteLine("[AddAsset] Incoming asset:");
@@ -1000,6 +1150,9 @@ namespace LiveStock.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Removes an asset by id if found, then redirects"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> RemoveAsset(int id)
         {
             Console.WriteLine($"[RemoveAsset] Request to delete asset id={id}");
@@ -1017,6 +1170,9 @@ namespace LiveStock.Web.Controllers
             return RedirectToAction(nameof(Assets));
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Shows the edit view for a single asset"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> EditAsset(int id)
         {
             var asset = await _context.Assets.FindAsync(id);
@@ -1029,6 +1185,9 @@ namespace LiveStock.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates asset fields and saves changes"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> EditAsset(Asset input)
         {
             Console.WriteLine($"[EditAsset] Incoming update for id={input.Id}");
@@ -1069,6 +1228,9 @@ namespace LiveStock.Web.Controllers
             return RedirectToAction(nameof(Assets));
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Displays financial records ordered by transaction date"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> Finance()
         {
             var financialRecords = await _context.FinancialRecords
@@ -1081,6 +1243,9 @@ namespace LiveStock.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Adds a financial record after validation and timestamps"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> AddFinancialRecord(LiveStock.Core.Models.FinancialRecord record)
         {
             if (!ModelState.IsValid)
@@ -1097,6 +1262,9 @@ namespace LiveStock.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Deletes a financial record by id and redirects"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> DeleteFinancialRecord(int id)
         {
             var existing = await _context.FinancialRecords.FindAsync(id);
@@ -1111,6 +1279,9 @@ namespace LiveStock.Web.Controllers
         }
 
         [HttpGet]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Shows the edit form for a financial record"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> EditFinancialRecord(int id)
         {
             var record = await _context.FinancialRecords.FindAsync(id);
@@ -1123,6 +1294,9 @@ namespace LiveStock.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates a financial record's fields and saves"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> EditFinancialRecord(LiveStock.Core.Models.FinancialRecord record)
         {
             if (!ModelState.IsValid)
@@ -1150,6 +1324,9 @@ namespace LiveStock.Web.Controllers
         }
                 
         #region Notes
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Displays the current user's notes, optionally filtered by category"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult Notes(string? category)
         {
             var userIdStr = HttpContext.Session.GetString("UserId");
@@ -1176,6 +1353,9 @@ namespace LiveStock.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Creates a note for the current user after model validation"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult CreateNote([Bind("Title,Content,Category")] Note input)
         {
             var userIdStr = HttpContext.Session.GetString("UserId");
@@ -1215,6 +1395,9 @@ namespace LiveStock.Web.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Deletes the current user's note by id"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult DeleteNote(int id)
         {
             var userIdStr = HttpContext.Session.GetString("UserId");
@@ -1237,6 +1420,9 @@ namespace LiveStock.Web.Controllers
         // Livestock
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Adds a sheep or cow to a camp with defaults and saves"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> AddLivestockToCamp(int campId, string animalType, string Breed, DateOnly BirthDate, string Gender, decimal Price, string? EarTag, bool? IsPregnant, DateTime? ExpectedCalvingDate, string? Notes)
         {
             if (animalType == "Sheep")
@@ -1289,6 +1475,9 @@ namespace LiveStock.Web.Controllers
         // Chat/Staff Communication
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Sends a staff message or broadcast, resolving sender and persisting"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> SendMessage(string content, int? recipientId, int? senderId)
         {
             if (string.IsNullOrWhiteSpace(content))
@@ -1340,7 +1529,11 @@ namespace LiveStock.Web.Controllers
         #endregion
 
         #region Medicine
-                [HttpPost]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Adds a medical record for a sheep or cow and redirects to details"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> AddMedicalRecord(string animalType, DateTime TreatmentDate, string Treatment, string? Veterinarian, decimal? Cost, string? Notes, int? SheepId, int? CowId)
         {
             if (string.IsNullOrWhiteSpace(animalType) || string.IsNullOrWhiteSpace(Treatment))

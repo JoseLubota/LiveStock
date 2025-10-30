@@ -1,6 +1,7 @@
 @{
     var userIdStr = Context.Session.GetString("UserId");
     int userID = int.TryParse(userIdStr, out var uid) ? uid : 0;
+    var userRole =  Context.Session.GetString("UserRole");
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -35,10 +36,18 @@
                                 <a class="btn btn-warning" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                             </li>
                         </ul>
-                    }else{
+                    }else if(userID != 0 && userRole  == "Admin" ){
                         <ul class="navbar-nav align-items-center">
                             <li class="nav-item">
                                 <a class="btn btn-warning" asp-area="" asp-controller="Management" asp-action="Dashboard">Dashboard</a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item">
+                                <a class="btn btn-warning" asp-area="" asp-controller="Employee" asp-action="Dashboard">Employee Dashboard</a>
                             </li>
                         </ul>
                     }

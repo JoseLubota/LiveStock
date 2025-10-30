@@ -19,11 +19,17 @@ namespace LiveStock.Web.Service
     {
         private readonly LiveStockDbContext _context;
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Initializes staff service with EF DbContext"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public staffService(LiveStockDbContext context)
         {
             _context = context;
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Returns all staff ordered by name"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IEnumerable<Staff>> GetAllStaffAsync()
         {
             return await _context.Staff
@@ -31,6 +37,9 @@ namespace LiveStock.Web.Service
                 .ToListAsync();
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Returns only active staff ordered by name"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IEnumerable<Staff>> GetActiveStaffAsync()
         {
             return await _context.Staff
@@ -39,6 +48,9 @@ namespace LiveStock.Web.Service
                 .ToListAsync();
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Gets a staff member by id, including assigned tasks"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<Staff?> GetStaffByIdAsync(int id)
         {
             return await _context.Staff
@@ -46,6 +58,9 @@ namespace LiveStock.Web.Service
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Adds a new staff member after verifying employee ID is unique"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<bool> AddStaffAsync(Staff staff)
         {
             try
@@ -72,6 +87,9 @@ namespace LiveStock.Web.Service
             }
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates staff details and sets updated timestamp"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<bool> UpdateStaffAsync(Staff staff)
         {
             try
@@ -98,6 +116,9 @@ namespace LiveStock.Web.Service
             }
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Soft deletes a staff member by marking them inactive"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<bool> RemoveStaffAsync(int id)
         {
             try
@@ -121,6 +142,9 @@ namespace LiveStock.Web.Service
             }
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Counts total active staff members"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<int> GetTotalStaffCount()
         {
             return await _context.Staff.CountAsync(s => s.IsActive);

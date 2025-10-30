@@ -9,11 +9,17 @@ namespace LiveStock.Web.Service
         public readonly string conString;
 
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Initializes admin service with DB connection string"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public adminService(IConfiguration configuration)
         {
             conString = configuration.GetConnectionString("AzureConString");
         }
         //----------------------------------------------------------
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Validates admin credentials in DB and returns user ID if found"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public int checkUser(string email, string password)
         {
             int userID = -1;
@@ -42,6 +48,9 @@ namespace LiveStock.Web.Service
             return userID;
         }
         //------------------------------------------------------------------------------------------------------------
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Returns configured database connection string"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public string GetConnection()
         {
             return conString;

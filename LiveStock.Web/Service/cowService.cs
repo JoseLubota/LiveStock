@@ -3,7 +3,6 @@ using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using iText.Kernel.Colors;
-// Note: Avoid importing iText.Kernel.Geom to prevent 'Path' ambiguity with System.IO.Path
 using LiveStock.Core.Models;
 using Microsoft.Data.SqlClient;
 
@@ -13,11 +12,17 @@ namespace LiveStock.Web.Service
     {
         private readonly string _conString;
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Initializes cow service with database connection string"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
         public cowService(IConfiguration configuration)
         {
             _conString = configuration.GetConnectionString("AzureConString");
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Inserts a new cow record, including pregnancy data and optional notes"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void AddCow(string earTag, string breed, DateOnly birdthDate, int camp, string gender, decimal price, string photoURL, DateTime createdAt, bool IsPregnant, DateTime? expectedCalvingDate, string? notes)
         {
             if (!IsPregnant)
@@ -47,6 +52,9 @@ namespace LiveStock.Web.Service
                 cmd.ExecuteNonQuery();
             }
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Fetches all cows from the database and maps to models"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public Queue<Cow> GetAllCow()
         {
             Queue<Cow> cowQueue = new Queue<Cow>();
@@ -93,6 +101,9 @@ namespace LiveStock.Web.Service
 
             return cowQueue;
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Deletes a cow by ID from the database"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void DeleteCow(int id)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -115,6 +126,9 @@ namespace LiveStock.Web.Service
             }
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Returns a single cow by ID wrapped in a queue"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public Queue<Cow> getCowByID(int ID)
         {
             Cow cow = GetAllCow().FirstOrDefault(c => c.Id == ID);
@@ -124,6 +138,9 @@ namespace LiveStock.Web.Service
             return cowQueue;
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Fills missing fields on current cow entries using new details"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public Queue<Cow> FillVoidCowFields(Queue<Cow> currentCow, Queue<Cow> newCowDetails)
         {
             Queue<Cow> result = [];
@@ -155,6 +172,9 @@ namespace LiveStock.Web.Service
             return result;
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates cow properties including pregnancy, photo, and notes"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void UpdateCow(Cow updateCow)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -192,6 +212,9 @@ namespace LiveStock.Web.Service
             }
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Performs bulk operations (sell, delete, move, status) on cows"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void CowBulkActions(string action, string reason, HashSet<int> cowId)
         {
             switch (action)
@@ -255,6 +278,9 @@ namespace LiveStock.Web.Service
             }
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Records sale income for a cow using its price and details"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void MarkCowAsSold(int id, string? reference)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -301,6 +327,9 @@ namespace LiveStock.Web.Service
                 }
             }
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates a cow's assigned camp"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void MoveCowToCamp(int id, int campID)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -320,6 +349,9 @@ namespace LiveStock.Web.Service
             }
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Marks a cow as inactive"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void MarkCowAsInactive(int id)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -337,6 +369,9 @@ namespace LiveStock.Web.Service
             }
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Marks a cow as active"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void MarkCowAsActive(int id)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -353,6 +388,9 @@ namespace LiveStock.Web.Service
                 }
             }
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Exports cow data to a CSV byte array"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public byte[] ExportCow()
         {
             var sheepList = GetAllCow();
@@ -369,6 +407,9 @@ namespace LiveStock.Web.Service
             return bytes;
 
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Generates a PDF report summarizing cow details"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public byte[] GenerateCowReport()
         {
 
@@ -440,6 +481,9 @@ namespace LiveStock.Web.Service
 
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Saves an uploaded cow photo to disk and returns its URL"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<string> SaveCowPhoto(IFormFile photo)
         {
 
@@ -456,6 +500,9 @@ namespace LiveStock.Web.Service
 
             return "/uploads/cow/" + fileName;
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Deletes the cow's photo file from disk if it exists"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void DeleteCowPhoto(int sheepID)
         {
             var sheepList = getCowByID(sheepID);

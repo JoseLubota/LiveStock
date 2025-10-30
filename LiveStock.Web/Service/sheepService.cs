@@ -16,11 +16,17 @@ namespace LiveStock.Web.Service
     {
         private readonly string _conString;
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Initializes sheep service with database connection string"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public sheepService(IConfiguration configuration)
         {
             _conString = configuration.GetConnectionString("AzureConString");
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Inserts a new sheep and returns the generated ID"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public int AddSheep(string breed, DateOnly birthDate, int camp, DateTime createdAt, string gender, decimal price, string? notes, string? photoURL)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -51,6 +57,9 @@ namespace LiveStock.Web.Service
                 }
             }
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Fetches all sheep from the database and maps to models"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public Queue<Sheep> GetAllSheep()
         {
             Queue<Sheep> sheepQueue = new Queue<Sheep>();
@@ -92,6 +101,9 @@ namespace LiveStock.Web.Service
 
             return sheepQueue;
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Deletes a sheep by ID from the database"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void DeleteSheep(int id)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -114,6 +126,9 @@ namespace LiveStock.Web.Service
             }
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Returns the specified sheep's details in a queue"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public Queue<Sheep> getSheepById(int id)
         {
             Queue<Sheep> sheepList = new Queue<Sheep>();
@@ -155,6 +170,9 @@ namespace LiveStock.Web.Service
             return sheepList;
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Fills missing fields on current sheep entries using new details"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public Queue<Sheep> FillVoidSheppFields(Queue<Sheep> currentShepp, Queue<Sheep> newSheppDetails)
         {
             Queue<Sheep> result = [];
@@ -182,6 +200,9 @@ namespace LiveStock.Web.Service
             return result;
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates sheep properties including photo, notes, and timestamps"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void UpdateSheep(Sheep updateSheep)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -216,6 +237,9 @@ namespace LiveStock.Web.Service
             }
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Performs bulk operations (sell, delete, move, status) on sheep"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void SheepBulkActions(string action, string reason, HashSet<int> ids)
         {
             switch (action)
@@ -279,6 +303,9 @@ namespace LiveStock.Web.Service
             }
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Soft marks a sheep as sold and records income in finance"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void MarkSheepAsSold(int id, string? reference)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -333,6 +360,9 @@ namespace LiveStock.Web.Service
                 }
             }
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates a sheep's assigned camp"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void MoveSheepToCamp(int id, int campID)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -352,6 +382,9 @@ namespace LiveStock.Web.Service
             }
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Marks a sheep as inactive"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void MarkSheepAsInactive(int id)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -369,6 +402,9 @@ namespace LiveStock.Web.Service
             }
         }
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Marks a sheep as active"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void MarkSheepAsActive(int id)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -385,6 +421,9 @@ namespace LiveStock.Web.Service
                 }
             }
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Exports sheep data to a CSV byte array"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public byte[] ExportSheep()
         {
             var sheepList = GetAllSheep();
@@ -402,6 +441,9 @@ namespace LiveStock.Web.Service
             return bytes;
 
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Generates a PDF report summarizing sheep details"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public byte[] GenerateSheepReport()
         {
 
@@ -471,6 +513,9 @@ namespace LiveStock.Web.Service
 
         } 
 
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Saves an uploaded sheep photo to disk and returns its URL"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<string> SaveSheepPhoto(IFormFile photo)
         {
 
@@ -487,6 +532,9 @@ namespace LiveStock.Web.Service
             
             return "/uploads/sheep/" + fileName;
         }
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Deletes the sheep's photo file from disk if it exists"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void DeleteSheepPhoto(int id)
         {
             var sheepList = getSheepById(id);
