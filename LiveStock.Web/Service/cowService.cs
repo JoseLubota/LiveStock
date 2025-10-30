@@ -199,6 +199,31 @@ namespace LiveStock.Web.Service
                 case "markSold":
                     foreach (int id in cowId)
                     {
+                        // Soft-sell only: update status and record income
+                        MarkCowAsSold(id, reason);
+                    }
+                    break;
+
+                case "delete":
+                    foreach (int id in cowId)
+                    {
+                        // Remove dependent records first to avoid FK conflicts
+                        using (SqlConnection con = new SqlConnection(_conString))
+                        {
+                            con.Open();
+                            using (SqlCommand delMed = new SqlCommand("DELETE FROM MedicalRecords WHERE AnimalType = 'Cow' AND CowId = @id", con))
+                            {
+                                delMed.Parameters.AddWithValue("@id", id);
+                                delMed.ExecuteNonQuery();
+                            }
+                            using (SqlCommand delMoves = new SqlCommand("DELETE FROM CampMovements WHERE CowId = @id", con))
+                            {
+                                delMoves.Parameters.AddWithValue("@id", id);
+                                delMoves.ExecuteNonQuery();
+                            }
+                        }
+
+                        // Hard delete the cow
                         DeleteCow(id);
                     }
                     break;
@@ -227,6 +252,53 @@ namespace LiveStock.Web.Service
                         MarkCowAsActive(id);
                     }
                     break;
+            }
+        }
+
+        public void MarkCowAsSold(int id, string? reference)
+        {
+            using (SqlConnection con = new SqlConnection(_conString))
+            {
+                con.Open();
+
+                // Get sale amount (Price) and basic info
+                decimal? amount = null;
+                string breed = string.Empty;
+                string earTag = string.Empty;
+                using (SqlCommand getCmd = new SqlCommand("SELECT Price, Breed, EarTag FROM Cows WHERE Id = @id", con))
+                {
+                    getCmd.Parameters.AddWithValue("@id", id);
+                    using (var reader = getCmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            amount = reader.IsDBNull(0) ? (decimal?)null : reader.GetDecimal(0);
+                            breed = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+                            earTag = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+                        }
+                    }
+                }
+
+                if (amount == null)
+                {
+                    // No cow found or price missing; skip
+                    return;
+                }
+                // Record income in FinancialRecords
+                using (SqlCommand finCmd = new SqlCommand(@"INSERT INTO FinancialRecords
+                    (Type, Description, Amount, TransactionDate, Category, Reference, Notes, CreatedAt)
+                    VALUES (@type, @description, @amount, @transactionDate, @category, @reference, @notes, @createdAt)", con))
+                {
+                    finCmd.Parameters.AddWithValue("@type", "Income");
+                    finCmd.Parameters.AddWithValue("@description", $"Cow Sold - ID {id} ({earTag} {breed})");
+                    finCmd.Parameters.AddWithValue("@amount", amount);
+                    finCmd.Parameters.AddWithValue("@transactionDate", DateTime.UtcNow);
+                    finCmd.Parameters.AddWithValue("@category", "Livestock Sales");
+                    finCmd.Parameters.AddWithValue("@reference", (object?)reference ?? DBNull.Value);
+                    finCmd.Parameters.AddWithValue("@notes", DBNull.Value);
+                    finCmd.Parameters.AddWithValue("@createdAt", DateTime.UtcNow);
+                    finCmd.ExecuteNonQuery();
+                }
             }
         }
         public void MoveCowToCamp(int id, int campID)

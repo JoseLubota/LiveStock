@@ -1,36 +1,42 @@
 {
   "format": 1,
   "restore": {
-    "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.API/LiveStock.API.csproj": {}
+    "D:\\repos\\LiveStock\\LiveStock.API\\LiveStock.API.csproj": {}
   },
   "projects": {
-    "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.API/LiveStock.API.csproj": {
+    "D:\\repos\\LiveStock\\LiveStock.API\\LiveStock.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.API/LiveStock.API.csproj",
+        "projectUniqueName": "D:\\repos\\LiveStock\\LiveStock.API\\LiveStock.API.csproj",
         "projectName": "LiveStock.API",
-        "projectPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.API/LiveStock.API.csproj",
-        "packagesPath": "/Users/mahefanyavo/.nuget/packages/",
-        "outputPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.API/obj/",
+        "projectPath": "D:\\repos\\LiveStock\\LiveStock.API\\LiveStock.API.csproj",
+        "packagesPath": "C:\\Users\\Alexi\\.nuget\\packages\\",
+        "outputPath": "D:\\repos\\LiveStock\\LiveStock.API\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/mahefanyavo/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Alexi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/LiveStock.Core.csproj": {
-                "projectPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/LiveStock.Core.csproj"
+              "D:\\repos\\LiveStock\\LiveStock.Core\\LiveStock.Core.csproj": {
+                "projectPath": "D:\\repos\\LiveStock\\LiveStock.Core\\LiveStock.Core.csproj"
               },
-              "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Infrastructure/LiveStock.Infrastructure.csproj": {
-                "projectPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Infrastructure/LiveStock.Infrastructure.csproj"
+              "D:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj": {
+                "projectPath": "D:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj"
               }
             }
           }
@@ -45,7 +51,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net9.0": {
@@ -89,26 +95,32 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/LiveStock.Core.csproj": {
+    "D:\\repos\\LiveStock\\LiveStock.Core\\LiveStock.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/LiveStock.Core.csproj",
+        "projectUniqueName": "D:\\repos\\LiveStock\\LiveStock.Core\\LiveStock.Core.csproj",
         "projectName": "LiveStock.Core",
-        "projectPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/LiveStock.Core.csproj",
-        "packagesPath": "/Users/mahefanyavo/.nuget/packages/",
-        "outputPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/obj/",
+        "projectPath": "D:\\repos\\LiveStock\\LiveStock.Core\\LiveStock.Core.csproj",
+        "packagesPath": "C:\\Users\\Alexi\\.nuget\\packages\\",
+        "outputPath": "D:\\repos\\LiveStock\\LiveStock.Core\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/mahefanyavo/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Alexi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -127,7 +139,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net9.0": {
@@ -148,34 +160,40 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Infrastructure/LiveStock.Infrastructure.csproj": {
+    "D:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Infrastructure/LiveStock.Infrastructure.csproj",
+        "projectUniqueName": "D:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj",
         "projectName": "LiveStock.Infrastructure",
-        "projectPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Infrastructure/LiveStock.Infrastructure.csproj",
-        "packagesPath": "/Users/mahefanyavo/.nuget/packages/",
-        "outputPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Infrastructure/obj/",
+        "projectPath": "D:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Alexi\\.nuget\\packages\\",
+        "outputPath": "D:\\repos\\LiveStock\\LiveStock.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/mahefanyavo/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Alexi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/LiveStock.Core.csproj": {
-                "projectPath": "/Users/mahefanyavo/Documents/GitHub/LiveStock/LiveStock.Core/LiveStock.Core.csproj"
+              "D:\\repos\\LiveStock\\LiveStock.Core\\LiveStock.Core.csproj": {
+                "projectPath": "D:\\repos\\LiveStock\\LiveStock.Core\\LiveStock.Core.csproj"
               }
             }
           }
@@ -190,7 +208,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net9.0": {
@@ -233,7 +251,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

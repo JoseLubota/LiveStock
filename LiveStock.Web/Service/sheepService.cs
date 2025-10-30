@@ -26,31 +26,29 @@ namespace LiveStock.Web.Service
             using (SqlConnection con = new SqlConnection(_conString))
             {
                 con.Open();
-                
-                // Get the next SheepID
-                string getMaxIdSql = "SELECT ISNULL(MAX(SheepID), 0) + 1 FROM Sheep";
-                SqlCommand getMaxIdCmd = new SqlCommand(getMaxIdSql, con);
-                int nextSheepId = (int)getMaxIdCmd.ExecuteScalar();
 
-                string sql = @"INSERT INTO Sheep (Id, Breed, BirthDate, CampId, Gender, Price, Notes, PhotoUrl, Status, IsActive, CreatedAt)
-                              VALUES(@sheepId, @breed, @birthDate, @campId, @gender, @price, @notes, @photoUrl, @status, @isActive, @createdAt)";
+                // Insert sheep and return generated Id (avoid SheepID column entirely)
+                string sql = @"INSERT INTO Sheep (Breed, BirthDate, CampId, Gender, Price, Notes, PhotoUrl, Status, IsActive, CreatedAt)
+                               OUTPUT INSERTED.Id
+                               VALUES(@breed, @birthDate, @campId, @gender, @price, @notes, @photoUrl, @status, @isActive, @createdAt)";
 
-                SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@Id", nextSheepId);
-                cmd.Parameters.AddWithValue("@breed", breed);
-                cmd.Parameters.AddWithValue("@birthDate", birthDate.ToDateTime(new TimeOnly(0,0)));
-                cmd.Parameters.AddWithValue("@campId", camp);
-                cmd.Parameters.AddWithValue("@gender", gender);
-                cmd.Parameters.AddWithValue("@price", price);
-                cmd.Parameters.AddWithValue("@notes", (object?)notes ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@photoUrl", (object?)photoURL ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@status", "Active");
-                cmd.Parameters.AddWithValue("@isActive", true);
-                cmd.Parameters.AddWithValue("@createdAt", createdAt);
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.Parameters.AddWithValue("@breed", breed);
+                    cmd.Parameters.AddWithValue("@birthDate", birthDate.ToDateTime(new TimeOnly(0,0)));
+                    cmd.Parameters.AddWithValue("@campId", camp);
+                    cmd.Parameters.AddWithValue("@gender", gender);
+                    cmd.Parameters.AddWithValue("@price", price);
+                    cmd.Parameters.AddWithValue("@notes", (object?)notes ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@photoUrl", (object?)photoURL ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@status", "Active");
+                    cmd.Parameters.AddWithValue("@isActive", true);
+                    cmd.Parameters.AddWithValue("@createdAt", createdAt);
 
-                cmd.ExecuteNonQuery();
-
-                return nextSheepId;
+                    var insertedIdObj = cmd.ExecuteScalar();
+                    int insertedId = Convert.ToInt32(insertedIdObj);
+                    return insertedId;
+                }
             }
         }
         public Queue<Sheep> GetAllSheep()
@@ -225,6 +223,31 @@ namespace LiveStock.Web.Service
                 case "markSold":
                     foreach (int id in ids)
                     {
+                        // Soft-sell only: update status and record income
+                        MarkSheepAsSold(id, reason);
+                    }
+                    break;
+
+                case "delete":
+                    foreach (int id in ids)
+                    {
+                        // Remove dependent records first to avoid FK conflicts
+                        using (SqlConnection con = new SqlConnection(_conString))
+                        {
+                            con.Open();
+                            using (SqlCommand delMed = new SqlCommand("DELETE FROM MedicalRecords WHERE AnimalType = 'Sheep' AND SheepId = @id", con))
+                            {
+                                delMed.Parameters.AddWithValue("@id", id);
+                                delMed.ExecuteNonQuery();
+                            }
+                            using (SqlCommand delMoves = new SqlCommand("DELETE FROM CampMovements WHERE SheepId = @id", con))
+                            {
+                                delMoves.Parameters.AddWithValue("@id", id);
+                                delMoves.ExecuteNonQuery();
+                            }
+                        }
+
+                        // Hard delete the sheep
                         DeleteSheep(id);
                     }
                     break;
@@ -253,6 +276,61 @@ namespace LiveStock.Web.Service
                         MarkSheepAsActive(id);
                     }
                     break;
+            }
+        }
+
+        public void MarkSheepAsSold(int id, string? reference)
+        {
+            using (SqlConnection con = new SqlConnection(_conString))
+            {
+                con.Open();
+
+                // Get sale amount (Price) and basic info
+                decimal? amount = null;
+                string breed = string.Empty;
+                using (SqlCommand getCmd = new SqlCommand("SELECT Price, Breed FROM Sheep WHERE Id = @id", con))
+                {
+                    getCmd.Parameters.AddWithValue("@id", id);
+                    using (var reader = getCmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            amount = reader.IsDBNull(0) ? (decimal?)null : reader.GetDecimal(0);
+                            breed = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+                        }
+                    }
+                }
+
+                if (amount == null)
+                {
+                    // No sheep found or price missing; skip
+                    return;
+                }
+
+                // Mark sheep as sold (soft-delete style)
+                using (SqlCommand updCmd = new SqlCommand("UPDATE Sheep SET Status = @status, IsActive = 0, UpdatedAt = @updatedAt WHERE Id = @id", con))
+                {
+                    updCmd.Parameters.AddWithValue("@status", "Sold");
+                    updCmd.Parameters.AddWithValue("@updatedAt", DateTime.UtcNow);
+                    updCmd.Parameters.AddWithValue("@id", id);
+                    updCmd.ExecuteNonQuery();
+                }
+
+                // Record income in FinancialRecords
+                using (SqlCommand finCmd = new SqlCommand(@"INSERT INTO FinancialRecords
+                    (Type, Description, Amount, TransactionDate, Category, Reference, Notes, CreatedAt)
+                    VALUES (@type, @description, @amount, @transactionDate, @category, @reference, @notes, @createdAt)", con))
+                {
+                    finCmd.Parameters.AddWithValue("@type", "Income");
+                    finCmd.Parameters.AddWithValue("@description", $"Sheep Sold - ID {id} ({breed})");
+                    finCmd.Parameters.AddWithValue("@amount", amount);
+                    finCmd.Parameters.AddWithValue("@transactionDate", DateTime.UtcNow);
+                    finCmd.Parameters.AddWithValue("@category", "Livestock Sales");
+                    finCmd.Parameters.AddWithValue("@reference", (object?)reference ?? DBNull.Value);
+                    finCmd.Parameters.AddWithValue("@notes", DBNull.Value);
+                    finCmd.Parameters.AddWithValue("@createdAt", DateTime.UtcNow);
+                    finCmd.ExecuteNonQuery();
+                }
             }
         }
         public void MoveSheepToCamp(int id, int campID)
