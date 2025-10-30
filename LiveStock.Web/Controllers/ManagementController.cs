@@ -1288,7 +1288,7 @@ namespace LiveStock.Web.Controllers
         // Chat/Staff Communication
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SendMessage(string content, int? recipientId)
+        public async Task<IActionResult> SendMessage(string content, int? recipientId, int? senderId)
         {
             if (string.IsNullOrWhiteSpace(content))
             {
@@ -1296,14 +1296,22 @@ namespace LiveStock.Web.Controllers
                 return RedirectToAction(nameof(Tasks));
             }
 
-            var userIdStr = HttpContext.Session.GetString("UserId");
-            int senderId;
-            if (!int.TryParse(userIdStr, out senderId))
+            // Resolve sender: prioritize provided senderId, otherwise fall back to session user or first active staff
+            int resolvedSenderId = 0;
+            if (senderId.HasValue && senderId.Value > 0)
             {
-                senderId = await _context.Staff.Where(s => s.IsActive).Select(s => s.Id).FirstOrDefaultAsync();
+                resolvedSenderId = senderId.Value;
+            }
+            else
+            {
+                var userIdStr = HttpContext.Session.GetString("UserId");
+                if (!int.TryParse(userIdStr, out resolvedSenderId))
+                {
+                    resolvedSenderId = await _context.Staff.Where(s => s.IsActive).Select(s => s.Id).FirstOrDefaultAsync();
+                }
             }
 
-            if (senderId == 0)
+            if (resolvedSenderId == 0)
             {
                 TempData["MessageError"] = "No active staff found to send message.";
                 return RedirectToAction(nameof(Tasks));
@@ -1311,7 +1319,7 @@ namespace LiveStock.Web.Controllers
 
             var message = new LiveStock.Core.Models.Message
             {
-                SenderId = senderId,
+                SenderId = resolvedSenderId,
                 RecipientId = recipientId,
                 Content = content,
                 IsBroadcast = recipientId == null,

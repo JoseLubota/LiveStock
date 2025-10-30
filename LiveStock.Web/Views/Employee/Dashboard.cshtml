@@ -118,6 +118,17 @@
                     <form asp-controller="Management" asp-action="SendMessage" method="post">
                         @Html.AntiForgeryToken()
                         <div class="mb-3">
+                            <label class="form-label">Sender</label>
+                            @{ var myUserIdStr = Context.Session.GetString("UserId"); int myUserId = 0; int.TryParse(myUserIdStr, out myUserId); }
+                            <select class="form-control" name="senderId" required>
+                                <option value="">Select sender</option>
+                                @foreach (var staff in ViewBag.Staff as List<LiveStock.Core.Models.Staff>)
+                                {
+                                    <option value="@staff.Id" selected="@(staff.Id == myUserId ? "selected" : null)">@staff.Name (@staff.EmployeeId)</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Message</label>
                             <textarea class="form-control" name="content" rows="3" placeholder="Type your message" required></textarea>
                         </div>
