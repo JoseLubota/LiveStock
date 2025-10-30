@@ -1,4 +1,4 @@
-﻿@model LiveStock.Core.Models.Cow
+@model LiveStock.Core.Models.Cow
 
 @{
     ViewData["Title"] = "Edit Cow Details";
@@ -98,7 +98,7 @@
                             <h5 class="mb-0"><i class="fas fa-plus me-2"></i>Update Cow Details</h5>
                         </div>
                         <div class="card-body">
-                            <form asp-action="UpdateCow" method="post" enctype="multipart/form-data">
+                            <form asp-action="UpdateCow" method="post" enctype="multipart/form-data" id="cowEditForm">
 
                                 <input asp-for="Id" value="@cowId"  hidden type="number" />
 
@@ -175,6 +175,11 @@
                                                     Is Pregnant
                                                 </label>
                                             </div>
+                                            <div class="mt-2">
+                                                <button type="button" id="markNotPregnantBtn" class="btn btn-outline-danger btn-sm">
+                                                    Mark Not Pregnant
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -188,7 +193,7 @@
 
                                 <div class="mb-3" id="calvingDateDiv" style="display: none;">
                                     <label class="form-label">Expected Calving Date:</label>
-                                    <input asp-for="ExpectedCalvingDate" type="date" class="form-control" name="expectedCalvingDate" />
+                                    <input asp-for="ExpectedCalvingDate" type="date" class="form-control" />
                                 </div>
 
                                 <div class="mb-3">
@@ -276,3 +281,40 @@
             box-shadow: 0 0 0 0.2rem rgba(78, 113, 69, 0.25);
         }
 </style>
+<script>
+    (function() {
+        const pregnantCheckbox = document.getElementById('isPregnant');
+        const calvingDiv = document.getElementById('calvingDateDiv');
+        const calvingInput = calvingDiv ? calvingDiv.querySelector('input[type="date"]') : null;
+        const form = document.getElementById('cowEditForm');
+        const markNotPregnantBtn = document.getElementById('markNotPregnantBtn');
+
+        function syncCalvingVisibility() {
+            if (!pregnantCheckbox || !calvingDiv) return;
+            const isPregnant = pregnantCheckbox.checked;
+            calvingDiv.style.display = isPregnant ? 'block' : 'none';
+            if (!isPregnant && calvingInput) {
+                calvingInput.value = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', syncCalvingVisibility);
+        if (pregnantCheckbox) {
+            pregnantCheckbox.addEventListener('change', syncCalvingVisibility);
+        }
+        if (markNotPregnantBtn) {
+            markNotPregnantBtn.addEventListener('click', function() {
+                if (pregnantCheckbox) {
+                    pregnantCheckbox.checked = false;
+                }
+                syncCalvingVisibility();
+                if (calvingInput) {
+                    calvingInput.value = '';
+                }
+                if (form) {
+                    form.submit();
+                }
+            });
+        }
+    })();
+</script>

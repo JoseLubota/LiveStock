@@ -5,17 +5,18 @@ using LiveStock.Core.Models;
 using LiveStock.Web.Models;
 using LiveStock.Web.ViewModels;
 using LiveStock.Web.Service;
+using LiveStock.Infrastructure.Data;
 
 namespace LiveStock.Web.Controllers
 {
     public class ManagementController : Controller
     {
-        private readonly LiveStock.Infrastructure.Data.LiveStockDbContext _context;
+        private readonly LiveStockDbContext _context;
         private readonly sheepService _sheepService;
         private readonly cowService _cowService;
         private readonly INoteService _noteService;
 
-        public ManagementController(LiveStock.Infrastructure.Data.LiveStockDbContext context, sheepService sheepService, cowService cowService, INoteService noteService)
+        public ManagementController(LiveStockDbContext context, sheepService sheepService, cowService cowService, INoteService noteService)
         {
             _context = context;
             _sheepService = sheepService;
@@ -361,7 +362,7 @@ namespace LiveStock.Web.Controllers
                 Price = cow.Price,
                 UpdatedAt = DateTime.UtcNow,
                 IsPregnant = cow.IsPregnant,
-                ExpectedCalvingDate = cow.ExpectedCalvingDate,
+                ExpectedCalvingDate = cow.IsPregnant ? cow.ExpectedCalvingDate : null,
                 Notes = cow.Notes
             };
 
