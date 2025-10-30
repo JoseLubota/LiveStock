@@ -15,13 +15,15 @@ namespace LiveStock.Web.Service
     public class noteService : INoteService
     {
         private readonly LiveStockDbContext _context;
+        private readonly ILogger<noteService> _logger;
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         // "Initializes note service with EF DbContext"
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
-        public noteService(LiveStockDbContext context)
+        public noteService(LiveStockDbContext context, ILogger<noteService> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -29,22 +31,30 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<List<Note>> GetUserNotesAsync(int userId, string? category = null, int? take = null)
         {
-            var query = _context.Notes
-                .Where(n => n.CreatedByUserId == userId)
-                .OrderByDescending(n => n.CreatedAt)
-                .AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(category) && !string.Equals(category, "All", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                query = query.Where(n => n.Category == category);
-            }
+                var query = _context.Notes
+                    .Where(n => n.CreatedByUserId == userId)
+                    .OrderByDescending(n => n.CreatedAt)
+                    .AsQueryable();
 
-            if (take.HasValue && take.Value > 0)
+                if (!string.IsNullOrWhiteSpace(category) && !string.Equals(category, "All", StringComparison.OrdinalIgnoreCase))
+                {
+                    query = query.Where(n => n.Category == category);
+                }
+
+                if (take.HasValue && take.Value > 0)
+                {
+                    query = query.Take(take.Value);
+                }
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
             {
-                query = query.Take(take.Value);
+                _logger.LogError(ex, "GetUserNotesAsync failed for UserId {UserId}", userId);
+                return new List<Note>();
             }
-
-            return await query.ToListAsync();
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -52,8 +62,16 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<Note?> GetNoteByIdAsync(int id, int userId)
         {
-            return await _context.Notes
-                .FirstOrDefaultAsync(n => n.Id == id && n.CreatedByUserId == userId);
+            try
+            {
+                return await _context.Notes
+                    .FirstOrDefaultAsync(n => n.Id == id && n.CreatedByUserId == userId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GetNoteByIdAsync failed for NoteId {NoteId} and UserId {UserId}", id, userId);
+                return null;
+            }
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -61,29 +79,36 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<Note?> CreateNoteAsync(int userId, string title, string content, string category, DateTime? createdAt = null)
         {
-            if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(content) || string.IsNullOrWhiteSpace(category))
+            try
             {
+                if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(content) || string.IsNullOrWhiteSpace(category))
+                {
+                    return null;
+                }
+
+                title = title.Trim();
+                content = content.Trim();
+                category = category.Trim();
+
+                var note = new Note
+                {
+                    Title = title,
+                    Content = content,
+                    Category = category,
+                    CreatedByUserId = userId,
+                    CreatedAt = createdAt ?? DateTime.UtcNow,
+                    UpdatedAt = null
+                };
+
+                _context.Notes.Add(note);
+                await _context.SaveChangesAsync();
+                return note;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "CreateNoteAsync failed for UserId {UserId}", userId);
                 return null;
             }
-
-            // Trim and enforce reasonable limits (mirrors model attributes)
-            title = title.Trim();
-            content = content.Trim();
-            category = category.Trim();
-
-            var note = new Note
-            {
-                Title = title,
-                Content = content,
-                Category = category,
-                CreatedByUserId = userId,
-                CreatedAt = createdAt ?? DateTime.UtcNow,
-                UpdatedAt = null
-            };
-
-            _context.Notes.Add(note);
-            await _context.SaveChangesAsync();
-            return note;
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -91,16 +116,24 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<bool> DeleteNoteAsync(int id, int userId)
         {
-            var note = await _context.Notes
-                .FirstOrDefaultAsync(n => n.Id == id && n.CreatedByUserId == userId);
-            if (note == null)
+            try
             {
+                var note = await _context.Notes
+                    .FirstOrDefaultAsync(n => n.Id == id && n.CreatedByUserId == userId);
+                if (note == null)
+                {
+                    return false;
+                }
+
+                _context.Notes.Remove(note);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "DeleteNoteAsync failed for NoteId {NoteId} and UserId {UserId}", id, userId);
                 return false;
             }
-
-            _context.Notes.Remove(note);
-            await _context.SaveChangesAsync();
-            return true;
         }
     }
 }

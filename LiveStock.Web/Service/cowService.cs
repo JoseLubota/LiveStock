@@ -11,13 +11,15 @@ namespace LiveStock.Web.Service
     public class cowService
     {
         private readonly string _conString;
+        private readonly ILogger<cowService> _logger;
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         // "Initializes cow service with database connection string"
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-        public cowService(IConfiguration configuration)
+        public cowService(IConfiguration configuration, ILogger<cowService> logger)
         {
             _conString = configuration.GetConnectionString("AzureConString");
+            _logger = logger;
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -25,31 +27,36 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void AddCow(string earTag, string breed, DateOnly birdthDate, int camp, string gender, decimal price, string photoURL, DateTime createdAt, bool IsPregnant, DateTime? expectedCalvingDate, string? notes)
         {
-            if (!IsPregnant)
-                IsPregnant = false;
-
-            using (SqlConnection con = new SqlConnection(_conString))
+            try
             {
-                string sql = @"INSERT INTO Cows (EarTag, Breed, BirthDate, CampId, Gender, Price, CreatedAt, IsActive, PhotoUrl, IsPregnant, ExpectedCalvingDate, Notes)
-                              VALUES(@earTag, @breed, @birthDate, @campId, @gender, @price, @createdAt, 1, @photoURL, @ispregnant, @expectedCalvingDate, @notes)";
+                if (!IsPregnant)
+                    IsPregnant = false;
 
-                SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@earTag", earTag);
-                cmd.Parameters.AddWithValue("@breed", breed);
-                cmd.Parameters.AddWithValue("@birthDate", birdthDate);
-                cmd.Parameters.AddWithValue("@campId", camp);
-                cmd.Parameters.AddWithValue("@gender", gender);
-                cmd.Parameters.AddWithValue("@price", price);
-                cmd.Parameters.AddWithValue("@createdAt", createdAt);
-                cmd.Parameters.AddWithValue("@photoURL", photoURL);
-                cmd.Parameters.AddWithValue("@ispregnant", IsPregnant);
-                cmd.Parameters.AddWithValue("@expectedCalvingDate", expectedCalvingDate.HasValue ? (object)expectedCalvingDate.Value : DBNull.Value);
-                cmd.Parameters.AddWithValue("@notes", (object?)notes ?? DBNull.Value);
+                using (SqlConnection con = new SqlConnection(_conString))
+                {
+                    string sql = @"INSERT INTO Cows (EarTag, Breed, BirthDate, CampId, Gender, Price, CreatedAt, IsActive, PhotoUrl, IsPregnant, ExpectedCalvingDate, Notes)
+                                  VALUES(@earTag, @breed, @birthDate, @campId, @gender, @price, @createdAt, 1, @photoURL, @ispregnant, @expectedCalvingDate, @notes)";
 
-                //cmd.Parameters.AddWithValue("@photoID", (object?)photoID ?? DBNull.Value);
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@earTag", earTag);
+                    cmd.Parameters.AddWithValue("@breed", breed);
+                    cmd.Parameters.AddWithValue("@birthDate", birdthDate);
+                    cmd.Parameters.AddWithValue("@campId", camp);
+                    cmd.Parameters.AddWithValue("@gender", gender);
+                    cmd.Parameters.AddWithValue("@price", price);
+                    cmd.Parameters.AddWithValue("@createdAt", createdAt);
+                    cmd.Parameters.AddWithValue("@photoURL", photoURL);
+                    cmd.Parameters.AddWithValue("@ispregnant", IsPregnant);
+                    cmd.Parameters.AddWithValue("@expectedCalvingDate", expectedCalvingDate.HasValue ? (object)expectedCalvingDate.Value : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@notes", (object?)notes ?? DBNull.Value);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "AddCow failed for EarTag {EarTag}", earTag);
             }
         }
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -57,72 +64,81 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public Queue<Cow> GetAllCow()
         {
-            Queue<Cow> cowQueue = new Queue<Cow>();
-
-            using (SqlConnection con = new SqlConnection(_conString))
+            try
             {
-                const string sql = "SELECT * FROM Cows";
-                SqlCommand cmd = new SqlCommand(sql, con);
+                Queue<Cow> cowQueue = new Queue<Cow>();
 
-                con.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlConnection con = new SqlConnection(_conString))
                 {
-                    while (reader.Read())
+                    const string sql = "SELECT * FROM Cows";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+
+                    con.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        var cow = new Cow
+                        while (reader.Read())
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            EarTag = reader.GetString(reader.GetOrdinal("EarTag")),
-                            Breed = reader.GetString(reader.GetOrdinal("Breed")),
-                            CampId = reader.GetInt32(reader.GetOrdinal("CampId")),
-                            Gender = reader.GetString(reader.GetOrdinal("Gender")),
-                            Price = reader.GetDecimal(reader.GetOrdinal("Price")),
-                            IsActive = reader.GetBoolean(reader.GetOrdinal("IsActive")),
-                            BirthDate = DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("BirthDate"))),
-                            CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
-                            PhotoUrl = reader.IsDBNull(reader.GetOrdinal("PhotoUrl"))
-                                       ? (string?)null : reader.GetString(reader.GetOrdinal("PhotoUrl")),
-                            Notes = reader.IsDBNull(reader.GetOrdinal("Notes"))
-                                       ? (string?)null : reader.GetString(reader.GetOrdinal("Notes")),
-                            IsPregnant = reader.GetBoolean(reader.GetOrdinal("IsPregnant")),
-                            ExpectedCalvingDate = reader.IsDBNull(reader.GetOrdinal("ExpectedCalvingDate"))
-                                       ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("ExpectedCalvingDate")),
-
-
-                            /*
-                             * reader.IsDBNull(reader.GetOrdinal("UpdatedAt"))
-                                        ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
-                             */
-                        };
-                        cowQueue.Enqueue(cow);
+                            var cow = new Cow
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                EarTag = reader.GetString(reader.GetOrdinal("EarTag")),
+                                Breed = reader.GetString(reader.GetOrdinal("Breed")),
+                                CampId = reader.GetInt32(reader.GetOrdinal("CampId")),
+                                Gender = reader.GetString(reader.GetOrdinal("Gender")),
+                                Price = reader.GetDecimal(reader.GetOrdinal("Price")),
+                                IsActive = reader.GetBoolean(reader.GetOrdinal("IsActive")),
+                                BirthDate = DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("BirthDate"))),
+                                CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+                                PhotoUrl = reader.IsDBNull(reader.GetOrdinal("PhotoUrl"))
+                                           ? (string?)null : reader.GetString(reader.GetOrdinal("PhotoUrl")),
+                                Notes = reader.IsDBNull(reader.GetOrdinal("Notes"))
+                                           ? (string?)null : reader.GetString(reader.GetOrdinal("Notes")),
+                                IsPregnant = reader.GetBoolean(reader.GetOrdinal("IsPregnant")),
+                                ExpectedCalvingDate = reader.IsDBNull(reader.GetOrdinal("ExpectedCalvingDate"))
+                                           ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("ExpectedCalvingDate")),
+                            };
+                            cowQueue.Enqueue(cow);
+                        }
                     }
                 }
-            }
 
-            return cowQueue;
+                return cowQueue;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GetAllCow failed");
+                return new Queue<Cow>();
+            }
         }
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         // "Deletes a cow by ID from the database"
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void DeleteCow(int id)
         {
-            using (SqlConnection con = new SqlConnection(_conString))
+            try
             {
-                const string sql = "DELETE FROM Cows WHERE Id = @id";
-                SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@id", id);
-
-                con.Open();
-                int rowsAffected = cmd.ExecuteNonQuery();
-
-                if (rowsAffected == 0)
+                using (SqlConnection con = new SqlConnection(_conString))
                 {
-                    Console.WriteLine($"No cow found");
+                    const string sql = "DELETE FROM Cows WHERE Id = @id";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    con.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                    {
+                        _logger.LogInformation("No cow found");
+                    }
+                    else
+                    {
+                        _logger.LogInformation("Cow with ID {CowId} deleted successfully", id);
+                    }
                 }
-                else
-                {
-                    Console.WriteLine($"Sheep with ID {id} deleted successfully.");
-                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "DeleteCow failed for ID {CowId}", id);
             }
         }
 
@@ -131,11 +147,21 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public Queue<Cow> getCowByID(int ID)
         {
-            Cow cow = GetAllCow().FirstOrDefault(c => c.Id == ID);
-            Queue<Cow> cowQueue = [];
-            cowQueue.Enqueue(cow);
-
-            return cowQueue;
+            try
+            {
+                Cow cow = GetAllCow().FirstOrDefault(c => c.Id == ID);
+                Queue<Cow> cowQueue = [];
+                if (cow != null)
+                {
+                    cowQueue.Enqueue(cow);
+                }
+                return cowQueue;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "getCowByID failed for ID {CowId}", ID);
+                return new Queue<Cow>();
+            }
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -143,33 +169,40 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public Queue<Cow> FillVoidCowFields(Queue<Cow> currentCow, Queue<Cow> newCowDetails)
         {
-            Queue<Cow> result = [];
-
-            foreach (var current in currentCow)
+            try
             {
-                Console.WriteLine($" New Cow Details has {newCowDetails.Count} entries");
-                var updated = newCowDetails.FirstOrDefault(s => s.Id == current.Id);
+                Queue<Cow> result = [];
 
-                if (updated != null)
+                foreach (var current in currentCow)
                 {
-                    // Fill in missing fields
-                    current.Breed = string.IsNullOrEmpty(updated.Breed) ? current.Breed : updated.Breed;
-                    current.EarTag = string.IsNullOrEmpty(updated.EarTag) ? current.EarTag : updated.EarTag;
-                    current.Gender = string.IsNullOrEmpty(updated.Gender) ? current.Gender : updated.Gender;
-                    current.CampId = updated.CampId == 0 ? current.CampId : updated.CampId;
-                    current.Price = updated.Price == 0 ? current.Price : updated.Price;
-                    current.BirthDate = updated.BirthDate == default ? current.BirthDate : updated.BirthDate;
-                    current.UpdatedAt = updated.UpdatedAt == default ? current.UpdatedAt : updated.UpdatedAt;
-                    current.PhotoUrl = string.IsNullOrEmpty(updated.PhotoUrl) ? current.PhotoUrl : updated.PhotoUrl;
-                    current.IsPregnant = updated.IsPregnant;
-                    current.ExpectedCalvingDate = updated.ExpectedCalvingDate;
-                    current.Notes = string.IsNullOrEmpty(updated.Notes) ? current.Notes : updated.Notes;
+                    _logger.LogInformation("New Cow Details has {Count} entries", newCowDetails.Count);
+                    var updated = newCowDetails.FirstOrDefault(s => s.Id == current.Id);
+
+                    if (updated != null)
+                    {
+                        current.Breed = string.IsNullOrEmpty(updated.Breed) ? current.Breed : updated.Breed;
+                        current.EarTag = string.IsNullOrEmpty(updated.EarTag) ? current.EarTag : updated.EarTag;
+                        current.Gender = string.IsNullOrEmpty(updated.Gender) ? current.Gender : updated.Gender;
+                        current.CampId = updated.CampId == 0 ? current.CampId : updated.CampId;
+                        current.Price = updated.Price == 0 ? current.Price : updated.Price;
+                        current.BirthDate = updated.BirthDate == default ? current.BirthDate : updated.BirthDate;
+                        current.UpdatedAt = updated.UpdatedAt == default ? current.UpdatedAt : updated.UpdatedAt;
+                        current.PhotoUrl = string.IsNullOrEmpty(updated.PhotoUrl) ? current.PhotoUrl : updated.PhotoUrl;
+                        current.IsPregnant = updated.IsPregnant;
+                        current.ExpectedCalvingDate = updated.ExpectedCalvingDate;
+                        current.Notes = string.IsNullOrEmpty(updated.Notes) ? current.Notes : updated.Notes;
+                    }
+                    result.Enqueue(current);
+
                 }
-                result.Enqueue(current);
 
+                return result;
             }
-
-            return result;
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "FillVoidCowFields failed");
+                return new Queue<Cow>();
+            }
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -177,38 +210,45 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void UpdateCow(Cow updateCow)
         {
-            using (SqlConnection con = new SqlConnection(_conString))
+            try
             {
-                const string sql = " UPDATE Cows SET EarTag = @earTag, Breed = @breed, CampId = @camp, Gender = @gender,Price = @price, BirthDate = @birthDate, UpdatedAt = @updatedAt, PhotoUrl = @photoUrl, IsPregnant = @ispregnant, ExpectedCalvingDate = @expectedCalvingDate, Notes = @notes WHERE Id = @id";
-
-                using (SqlCommand cmd = new SqlCommand(sql, con))
+                using (SqlConnection con = new SqlConnection(_conString))
                 {
-                    cmd.Parameters.AddWithValue("@Id", updateCow.Id);
-                    cmd.Parameters.AddWithValue("@earTag", updateCow.EarTag);
-                    cmd.Parameters.AddWithValue("@breed", updateCow.Breed);
-                    cmd.Parameters.AddWithValue("@camp", updateCow.CampId);
-                    cmd.Parameters.AddWithValue("@price", updateCow.Price);
-                    cmd.Parameters.AddWithValue("@birthDate", updateCow.BirthDate);
-                    cmd.Parameters.AddWithValue("@gender", updateCow.Gender);
-                    cmd.Parameters.AddWithValue("@updatedAt", updateCow.UpdatedAt);
-                    cmd.Parameters.AddWithValue("@photoUrl", updateCow.PhotoUrl);
-                    cmd.Parameters.AddWithValue("@ispregnant", updateCow.IsPregnant);
-                    cmd.Parameters.AddWithValue("@notes", updateCow.Notes);
-                    cmd.Parameters.AddWithValue("@expectedCalvingDate", updateCow.ExpectedCalvingDate.HasValue ? (object)updateCow.ExpectedCalvingDate.Value : DBNull.Value);
+                    const string sql = " UPDATE Cows SET EarTag = @earTag, Breed = @breed, CampId = @camp, Gender = @gender,Price = @price, BirthDate = @birthDate, UpdatedAt = @updatedAt, PhotoUrl = @photoUrl, IsPregnant = @ispregnant, ExpectedCalvingDate = @expectedCalvingDate, Notes = @notes WHERE Id = @id";
 
-                    con.Open();
-                    int rows = cmd.ExecuteNonQuery();
+                    using (SqlCommand cmd = new SqlCommand(sql, con))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", updateCow.Id);
+                        cmd.Parameters.AddWithValue("@earTag", updateCow.EarTag);
+                        cmd.Parameters.AddWithValue("@breed", updateCow.Breed);
+                        cmd.Parameters.AddWithValue("@camp", updateCow.CampId);
+                        cmd.Parameters.AddWithValue("@price", updateCow.Price);
+                        cmd.Parameters.AddWithValue("@birthDate", updateCow.BirthDate);
+                        cmd.Parameters.AddWithValue("@gender", updateCow.Gender);
+                        cmd.Parameters.AddWithValue("@updatedAt", updateCow.UpdatedAt);
+                        cmd.Parameters.AddWithValue("@photoUrl", updateCow.PhotoUrl);
+                        cmd.Parameters.AddWithValue("@ispregnant", updateCow.IsPregnant);
+                        cmd.Parameters.AddWithValue("@notes", updateCow.Notes);
+                        cmd.Parameters.AddWithValue("@expectedCalvingDate", updateCow.ExpectedCalvingDate.HasValue ? (object)updateCow.ExpectedCalvingDate.Value : DBNull.Value);
 
-                    if (rows == 0)
-                    {
-                        Console.WriteLine($"No Cow found with the ID {updateCow.Id}");
+                        con.Open();
+                        int rows = cmd.ExecuteNonQuery();
+
+                        if (rows == 0)
+                        {
+                            _logger.LogInformation("No Cow found with the ID {CowId}", updateCow.Id);
+                        }
+                        else
+                        {
+                            _logger.LogInformation("Updated Cow {CowId}", updateCow.Id);
+                        }
                     }
-                    else
-                    {
-                        Console.WriteLine($"Updated {updateCow.Id}");
-                    }
+
                 }
-
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "UpdateCow failed for ID {CowId}", updateCow?.Id);
             }
         }
 
@@ -217,64 +257,68 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void CowBulkActions(string action, string reason, HashSet<int> cowId)
         {
-            switch (action)
+            try
             {
-                case "markSold":
-                    foreach (int id in cowId)
-                    {
-                        // Soft-sell only: update status and record income
-                        MarkCowAsSold(id, reason);
-                    }
-                    break;
-
-                case "delete":
-                    foreach (int id in cowId)
-                    {
-                        // Remove dependent records first to avoid FK conflicts
-                        using (SqlConnection con = new SqlConnection(_conString))
-                        {
-                            con.Open();
-                            using (SqlCommand delMed = new SqlCommand("DELETE FROM MedicalRecords WHERE AnimalType = 'Cow' AND CowId = @id", con))
-                            {
-                                delMed.Parameters.AddWithValue("@id", id);
-                                delMed.ExecuteNonQuery();
-                            }
-                            using (SqlCommand delMoves = new SqlCommand("DELETE FROM CampMovements WHERE CowId = @id", con))
-                            {
-                                delMoves.Parameters.AddWithValue("@id", id);
-                                delMoves.ExecuteNonQuery();
-                            }
-                        }
-
-                        // Hard delete the cow
-                        DeleteCow(id);
-                    }
-                    break;
-
-                case "move":
-                    if (int.TryParse(reason, out int newCampId))
-                    {
+                switch (action)
+                {
+                    case "markSold":
                         foreach (int id in cowId)
                         {
-                            MoveCowToCamp(id, newCampId);
+                            MarkCowAsSold(id, reason);
                         }
+                        break;
 
-                    }
-                    break;
+                    case "delete":
+                        foreach (int id in cowId)
+                        {
+                            using (SqlConnection con = new SqlConnection(_conString))
+                            {
+                                con.Open();
+                                using (SqlCommand delMed = new SqlCommand("DELETE FROM MedicalRecords WHERE AnimalType = 'Cow' AND CowId = @id", con))
+                                {
+                                    delMed.Parameters.AddWithValue("@id", id);
+                                    delMed.ExecuteNonQuery();
+                                }
+                                using (SqlCommand delMoves = new SqlCommand("DELETE FROM CampMovements WHERE CowId = @id", con))
+                                {
+                                    delMoves.Parameters.AddWithValue("@id", id);
+                                    delMoves.ExecuteNonQuery();
+                                }
+                            }
 
-                case "markInactive":
-                    foreach (int id in cowId)
-                    {
-                        MarkCowAsInactive(id);
-                    }
-                    break;
+                            DeleteCow(id);
+                        }
+                        break;
 
-                case "markAactive":
-                    foreach (int id in cowId)
-                    {
-                        MarkCowAsActive(id);
-                    }
-                    break;
+                    case "move":
+                        if (int.TryParse(reason, out int newCampId))
+                        {
+                            foreach (int id in cowId)
+                            {
+                                MoveCowToCamp(id, newCampId);
+                            }
+
+                        }
+                        break;
+
+                    case "markInactive":
+                        foreach (int id in cowId)
+                        {
+                            MarkCowAsInactive(id);
+                        }
+                        break;
+
+                    case "markAactive":
+                        foreach (int id in cowId)
+                        {
+                            MarkCowAsActive(id);
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "CowBulkActions failed for action {Action} on {Count} ids", action, cowId?.Count ?? 0);
             }
         }
 
@@ -283,48 +327,53 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void MarkCowAsSold(int id, string? reference)
         {
-            using (SqlConnection con = new SqlConnection(_conString))
+            try
             {
-                con.Open();
-
-                // Get sale amount (Price) and basic info
-                decimal? amount = null;
-                string breed = string.Empty;
-                string earTag = string.Empty;
-                using (SqlCommand getCmd = new SqlCommand("SELECT Price, Breed, EarTag FROM Cows WHERE Id = @id", con))
+                using (SqlConnection con = new SqlConnection(_conString))
                 {
-                    getCmd.Parameters.AddWithValue("@id", id);
-                    using (var reader = getCmd.ExecuteReader())
+                    con.Open();
+
+                    decimal? amount = null;
+                    string breed = string.Empty;
+                    string earTag = string.Empty;
+                    using (SqlCommand getCmd = new SqlCommand("SELECT Price, Breed, EarTag FROM Cows WHERE Id = @id", con))
                     {
-                        if (reader.Read())
+                        getCmd.Parameters.AddWithValue("@id", id);
+                        using (var reader = getCmd.ExecuteReader())
                         {
-                            amount = reader.IsDBNull(0) ? (decimal?)null : reader.GetDecimal(0);
-                            breed = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
-                            earTag = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+                            if (reader.Read())
+                            {
+                                amount = reader.IsDBNull(0) ? (decimal?)null : reader.GetDecimal(0);
+                                breed = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+                                earTag = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+                            }
                         }
                     }
-                }
 
-                if (amount == null)
-                {
-                    // No cow found or price missing; skip
-                    return;
+                    if (amount == null)
+                    {
+                        _logger.LogInformation("Cow {CowId} not found or missing price for sale", id);
+                        return;
+                    }
+                    using (SqlCommand finCmd = new SqlCommand(@"INSERT INTO FinancialRecords
+                        (Type, Description, Amount, TransactionDate, Category, Reference, Notes, CreatedAt)
+                        VALUES (@type, @description, @amount, @transactionDate, @category, @reference, @notes, @createdAt)", con))
+                    {
+                        finCmd.Parameters.AddWithValue("@type", "Income");
+                        finCmd.Parameters.AddWithValue("@description", $"Cow Sold - ID {id} ({earTag} {breed})");
+                        finCmd.Parameters.AddWithValue("@amount", amount);
+                        finCmd.Parameters.AddWithValue("@transactionDate", DateTime.UtcNow);
+                        finCmd.Parameters.AddWithValue("@category", "Livestock Sales");
+                        finCmd.Parameters.AddWithValue("@reference", (object?)reference ?? DBNull.Value);
+                        finCmd.Parameters.AddWithValue("@notes", DBNull.Value);
+                        finCmd.Parameters.AddWithValue("@createdAt", DateTime.UtcNow);
+                        finCmd.ExecuteNonQuery();
+                    }
                 }
-                // Record income in FinancialRecords
-                using (SqlCommand finCmd = new SqlCommand(@"INSERT INTO FinancialRecords
-                    (Type, Description, Amount, TransactionDate, Category, Reference, Notes, CreatedAt)
-                    VALUES (@type, @description, @amount, @transactionDate, @category, @reference, @notes, @createdAt)", con))
-                {
-                    finCmd.Parameters.AddWithValue("@type", "Income");
-                    finCmd.Parameters.AddWithValue("@description", $"Cow Sold - ID {id} ({earTag} {breed})");
-                    finCmd.Parameters.AddWithValue("@amount", amount);
-                    finCmd.Parameters.AddWithValue("@transactionDate", DateTime.UtcNow);
-                    finCmd.Parameters.AddWithValue("@category", "Livestock Sales");
-                    finCmd.Parameters.AddWithValue("@reference", (object?)reference ?? DBNull.Value);
-                    finCmd.Parameters.AddWithValue("@notes", DBNull.Value);
-                    finCmd.Parameters.AddWithValue("@createdAt", DateTime.UtcNow);
-                    finCmd.ExecuteNonQuery();
-                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "MarkCowAsSold failed for ID {CowId}", id);
             }
         }
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -332,20 +381,27 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void MoveCowToCamp(int id, int campID)
         {
-            using (SqlConnection con = new SqlConnection(_conString))
+            try
             {
-                const string sql = "UPDATE Cows SET CampId = @campID WHERE Id = @Id";
-
-                using (SqlCommand cmd = new SqlCommand(sql, con))
+                using (SqlConnection con = new SqlConnection(_conString))
                 {
-                    cmd.Parameters.AddWithValue("@Id", id);
-                    cmd.Parameters.AddWithValue("@campID", campID);
+                    const string sql = "UPDATE Cows SET CampId = @campID WHERE Id = @Id";
 
-                    con.Open();
-                    int rows = cmd.ExecuteNonQuery();
-                    Console.WriteLine($"Move Cow to camp {rows} affected");
+                    using (SqlCommand cmd = new SqlCommand(sql, con))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", id);
+                        cmd.Parameters.AddWithValue("@campID", campID);
 
+                        con.Open();
+                        int rows = cmd.ExecuteNonQuery();
+                        _logger.LogInformation("Move Cow to camp affected {Rows} rows", rows);
+
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "MoveCowToCamp failed for ID {CowId} to camp {CampId}", id, campID);
             }
         }
 
@@ -354,18 +410,25 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void MarkCowAsInactive(int id)
         {
-            using (SqlConnection con = new SqlConnection(_conString))
+            try
             {
-                const string sql = "UPDATE Cows SET IsActive = 0 WHERE Id = @Id";
-
-                using (SqlCommand cmd = new SqlCommand(sql, con))
+                using (SqlConnection con = new SqlConnection(_conString))
                 {
-                    cmd.Parameters.AddWithValue("@Id", id);
+                    const string sql = "UPDATE Cows SET IsActive = 0 WHERE Id = @Id";
 
-                    con.Open();
-                    int rows = cmd.ExecuteNonQuery();
-                    Console.WriteLine($"Mark Cows as inactive {rows} affected");
+                    using (SqlCommand cmd = new SqlCommand(sql, con))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", id);
+
+                        con.Open();
+                        int rows = cmd.ExecuteNonQuery();
+                        _logger.LogInformation("Mark Cows as inactive affected {Rows} rows", rows);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "MarkCowAsInactive failed for ID {CowId}", id);
             }
         }
 
@@ -374,18 +437,25 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void MarkCowAsActive(int id)
         {
-            using (SqlConnection con = new SqlConnection(_conString))
+            try
             {
-                const string sql = "UPDATE Cows SET IsActive = 1 WHERE Id = @id";
-
-                using (SqlCommand cmd = new SqlCommand(sql, con))
+                using (SqlConnection con = new SqlConnection(_conString))
                 {
-                    cmd.Parameters.AddWithValue("@id", id);
+                    const string sql = "UPDATE Cows SET IsActive = 1 WHERE Id = @id";
 
-                    con.Open();
-                    int rows = cmd.ExecuteNonQuery();
-                    Console.WriteLine($"Mark Cows as active {rows} affected");
+                    using (SqlCommand cmd = new SqlCommand(sql, con))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+
+                        con.Open();
+                        int rows = cmd.ExecuteNonQuery();
+                        _logger.LogInformation("Mark Cows as active affected {Rows} rows", rows);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "MarkCowAsActive failed for ID {CowId}", id);
             }
         }
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -393,18 +463,26 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public byte[] ExportCow()
         {
-            var sheepList = GetAllCow();
-
-            var csvBuilder = new System.Text.StringBuilder();
-
-            csvBuilder.AppendLine("Id,Ear Tag,Breed,CampId,Gender,BirthDate,Price,IsActive,IsPregnant,ExpectedCalvingDate");
-            foreach (var item in sheepList)
+            try
             {
-                csvBuilder.AppendLine($"{item.EarTag},{item.EarTag},{item.Breed},{item.CampId},{item.Gender},{item.BirthDate},{item.Price},{item.IsActive},{item.IsPregnant},{item.ExpectedCalvingDate}");
-            }
+                var sheepList = GetAllCow();
 
-            var bytes = System.Text.Encoding.UTF8.GetBytes(csvBuilder.ToString());
-            return bytes;
+                var csvBuilder = new System.Text.StringBuilder();
+
+                csvBuilder.AppendLine("Id,Ear Tag,Breed,CampId,Gender,BirthDate,Price,IsActive,IsPregnant,ExpectedCalvingDate");
+                foreach (var item in sheepList)
+                {
+                    csvBuilder.AppendLine($"{item.EarTag},{item.EarTag},{item.Breed},{item.CampId},{item.Gender},{item.BirthDate},{item.Price},{item.IsActive},{item.IsPregnant},{item.ExpectedCalvingDate}");
+                }
+
+                var bytes = System.Text.Encoding.UTF8.GetBytes(csvBuilder.ToString());
+                return bytes;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ExportCow failed");
+                return Array.Empty<byte>();
+            }
 
         }
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -412,71 +490,74 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public byte[] GenerateCowReport()
         {
-
-            var cowQueue = GetAllCow();
-            using (var mstream = new MemoryStream())
+            try
             {
-                var writer = new PdfWriter(mstream);
-                var pdf = new PdfDocument(writer);
-                var doc = new Document(pdf, iText.Kernel.Geom.PageSize.A4);
-                doc.SetMargins(50, 50, 50, 50);
 
-                // Title
-                var title = new Paragraph("Cow Report")
-                    .SetTextAlignment(TextAlignment.CENTER)
-                    .SetFontSize(20)
-                    .SetBold();
-                doc.Add(title);
-
-                doc.Add(new Paragraph("\n"));
-                doc.Add(new Paragraph($"Date Generated: {DateTime.Now:MMMM-dd, yyyy HH:mm}")
-                    .SetFontSize(12)
-                    .SetFontColor(ColorConstants.GRAY));
-                doc.Add(new Paragraph($"Total Cows: {cowQueue.Count}")
-                    .SetFontSize(12)
-                    .SetFontColor(ColorConstants.GRAY));
-                doc.Add(new Paragraph("\n\n"));
-
-                // Table Setup
-                var table = new Table(new float[] {2f, 1.5f, 1.2f, 2f, 1.5f, 1.2f, 1.2f, 2f, 2f });
-                table.SetWidth(UnitValue.CreatePercentValue(100));
-
-                // Headers
-                string[] headers = {"Ear Tag", "Breed", "Camp ID", "Gender", "Birth Date", "Price", "Active", "IsPregnant", "ExpectedCalvingDate" };
-                foreach (string header in headers)
+                var cowQueue = GetAllCow();
+                using (var mstream = new MemoryStream())
                 {
-                    var cell = new Cell()
-                        .Add(new Paragraph(header).SetBold().SetFontColor(ColorConstants.WHITE))
-                        .SetBackgroundColor(new DeviceRgb(52, 73, 94))
+                    var writer = new PdfWriter(mstream);
+                    var pdf = new PdfDocument(writer);
+                    var doc = new Document(pdf, iText.Kernel.Geom.PageSize.A4);
+                    doc.SetMargins(50, 50, 50, 50);
+
+                    var title = new Paragraph("Cow Report")
                         .SetTextAlignment(TextAlignment.CENTER)
-                        .SetPadding(6);
-                    table.AddCell(cell);
-                }
-                // Data
-                foreach (var cow in cowQueue)
-                {
-                    table.AddCell(new Cell().Add(new Paragraph(cow.EarTag)));
-                    table.AddCell(new Cell().Add(new Paragraph(cow.Breed)));
-                    table.AddCell(new Cell().Add(new Paragraph($"Camp {cow.CampId}")));
-                    table.AddCell(new Cell().Add(new Paragraph(cow.Gender)));
-                    table.AddCell(new Cell().Add(new Paragraph(cow.BirthDate.ToString("MMMM-dd-yyyy"))));
-                    table.AddCell(new Cell().Add(new Paragraph($"R {cow.Price:N2}")));
-                    table.AddCell(new Cell().Add(new Paragraph(cow.IsActive ? "Yes" : "No")));
-                    table.AddCell(new Cell().Add(new Paragraph(cow.IsPregnant ? "Yes" : "No")));
-                    table.AddCell(new Cell().Add(new Paragraph(cow.ExpectedCalvingDate?.ToString("MMMM-dd-yyyy"))));
-                }
-                doc.Add(table);
+                        .SetFontSize(20)
+                        .SetBold();
+                    doc.Add(title);
 
-                // Footer
-                doc.Add(new Paragraph("\n\n"));
-                var footer = new Paragraph("")
-                    .SetTextAlignment(TextAlignment.CENTER)
-                    .SetFontSize(12)
-                    .SetFontColor(ColorConstants.GRAY);
-                doc.Add(footer);
-                doc.Close();
+                    doc.Add(new Paragraph("\n"));
+                    doc.Add(new Paragraph($"Date Generated: {DateTime.Now:MMMM-dd, yyyy HH:mm}")
+                        .SetFontSize(12)
+                        .SetFontColor(ColorConstants.GRAY));
+                    doc.Add(new Paragraph($"Total Cows: {cowQueue.Count}")
+                        .SetFontSize(12)
+                        .SetFontColor(ColorConstants.GRAY));
+                    doc.Add(new Paragraph("\n\n"));
 
-                return mstream.ToArray();
+                    var table = new Table(new float[] {2f, 1.5f, 1.2f, 2f, 1.5f, 1.2f, 1.2f, 2f, 2f });
+                    table.SetWidth(UnitValue.CreatePercentValue(100));
+
+                    string[] headers = {"Ear Tag", "Breed", "Camp ID", "Gender", "Birth Date", "Price", "Active", "IsPregnant", "ExpectedCalvingDate" };
+                    foreach (string header in headers)
+                    {
+                        var cell = new Cell()
+                            .Add(new Paragraph(header).SetBold().SetFontColor(ColorConstants.WHITE))
+                            .SetBackgroundColor(new DeviceRgb(52, 73, 94))
+                            .SetTextAlignment(TextAlignment.CENTER)
+                            .SetPadding(6);
+                        table.AddCell(cell);
+                    }
+                    foreach (var cow in cowQueue)
+                    {
+                        table.AddCell(new Cell().Add(new Paragraph(cow.EarTag)));
+                        table.AddCell(new Cell().Add(new Paragraph(cow.Breed)));
+                        table.AddCell(new Cell().Add(new Paragraph($"Camp {cow.CampId}")));
+                        table.AddCell(new Cell().Add(new Paragraph(cow.Gender)));
+                        table.AddCell(new Cell().Add(new Paragraph(cow.BirthDate.ToString("MMMM-dd-yyyy"))));
+                        table.AddCell(new Cell().Add(new Paragraph($"R {cow.Price:N2}")));
+                        table.AddCell(new Cell().Add(new Paragraph(cow.IsActive ? "Yes" : "No")));
+                        table.AddCell(new Cell().Add(new Paragraph(cow.IsPregnant ? "Yes" : "No")));
+                        table.AddCell(new Cell().Add(new Paragraph(cow.ExpectedCalvingDate?.ToString("MMMM-dd-yyyy"))));
+                    }
+                    doc.Add(table);
+
+                    doc.Add(new Paragraph("\n\n"));
+                    var footer = new Paragraph("")
+                        .SetTextAlignment(TextAlignment.CENTER)
+                        .SetFontSize(12)
+                        .SetFontColor(ColorConstants.GRAY);
+                    doc.Add(footer);
+                    doc.Close();
+
+                    return mstream.ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GenerateCowReport failed");
+                return Array.Empty<byte>();
             }
 
         }
@@ -486,39 +567,53 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<string> SaveCowPhoto(IFormFile photo)
         {
-
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/cow");
-            Directory.CreateDirectory(uploadsFolder);
-
-            var fileName = Guid.NewGuid() + Path.GetExtension(photo.FileName);
-            var filePath = Path.Combine(uploadsFolder, fileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            try
             {
-                await photo.CopyToAsync(stream);
-            }
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/cow");
+                Directory.CreateDirectory(uploadsFolder);
 
-            return "/uploads/cow/" + fileName;
+                var fileName = Guid.NewGuid() + Path.GetExtension(photo.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await photo.CopyToAsync(stream);
+                }
+                _logger.LogInformation("Saved cow photo {FileName}", fileName);
+                return "/uploads/cow/" + fileName;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "SaveCowPhoto failed");
+                return string.Empty;
+            }
         }
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         // "Deletes the cow's photo file from disk if it exists"
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public void DeleteCowPhoto(int sheepID)
         {
-            var sheepList = getCowByID(sheepID);
-            if (sheepList == null || sheepList.Count == 0)
-                return;
-
-            if (string.IsNullOrEmpty(sheepList.FirstOrDefault().PhotoUrl))
-                return;
-
-            var roothPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-            var filePath = Path.Combine(roothPath, sheepList.FirstOrDefault().PhotoUrl.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
-
-            if (File.Exists(filePath))
+            try
             {
-                File.Delete(filePath);
-                Console.WriteLine($"Deleted photo : {filePath}");
+                var sheepList = getCowByID(sheepID);
+                if (sheepList == null || sheepList.Count == 0)
+                    return;
+
+                if (string.IsNullOrEmpty(sheepList.FirstOrDefault().PhotoUrl))
+                    return;
+
+                var roothPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                var filePath = Path.Combine(roothPath, sheepList.FirstOrDefault().PhotoUrl.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                    _logger.LogInformation("Deleted photo: {FilePath}", filePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "DeleteCowPhoto failed for ID {CowId}", sheepID);
             }
         }
 

@@ -18,13 +18,15 @@ namespace LiveStock.Web.Service
     public class staffService : IStaffService
     {
         private readonly LiveStockDbContext _context;
+        private readonly ILogger<staffService> _logger;
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         // "Initializes staff service with EF DbContext"
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
-        public staffService(LiveStockDbContext context)
+        public staffService(LiveStockDbContext context, ILogger<staffService> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -32,9 +34,17 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IEnumerable<Staff>> GetAllStaffAsync()
         {
-            return await _context.Staff
-                .OrderBy(s => s.Name)
-                .ToListAsync();
+            try
+            {
+                return await _context.Staff
+                    .OrderBy(s => s.Name)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GetAllStaffAsync failed");
+                return Enumerable.Empty<Staff>();
+            }
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -42,10 +52,18 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IEnumerable<Staff>> GetActiveStaffAsync()
         {
-            return await _context.Staff
-                .Where(s => s.IsActive)
-                .OrderBy(s => s.Name)
-                .ToListAsync();
+            try
+            {
+                return await _context.Staff
+                    .Where(s => s.IsActive)
+                    .OrderBy(s => s.Name)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GetActiveStaffAsync failed");
+                return Enumerable.Empty<Staff>();
+            }
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -53,9 +71,17 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<Staff?> GetStaffByIdAsync(int id)
         {
-            return await _context.Staff
-                .Include(s => s.AssignedTasks)
-                .FirstOrDefaultAsync(s => s.Id == id);
+            try
+            {
+                return await _context.Staff
+                    .Include(s => s.AssignedTasks)
+                    .FirstOrDefaultAsync(s => s.Id == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GetStaffByIdAsync failed for ID {StaffId}", id);
+                return null;
+            }
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -65,7 +91,6 @@ namespace LiveStock.Web.Service
         {
             try
             {
-                // Check if employee ID already exists
                 var existingStaff = await _context.Staff
                     .FirstOrDefaultAsync(s => s.EmployeeId == staff.EmployeeId);
                 
@@ -81,8 +106,9 @@ namespace LiveStock.Web.Service
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "AddStaffAsync failed for EmployeeId {EmployeeId}", staff?.EmployeeId);
                 return false;
             }
         }
@@ -110,8 +136,9 @@ namespace LiveStock.Web.Service
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "UpdateStaffAsync failed for ID {StaffId}", staff?.Id);
                 return false;
             }
         }
@@ -129,15 +156,15 @@ namespace LiveStock.Web.Service
                     return false;
                 }
 
-                // Soft delete - just mark as inactive
                 staff.IsActive = false;
                 staff.UpdatedAt = DateTime.UtcNow;
                 
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "RemoveStaffAsync failed for ID {StaffId}", id);
                 return false;
             }
         }
@@ -147,7 +174,15 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<int> GetTotalStaffCount()
         {
-            return await _context.Staff.CountAsync(s => s.IsActive);
+            try
+            {
+                return await _context.Staff.CountAsync(s => s.IsActive);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GetTotalStaffCount failed");
+                return 0;
+            }
         }
     }
 }

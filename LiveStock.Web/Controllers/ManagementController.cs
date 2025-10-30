@@ -6,6 +6,7 @@ using LiveStock.Web.Models;
 using LiveStock.Web.ViewModels;
 using LiveStock.Web.Service;
 using LiveStock.Infrastructure.Data;
+using Microsoft.Extensions.Logging;
 
 namespace LiveStock.Web.Controllers
 {
@@ -15,42 +16,52 @@ namespace LiveStock.Web.Controllers
         private readonly sheepService _sheepService;
         private readonly cowService _cowService;
         private readonly INoteService _noteService;
+        private readonly ILogger<ManagementController> _logger;
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         // "Initializes management controller with DbContext and livestock/note services"
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
-        public ManagementController(LiveStockDbContext context, sheepService sheepService, cowService cowService, INoteService noteService)
+        public ManagementController(LiveStockDbContext context, sheepService sheepService, cowService cowService, INoteService noteService, ILogger<ManagementController> logger)
         {
             _context = context;
             _sheepService = sheepService;
             _cowService = cowService;
             _noteService = noteService;
+            _logger = logger;
         }
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         // "Displays the management dashboard with livestock, staff, task, and rainfall summaries"
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult Dashboard()
         {
-            var userId = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userId))
+            try
             {
-                return RedirectToAction("Login", "Account");
+                var userId = HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var dashboardViewModel = new DashboardViewModel
+                {
+                    TotalSheep = _sheepService.GetAllSheep().Count(c => c.IsActive),
+                    TotalCows = _cowService.GetAllCow().Count(c => c.IsActive),
+                    TotalStaff = _context.Staff.Count(s => s.IsActive),
+                    PendingTasks = _context.FarmTasks.Count(t => t.Status == "Pending"),
+                    RecentRainfall = _context.RainfallRecords
+                        .Include(r => r.Camp)
+                        .OrderByDescending(r => r.RainfallDate)
+                        .Take(5)
+                        .ToList()
+                };
+
+                return View(dashboardViewModel);
             }
-
-            var dashboardViewModel = new DashboardViewModel
+            catch (Exception ex)
             {
-                TotalSheep = _sheepService.GetAllSheep().Count(c => c.IsActive),
-                TotalCows = _cowService.GetAllCow().Count(c => c.IsActive),
-                TotalStaff = _context.Staff.Count(s => s.IsActive),
-                PendingTasks = _context.FarmTasks.Count(t => t.Status == "Pending"),
-                RecentRainfall = _context.RainfallRecords
-                    .Include(r => r.Camp)
-                    .OrderByDescending(r => r.RainfallDate)
-                    .Take(5)
-                    .ToList()
-            };
-
-            return View(dashboardViewModel);
+                _logger.LogError(ex, "Error loading management dashboard");
+                return StatusCode(500);
+            }
         }
 
         #region Sheep Management
@@ -684,7 +695,7 @@ namespace LiveStock.Web.Controllers
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"[AddRainfallForCamp] Error: {ex.Message}");
+                _logger.LogError(ex, "AddRainfallForCamp failed for campId={campId}");
                 return BadRequest("Failed to add rainfall record.");
             }
         }
@@ -719,7 +730,7 @@ namespace LiveStock.Web.Controllers
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"[ClearRainfallForCamp] Error: {ex.Message}");
+                _logger.LogError(ex, "ClearRainfallForCamp failed for campId={campId}");
                 return BadRequest("Failed to clear rainfall history.");
             }
         }
@@ -866,20 +877,28 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> Tasks()
         {
-            var tasks = await _context.FarmTasks
-                .Include(t => t.AssignedTo)
-                .Include(t => t.CreatedBy)
-                .OrderByDescending(t => t.CreatedAt)
-                .ToListAsync();
+            try
+            {
+                var tasks = await _context.FarmTasks
+                    .Include(t => t.AssignedTo)
+                    .Include(t => t.CreatedBy)
+                    .OrderByDescending(t => t.CreatedAt)
+                    .ToListAsync();
 
-            ViewBag.Staff = await _context.Staff.Where(s => s.IsActive).ToListAsync();
-            ViewBag.Messages = await _context.Messages
-                .Include(m => m.Sender)
-                .OrderByDescending(m => m.SentAt)
-                .Take(100)
-                .ToListAsync();
+                ViewBag.Staff = await _context.Staff.Where(s => s.IsActive).ToListAsync();
+                ViewBag.Messages = await _context.Messages
+                    .Include(m => m.Sender)
+                    .OrderByDescending(m => m.SentAt)
+                    .Take(100)
+                    .ToListAsync();
 
-            return View(tasks);
+                return View(tasks);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading Tasks view");
+                return StatusCode(500);
+            }
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -887,8 +906,16 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult CreateTask()
         {
-            ViewBag.Staff = _context.Staff.Where(s => s.IsActive).ToList();
-            return View();
+            try
+            {
+                ViewBag.Staff = _context.Staff.Where(s => s.IsActive).ToList();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error showing CreateTask form");
+                return StatusCode(500);
+            }
         }
 
         [HttpPost]
@@ -898,64 +925,54 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> CreateTask(FarmTask task)
         {
-            // Debug logging - what did we receive?
-            Console.WriteLine($"[CreateTask] Received task:");
-            Console.WriteLine($"  Description: '{task.Description}'");
-            Console.WriteLine($"  AssignedToId: {task.AssignedToId}");
-            Console.WriteLine($"  Importance: '{task.Importance}'");
-            Console.WriteLine($"  DueDate: {task.DueDate}");
-            Console.WriteLine($"  Notes: '{task.Notes}'");
-            Console.WriteLine($"  CreatedById (initial): {task.CreatedById}");
-
-            // Check if we have any active staff
-            var activeStaff = _context.Staff.Where(s => s.IsActive).ToList();
-            Console.WriteLine($"[CreateTask] Found {activeStaff.Count} active staff members");
-            foreach (var staff in activeStaff)
+            try
             {
-                Console.WriteLine($"  Staff: {staff.Id} - {staff.Name} ({staff.EmployeeId})");
-            }
+                _logger.LogInformation("CreateTask received: Description={Description}, AssignedToId={AssignedToId}, Importance={Importance}, DueDate={DueDate}, Notes={Notes}",
+                    task.Description, task.AssignedToId, task.Importance, task.DueDate, task.Notes);
 
-            // Set CreatedById BEFORE model validation to prevent foreign key validation errors
-            var userIdStr = HttpContext.Session.GetString("UserId");
-            int createdById;
-            if (!int.TryParse(userIdStr, out createdById))
-            {
-                // Fallback: use the assigned staff or first active staff if session is missing
-                var fallbackStaff = activeStaff.FirstOrDefault();
-                createdById = task.AssignedToId != 0
-                    ? task.AssignedToId
-                    : (fallbackStaff != null ? fallbackStaff.Id : 0);
-            }
+                var activeStaff = _context.Staff.Where(s => s.IsActive).ToList();
+                _logger.LogInformation("Active staff count: {Count}", activeStaff.Count);
 
-            Console.WriteLine($"[CreateTask] Setting CreatedById to: {createdById}");
-            task.CreatedById = createdById;
-            task.CreatedAt = DateTime.UtcNow;
-            task.Status = "Pending";
-
-            Console.WriteLine($"[CreateTask] Final task values before validation:");
-            Console.WriteLine($"  AssignedToId: {task.AssignedToId}");
-            Console.WriteLine($"  CreatedById: {task.CreatedById}");
-
-            if (ModelState.IsValid)
-            {
-                Console.WriteLine("[CreateTask] ModelState is valid, saving task...");
-                _context.FarmTasks.Add(task);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Tasks));
-            }
-
-            // Log ModelState errors to help diagnose why the form reloads
-            Console.WriteLine("[CreateTask] ModelState is INVALID:");
-            foreach (var kvp in ModelState)
-            {
-                foreach (var err in kvp.Value.Errors)
+                var userIdStr = HttpContext.Session.GetString("UserId");
+                int createdById;
+                if (!int.TryParse(userIdStr, out createdById))
                 {
-                    Console.WriteLine($"  {kvp.Key} - {err.ErrorMessage}");
+                    var fallbackStaff = activeStaff.FirstOrDefault();
+                    createdById = task.AssignedToId != 0
+                        ? task.AssignedToId
+                        : (fallbackStaff != null ? fallbackStaff.Id : 0);
                 }
-            }
 
-            ViewBag.Staff = activeStaff;
-            return View(task);
+                _logger.LogInformation("Setting CreatedById to: {CreatedById}", createdById);
+                task.CreatedById = createdById;
+                task.CreatedAt = DateTime.UtcNow;
+                task.Status = "Pending";
+
+                _logger.LogInformation("Final task values: AssignedToId={AssignedToId}, CreatedById={CreatedById}", task.AssignedToId, task.CreatedById);
+
+                if (ModelState.IsValid)
+                {
+                    _context.FarmTasks.Add(task);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Tasks));
+                }
+
+                foreach (var kvp in ModelState)
+                {
+                    foreach (var err in kvp.Value.Errors)
+                    {
+                        _logger.LogError("CreateTask validation error: {Key} - {Error}", kvp.Key, err.ErrorMessage);
+                    }
+                }
+
+                ViewBag.Staff = activeStaff;
+                return View(task);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating task");
+                return StatusCode(500);
+            }
         }
 
         [HttpPost]
@@ -965,21 +982,28 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> CompleteTask(int taskId)
         {
-            var task = await _context.FarmTasks.FindAsync(taskId);
-            if (task != null)
+            try
             {
-                task.Status = "Completed";
-                task.CompletedAt = DateTime.UtcNow;
-                await _context.SaveChangesAsync();
-            }
+                var task = await _context.FarmTasks.FindAsync(taskId);
+                if (task != null)
+                {
+                    task.Status = "Completed";
+                    task.CompletedAt = DateTime.UtcNow;
+                    await _context.SaveChangesAsync();
+                }
 
-            // Keep employees on their dashboard; admins go to Tasks
-            var role = HttpContext.Session.GetString("UserRole");
-            if (string.Equals(role, "Employee", StringComparison.OrdinalIgnoreCase))
-            {
-                return RedirectToAction("Dashboard", "Employee");
+                var role = HttpContext.Session.GetString("UserRole");
+                if (string.Equals(role, "Employee", StringComparison.OrdinalIgnoreCase))
+                {
+                    return RedirectToAction("Dashboard", "Employee");
+                }
+                return RedirectToAction(nameof(Tasks));
             }
-            return RedirectToAction(nameof(Tasks));
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error completing task Id={TaskId}", taskId);
+                return StatusCode(500);
+            }
         }
 
         [HttpPost]
@@ -989,30 +1013,38 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> UpdateTaskStatus(int taskId, string status)
         {
-            var task = await _context.FarmTasks.FindAsync(taskId);
-            if (task == null)
+            try
             {
-                return NotFound();
-            }
+                var task = await _context.FarmTasks.FindAsync(taskId);
+                if (task == null)
+                {
+                    return NotFound();
+                }
 
-            var allowed = new[] { "Pending", "In Progress", "Completed" };
-            if (!allowed.Contains(status))
-            {
-                return BadRequest("Invalid status");
-            }
+                var allowed = new[] { "Pending", "In Progress", "Completed" };
+                if (!allowed.Contains(status))
+                {
+                    return BadRequest("Invalid status");
+                }
 
-            task.Status = status;
-            if (status == "Completed")
-            {
-                task.CompletedAt = DateTime.UtcNow;
-            }
-            else
-            {
-                task.CompletedAt = null;
-            }
+                task.Status = status;
+                if (status == "Completed")
+                {
+                    task.CompletedAt = DateTime.UtcNow;
+                }
+                else
+                {
+                    task.CompletedAt = null;
+                }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Tasks));
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Tasks));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating task status Id={TaskId} Status={Status}", taskId, status);
+                return StatusCode(500);
+            }
         }
 
         [HttpPost]
@@ -1022,28 +1054,34 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> DeleteTask(int taskId)
         {
-            // Only admins can delete tasks
-            var role = HttpContext.Session.GetString("UserRole");
-            if (!string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                return Forbid();
-            }
+                var role = HttpContext.Session.GetString("UserRole");
+                if (!string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
+                {
+                    return Forbid();
+                }
 
-            var task = await _context.FarmTasks.FindAsync(taskId);
-            if (task == null)
+                var task = await _context.FarmTasks.FindAsync(taskId);
+                if (task == null)
+                {
+                    return NotFound();
+                }
+
+                if (!string.Equals(task.Status, "Completed", StringComparison.OrdinalIgnoreCase))
+                {
+                    return BadRequest("Only completed tasks can be deleted.");
+                }
+
+                _context.FarmTasks.Remove(task);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Tasks));
+            }
+            catch (Exception ex)
             {
-                return NotFound();
+                _logger.LogError(ex, "Error deleting task Id={TaskId}", taskId);
+                return StatusCode(500);
             }
-
-            // Restrict deletion to completed tasks only
-            if (!string.Equals(task.Status, "Completed", StringComparison.OrdinalIgnoreCase))
-            {
-                return BadRequest("Only completed tasks can be deleted.");
-            }
-
-            _context.FarmTasks.Remove(task);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Tasks));
         }
         #endregion
 
@@ -1053,22 +1091,30 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> Water()
         {
-            var camps = await _context.Camps
-                .OrderBy(c => c.CampNumber)
-                .ToListAsync();
-
-            var rainfallRecords = await _context.RainfallRecords
-                .Include(r => r.Camp)
-                .OrderByDescending(r => r.RainfallDate)
-                .ToListAsync();
-
-            var model = new LiveStock.Web.ViewModels.WaterViewModel
+            try
             {
-                Camps = camps,
-                RainfallRecords = rainfallRecords
-            };
+                var camps = await _context.Camps
+                    .OrderBy(c => c.CampNumber)
+                    .ToListAsync();
 
-            return View(model);
+                var rainfallRecords = await _context.RainfallRecords
+                    .Include(r => r.Camp)
+                    .OrderByDescending(r => r.RainfallDate)
+                    .ToListAsync();
+
+                var model = new LiveStock.Web.ViewModels.WaterViewModel
+                {
+                    Camps = camps,
+                    RainfallRecords = rainfallRecords
+                };
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading Water view");
+                return StatusCode(500);
+            }
         }
 
         [HttpPost]
@@ -1078,18 +1124,26 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> AddRainfall(int campId, double amountMl)
         {
-            var rainfall = new RainfallRecord
+            try
             {
-                CampId = campId,
-                RainfallDate = DateTime.UtcNow,
-                AmountMl = amountMl,
-                CreatedAt = DateTime.UtcNow
-            };
+                var rainfall = new RainfallRecord
+                {
+                    CampId = campId,
+                    RainfallDate = DateTime.UtcNow,
+                    AmountMl = amountMl,
+                    CreatedAt = DateTime.UtcNow
+                };
 
-            _context.RainfallRecords.Add(rainfall);
-            await _context.SaveChangesAsync();
+                _context.RainfallRecords.Add(rainfall);
+                await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Water));
+                return RedirectToAction(nameof(Water));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding rainfall campId={CampId}", campId);
+                return StatusCode(500);
+            }
         }
         #endregion
 
@@ -1114,38 +1168,42 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> AddAsset(Asset asset)
         {
-            Console.WriteLine("[AddAsset] Incoming asset:");
-            Console.WriteLine($"  Name={asset.Name}, Category={asset.Category}, Type={asset.Type}");
-            Console.WriteLine($"  Quantity={asset.Quantity}, Unit={asset.Unit}, PurchasePrice={asset.PurchasePrice}");
-            Console.WriteLine($"  PurchaseDate={asset.PurchaseDate}, Location={asset.Location}");
-
-            if (!ModelState.IsValid)
+            try
             {
-                Console.WriteLine("[AddAsset] ModelState INVALID");
-                foreach (var kvp in ModelState)
+                _logger.LogInformation("AddAsset received: Name={Name}, Category={Category}, Type={Type}, Quantity={Quantity}, Unit={Unit}, PurchasePrice={Price}, PurchaseDate={PurchaseDate}, Location={Location}",
+                    asset.Name, asset.Category, asset.Type, asset.Quantity, asset.Unit, asset.PurchasePrice, asset.PurchaseDate, asset.Location);
+
+                if (!ModelState.IsValid)
                 {
-                    foreach (var err in kvp.Value.Errors)
+                    foreach (var kvp in ModelState)
                     {
-                        Console.WriteLine($"  {kvp.Key} - {err.ErrorMessage}");
+                        foreach (var err in kvp.Value.Errors)
+                        {
+                            _logger.LogError("AddAsset validation error: {Key} - {Error}", kvp.Key, err.ErrorMessage);
+                        }
                     }
+                    var assets = await _context.Assets
+                        .OrderBy(a => a.Category)
+                        .ThenBy(a => a.Name)
+                        .ToListAsync();
+                    TempData["AssetError"] = "Could not add asset. Please check required fields.";
+                    return View(nameof(Assets), assets);
                 }
-                // Recompute list for counts and table if validation fails
-                var assets = await _context.Assets
-                    .OrderBy(a => a.Category)
-                    .ThenBy(a => a.Name)
-                    .ToListAsync();
-                TempData["AssetError"] = "Could not add asset. Please check required fields.";
-                return View(nameof(Assets), assets);
+
+                asset.Status = string.IsNullOrWhiteSpace(asset.Status) ? "Active" : asset.Status;
+                asset.CreatedAt = DateTime.UtcNow;
+                asset.UpdatedAt = null;
+
+                _context.Assets.Add(asset);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("Asset saved with Id={Id}", asset.Id);
+                return RedirectToAction(nameof(Assets));
             }
-
-            asset.Status = string.IsNullOrWhiteSpace(asset.Status) ? "Active" : asset.Status;
-            asset.CreatedAt = DateTime.UtcNow;
-            asset.UpdatedAt = null;
-
-            _context.Assets.Add(asset);
-            await _context.SaveChangesAsync();
-            Console.WriteLine($"[AddAsset] Saved asset #{asset.Id}");
-            return RedirectToAction(nameof(Assets));
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding asset");
+                return StatusCode(500);
+            }
         }
 
         [HttpPost]
@@ -1155,19 +1213,27 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> RemoveAsset(int id)
         {
-            Console.WriteLine($"[RemoveAsset] Request to delete asset id={id}");
-            var asset = await _context.Assets.FindAsync(id);
-            if (asset != null)
+            try
             {
-                _context.Assets.Remove(asset);
-                await _context.SaveChangesAsync();
-                Console.WriteLine($"[RemoveAsset] Deleted asset #{id}");
+                _logger.LogInformation("RemoveAsset requested for Id={Id}", id);
+                var asset = await _context.Assets.FindAsync(id);
+                if (asset != null)
+                {
+                    _context.Assets.Remove(asset);
+                    await _context.SaveChangesAsync();
+                    _logger.LogInformation("Asset deleted Id={Id}", id);
+                }
+                else
+                {
+                    _logger.LogInformation("Asset not found Id={Id}", id);
+                }
+                return RedirectToAction(nameof(Assets));
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine($"[RemoveAsset] Asset not found id={id}");
+                _logger.LogError(ex, "Error removing asset Id={Id}", id);
+                return StatusCode(500);
             }
-            return RedirectToAction(nameof(Assets));
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -1190,42 +1256,49 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> EditAsset(Asset input)
         {
-            Console.WriteLine($"[EditAsset] Incoming update for id={input.Id}");
-            if (!ModelState.IsValid)
+            try
             {
-                Console.WriteLine("[EditAsset] ModelState INVALID");
-                foreach (var kvp in ModelState)
+                _logger.LogInformation("EditAsset incoming update Id={Id}", input.Id);
+                if (!ModelState.IsValid)
                 {
-                    foreach (var err in kvp.Value.Errors)
+                    foreach (var kvp in ModelState)
                     {
-                        Console.WriteLine($"  {kvp.Key} - {err.ErrorMessage}");
+                        foreach (var err in kvp.Value.Errors)
+                        {
+                            _logger.LogError("EditAsset validation error: {Key} - {Error}", kvp.Key, err.ErrorMessage);
+                        }
                     }
+                    return View(input);
                 }
-                return View(input);
-            }
 
-            var asset = await _context.Assets.FindAsync(input.Id);
-            if (asset == null)
+                var asset = await _context.Assets.FindAsync(input.Id);
+                if (asset == null)
+                {
+                    return NotFound();
+                }
+
+                asset.Name = input.Name;
+                asset.Category = input.Category;
+                asset.Type = input.Type;
+                asset.Description = input.Description;
+                asset.Quantity = input.Quantity;
+                asset.Unit = input.Unit;
+                asset.PurchasePrice = input.PurchasePrice;
+                asset.PurchaseDate = input.PurchaseDate;
+                asset.ExpiryDate = input.ExpiryDate;
+                asset.Status = string.IsNullOrWhiteSpace(input.Status) ? asset.Status : input.Status;
+                asset.Location = input.Location;
+                asset.UpdatedAt = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("Asset updated Id={Id}", asset.Id);
+                return RedirectToAction(nameof(Assets));
+            }
+            catch (Exception ex)
             {
-                return NotFound();
+                _logger.LogError(ex, "Error editing asset Id={Id}", input.Id);
+                return StatusCode(500);
             }
-
-            asset.Name = input.Name;
-            asset.Category = input.Category;
-            asset.Type = input.Type;
-            asset.Description = input.Description;
-            asset.Quantity = input.Quantity;
-            asset.Unit = input.Unit;
-            asset.PurchasePrice = input.PurchasePrice;
-            asset.PurchaseDate = input.PurchaseDate;
-            asset.ExpiryDate = input.ExpiryDate;
-            asset.Status = string.IsNullOrWhiteSpace(input.Status) ? asset.Status : input.Status;
-            asset.Location = input.Location;
-            asset.UpdatedAt = DateTime.UtcNow;
-
-            await _context.SaveChangesAsync();
-            Console.WriteLine($"[EditAsset] Updated asset #{asset.Id}");
-            return RedirectToAction(nameof(Assets));
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -1329,26 +1402,34 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult Notes(string? category)
         {
-            var userIdStr = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userIdStr))
+            try
             {
-                return RedirectToAction("Login", "Account");
-            }
-            int userId = int.Parse(userIdStr);
-            var query = _context.Notes
-                .Where(n => n.CreatedByUserId == userId);
+                var userIdStr = HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userIdStr))
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                int userId = int.Parse(userIdStr);
+                var query = _context.Notes
+                    .Where(n => n.CreatedByUserId == userId);
 
-            if (!string.IsNullOrWhiteSpace(category) && !string.Equals(category, "All", StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrWhiteSpace(category) && !string.Equals(category, "All", StringComparison.OrdinalIgnoreCase))
+                {
+                    query = query.Where(n => n.Category == category);
+                }
+
+                var notes = query
+                    .OrderByDescending(n => n.CreatedAt)
+                    .ToList();
+
+                ViewBag.ActiveCategory = string.IsNullOrWhiteSpace(category) ? "All" : category;
+                return View(notes);
+            }
+            catch (Exception ex)
             {
-                query = query.Where(n => n.Category == category);
+                _logger.LogError(ex, "Error loading Notes category={Category}", category);
+                return StatusCode(500);
             }
-
-            var notes = query
-                .OrderByDescending(n => n.CreatedAt)
-                .ToList();
-
-            ViewBag.ActiveCategory = string.IsNullOrWhiteSpace(category) ? "All" : category;
-            return View(notes);
         }
 
         [HttpPost]
@@ -1358,39 +1439,46 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult CreateNote([Bind("Title,Content,Category")] Note input)
         {
-            var userIdStr = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userIdStr))
+            try
             {
-                return RedirectToAction("Login", "Account");
-            }
-            if (!ModelState.IsValid)
-            {
-                // Keep employees on dashboard when invalid
-                var roleInvalid = HttpContext.Session.GetString("UserRole");
-                if (string.Equals(roleInvalid, "Employee", StringComparison.OrdinalIgnoreCase))
+                var userIdStr = HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userIdStr))
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                if (!ModelState.IsValid)
+                {
+                    var roleInvalid = HttpContext.Session.GetString("UserRole");
+                    if (string.Equals(roleInvalid, "Employee", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return RedirectToAction("Dashboard", "Employee");
+                    }
+                    return RedirectToAction("Notes");
+                }
+                int userId = int.Parse(userIdStr);
+                var note = new Note
+                {
+                    Title = input.Title,
+                    Content = input.Content,
+                    Category = input.Category,
+                    CreatedByUserId = userId,
+                    CreatedAt = DateTime.UtcNow
+                };
+                _context.Notes.Add(note);
+                _context.SaveChanges();
+
+                var role = HttpContext.Session.GetString("UserRole");
+                if (string.Equals(role, "Employee", StringComparison.OrdinalIgnoreCase))
                 {
                     return RedirectToAction("Dashboard", "Employee");
                 }
                 return RedirectToAction("Notes");
             }
-            int userId = int.Parse(userIdStr);
-            var note = new Note
+            catch (Exception ex)
             {
-                Title = input.Title,
-                Content = input.Content,
-                Category = input.Category,
-                CreatedByUserId = userId,
-                CreatedAt = DateTime.UtcNow
-            };
-            _context.Notes.Add(note);
-            _context.SaveChanges();
-
-            var role = HttpContext.Session.GetString("UserRole");
-            if (string.Equals(role, "Employee", StringComparison.OrdinalIgnoreCase))
-            {
-                return RedirectToAction("Dashboard", "Employee");
+                _logger.LogError(ex, "Error creating note");
+                return StatusCode(500);
             }
-            return RedirectToAction("Notes");
         }
         
         [HttpPost]
@@ -1400,21 +1488,29 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public IActionResult DeleteNote(int id)
         {
-            var userIdStr = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userIdStr))
+            try
             {
-                return RedirectToAction("Login", "Account");
-            }
-            int userId = int.Parse(userIdStr);
+                var userIdStr = HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userIdStr))
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                int userId = int.Parse(userIdStr);
 
-            var note = _context.Notes.FirstOrDefault(n => n.Id == id && n.CreatedByUserId == userId);
-            if (note != null)
+                var note = _context.Notes.FirstOrDefault(n => n.Id == id && n.CreatedByUserId == userId);
+                if (note != null)
+                {
+                    _context.Notes.Remove(note);
+                    _context.SaveChanges();
+                }
+
+                return RedirectToAction(nameof(Notes));
+            }
+            catch (Exception ex)
             {
-                _context.Notes.Remove(note);
-                _context.SaveChanges();
+                _logger.LogError(ex, "Error deleting note Id={Id}", id);
+                return StatusCode(500);
             }
-
-            return RedirectToAction(nameof(Notes));
         }
         #endregion
         // Livestock
@@ -1425,51 +1521,59 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> AddLivestockToCamp(int campId, string animalType, string Breed, DateOnly BirthDate, string Gender, decimal Price, string? EarTag, bool? IsPregnant, DateTime? ExpectedCalvingDate, string? Notes)
         {
-            if (animalType == "Sheep")
+            try
             {
-                var sheep = new Sheep
+                if (animalType == "Sheep")
                 {
-                    Breed = Breed,
-                    BirthDate = BirthDate,
-                    CampId = campId,
-                    Gender = Gender,
-                    Price = Price,
-                    Status = "Active",
-                    CreatedAt = DateTime.UtcNow,
-                    IsActive = true,
-                    Notes = Notes
-                };
+                    var sheep = new Sheep
+                    {
+                        Breed = Breed,
+                        BirthDate = BirthDate,
+                        CampId = campId,
+                        Gender = Gender,
+                        Price = Price,
+                        Status = "Active",
+                        CreatedAt = DateTime.UtcNow,
+                        IsActive = true,
+                        Notes = Notes
+                    };
 
-                _context.Sheep.Add(sheep);
-                await _context.SaveChangesAsync();
-            }
-            else if (animalType == "Cow")
-            {
-                var cow = new Cow
+                    _context.Sheep.Add(sheep);
+                    await _context.SaveChangesAsync();
+                }
+                else if (animalType == "Cow")
                 {
-                    Breed = Breed,
-                    BirthDate = BirthDate,
-                    CampId = campId,
-                    Gender = Gender,
-                    Price = Price,
-                    Status = "Active",
-                    EarTag = EarTag,
-                    IsPregnant = IsPregnant ?? false,
-                    ExpectedCalvingDate = ExpectedCalvingDate,
-                    CreatedAt = DateTime.UtcNow,
-                    IsActive = true,
-                    Notes = Notes
-                };
+                    var cow = new Cow
+                    {
+                        Breed = Breed,
+                        BirthDate = BirthDate,
+                        CampId = campId,
+                        Gender = Gender,
+                        Price = Price,
+                        Status = "Active",
+                        EarTag = EarTag,
+                        IsPregnant = IsPregnant ?? false,
+                        ExpectedCalvingDate = ExpectedCalvingDate,
+                        CreatedAt = DateTime.UtcNow,
+                        IsActive = true,
+                        Notes = Notes
+                    };
 
-                _context.Cows.Add(cow);
-                await _context.SaveChangesAsync();
+                    _context.Cows.Add(cow);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return BadRequest("Unsupported animal type.");
+                }
+
+                return RedirectToAction(nameof(CampDetails), new { id = campId });
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("Unsupported animal type.");
+                _logger.LogError(ex, "Error adding livestock to campId={CampId} animalType={AnimalType}", campId, animalType);
+                return StatusCode(500);
             }
-
-            return RedirectToAction(nameof(CampDetails), new { id = campId });
         }
 
         // Chat/Staff Communication
@@ -1480,51 +1584,58 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> SendMessage(string content, int? recipientId, int? senderId)
         {
-            if (string.IsNullOrWhiteSpace(content))
+            try
             {
-                TempData["MessageError"] = "Message cannot be empty.";
-                return RedirectToAction(nameof(Tasks));
-            }
-
-            // Resolve sender: prioritize provided senderId, otherwise fall back to session user or first active staff
-            int resolvedSenderId = 0;
-            if (senderId.HasValue && senderId.Value > 0)
-            {
-                resolvedSenderId = senderId.Value;
-            }
-            else
-            {
-                var userIdStr = HttpContext.Session.GetString("UserId");
-                if (!int.TryParse(userIdStr, out resolvedSenderId))
+                if (string.IsNullOrWhiteSpace(content))
                 {
-                    resolvedSenderId = await _context.Staff.Where(s => s.IsActive).Select(s => s.Id).FirstOrDefaultAsync();
+                    TempData["MessageError"] = "Message cannot be empty.";
+                    return RedirectToAction(nameof(Tasks));
                 }
-            }
 
-            if (resolvedSenderId == 0)
-            {
-                TempData["MessageError"] = "No active staff found to send message.";
+                int resolvedSenderId = 0;
+                if (senderId.HasValue && senderId.Value > 0)
+                {
+                    resolvedSenderId = senderId.Value;
+                }
+                else
+                {
+                    var userIdStr = HttpContext.Session.GetString("UserId");
+                    if (!int.TryParse(userIdStr, out resolvedSenderId))
+                    {
+                        resolvedSenderId = await _context.Staff.Where(s => s.IsActive).Select(s => s.Id).FirstOrDefaultAsync();
+                    }
+                }
+
+                if (resolvedSenderId == 0)
+                {
+                    TempData["MessageError"] = "No active staff found to send message.";
+                    return RedirectToAction(nameof(Tasks));
+                }
+
+                var message = new LiveStock.Core.Models.Message
+                {
+                    SenderId = resolvedSenderId,
+                    RecipientId = recipientId,
+                    Content = content,
+                    IsBroadcast = recipientId == null,
+                    SentAt = DateTime.UtcNow
+                };
+
+                _context.Messages.Add(message);
+                await _context.SaveChangesAsync();
+
+                var role = HttpContext.Session.GetString("UserRole");
+                if (string.Equals(role, "Employee", StringComparison.OrdinalIgnoreCase))
+                {
+                    return RedirectToAction("Dashboard", "Employee");
+                }
                 return RedirectToAction(nameof(Tasks));
             }
-
-            var message = new LiveStock.Core.Models.Message
+            catch (Exception ex)
             {
-                SenderId = resolvedSenderId,
-                RecipientId = recipientId,
-                Content = content,
-                IsBroadcast = recipientId == null,
-                SentAt = DateTime.UtcNow
-            };
-
-            _context.Messages.Add(message);
-            await _context.SaveChangesAsync();
-
-            var role = HttpContext.Session.GetString("UserRole");
-            if (string.Equals(role, "Employee", StringComparison.OrdinalIgnoreCase))
-            {
-                return RedirectToAction("Dashboard", "Employee");
+                _logger.LogError(ex, "Error sending message to recipientId={RecipientId}", recipientId);
+                return StatusCode(500);
             }
-            return RedirectToAction(nameof(Tasks));
         }
         #endregion
 
@@ -1536,10 +1647,12 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public async Task<IActionResult> AddMedicalRecord(string animalType, DateTime TreatmentDate, string Treatment, string? Veterinarian, decimal? Cost, string? Notes, int? SheepId, int? CowId)
         {
-            if (string.IsNullOrWhiteSpace(animalType) || string.IsNullOrWhiteSpace(Treatment))
+            try
             {
-                return BadRequest("Missing required fields");
-            }
+                if (string.IsNullOrWhiteSpace(animalType) || string.IsNullOrWhiteSpace(Treatment))
+                {
+                    return BadRequest("Missing required fields");
+                }
 
             var record = new MedicalRecord
             {
@@ -1562,6 +1675,12 @@ namespace LiveStock.Web.Controllers
             if (animalType == "Cow")
                 return RedirectToAction(nameof(CowDetails), new { id = CowId });
             return RedirectToAction(nameof(Dashboard));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding medical record for animalType={AnimalType}", animalType);
+                return StatusCode(500);
+            }
         }
 
         #endregion

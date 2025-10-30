@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QHoc0howgv4=",
+  "dgSpecHash": "IELFALjDv9o=",
   "success": true,
-  "projectFilePath": "D:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj",
+  "projectFilePath": "d:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Alexi\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Alexi\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

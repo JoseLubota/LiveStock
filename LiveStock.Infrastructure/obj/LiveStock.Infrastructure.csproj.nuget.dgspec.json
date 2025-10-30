@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "D:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj": {}
+    "d:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj": {}
   },
   "projects": {
     "D:\\repos\\LiveStock\\LiveStock.Core\\LiveStock.Core.csproj": {
@@ -69,14 +69,14 @@
         }
       }
     },
-    "D:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj": {
+    "d:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj",
+        "projectUniqueName": "d:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj",
         "projectName": "LiveStock.Infrastructure",
-        "projectPath": "D:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj",
+        "projectPath": "d:\\repos\\LiveStock\\LiveStock.Infrastructure\\LiveStock.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\Alexi\\.nuget\\packages\\",
-        "outputPath": "D:\\repos\\LiveStock\\LiveStock.Infrastructure\\obj\\",
+        "outputPath": "d:\\repos\\LiveStock\\LiveStock.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -7,14 +7,16 @@ namespace LiveStock.Web.Service
     {
         //----------------------------------------------------------
         public readonly string conString;
+        private readonly ILogger<adminService> _logger;
 
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         // "Initializes admin service with DB connection string"
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
-        public adminService(IConfiguration configuration)
+        public adminService(IConfiguration configuration, ILogger<adminService> logger)
         {
             conString = configuration.GetConnectionString("AzureConString");
+            _logger = logger;
         }
         //----------------------------------------------------------
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -22,16 +24,17 @@ namespace LiveStock.Web.Service
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         public int checkUser(string email, string password)
         {
-            int userID = -1;
-
-            using(SqlConnection con = new SqlConnection(conString))
+            try
             {
-                string sql = "SELECT ID FROM Admin WHERE email = @Email AND password = @Password";
-                SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@Email", email);
-                cmd.Parameters.AddWithValue("@Password", password);
-                try
+                int userID = -1;
+
+                using(SqlConnection con = new SqlConnection(conString))
                 {
+                    string sql = "SELECT ID FROM Admin WHERE email = @Email AND password = @Password";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@Password", password);
+
                     con.Open();
                     object result = cmd.ExecuteScalar();
                     if (result != null && result != DBNull.Value)
@@ -39,13 +42,14 @@ namespace LiveStock.Web.Service
                         userID = Convert.ToInt32(result);
                     }
                 }
-                catch (Exception)
-                {
-                    throw;
-                }
-            }
 
-            return userID;
+                return userID;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "checkUser failed for email {Email}", email);
+                return -1;
+            }
         }
         //------------------------------------------------------------------------------------------------------------
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
