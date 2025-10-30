@@ -174,7 +174,7 @@
                                         Average Age
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        <!--   (Model.Any() ? Model.Average(c => c.BirthDate).ToString("F1") : "0") years -->
+                                        @(Model.Any() ? Model.Average( s => (DateTime.Now - s.BirthDate.ToDateTime(TimeOnly.MinValue)).TotalDays / 365.25).ToString("F1") : "N/A") years
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -279,7 +279,12 @@
                                                     }
                                                 </td>
                                                 <td>
-                                                    @{ var s = cow.Status ?? (cow.IsActive ? "Active" : "Inactive"); var cls = (s.IndexOf("active", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-success" : (s.IndexOf("vacc", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-info" : (s.IndexOf("pending", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-warning" : (s.IndexOf("inactive", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-danger" : "bg-secondary"; }
+                                                    @{ 
+                                                        var s = cow.Status ?? (cow.IsActive ? "Active": "Inactive");
+                                                        var cls =
+                                                            (s.IndexOf("inactive", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-danger" : 
+                                                            (s.IndexOf("active", System.StringComparison.OrdinalIgnoreCase) >= 0) ? "bg-success" : "bg-secondary"; 
+                                                    }
                                                     <span class="badge @cls">@s</span>
                                                 </td>
                                                 <td>
