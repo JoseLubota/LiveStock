@@ -16,17 +16,19 @@ namespace LiveStock.Web.Controllers
         private readonly sheepService _sheepService;
         private readonly cowService _cowService;
         private readonly INoteService _noteService;
+        private readonly adminService _adminService;
         private readonly ILogger<ManagementController> _logger;
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         // "Initializes management controller with DbContext and livestock/note services"
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
-        public ManagementController(LiveStockDbContext context, sheepService sheepService, cowService cowService, INoteService noteService, ILogger<ManagementController> logger)
+        public ManagementController(LiveStockDbContext context, sheepService sheepService, cowService cowService, INoteService noteService, adminService adminService, ILogger<ManagementController> logger)
         {
             _context = context;
             _sheepService = sheepService;
             _cowService = cowService;
             _noteService = noteService;
+            _adminService = adminService;
             _logger = logger;
         }
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -767,7 +769,8 @@ namespace LiveStock.Web.Controllers
             var staff = await _context.Staff
                 .Where(s => s.IsActive)
                 .ToListAsync();
-
+            // Include admins for management on the same dashboard
+            ViewBag.Admins = _adminService.ListAdmins();
             return View(staff);
         }
 
@@ -784,18 +787,56 @@ namespace LiveStock.Web.Controllers
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         // "Adds a staff member, sets defaults, and saves"
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
-        public async Task<IActionResult> AddStaff(Staff staff)
+        public async Task<IActionResult> AddStaff(Staff staff, string? adminPassword)
         {
-            if (ModelState.IsValid)
+            try
             {
-                staff.CreatedAt = DateTime.UtcNow;
-                staff.IsActive = true;
-                _context.Staff.Add(staff);
-                await _context.SaveChangesAsync();
+                if (!ModelState.IsValid)
+                {
+                    return View(staff);
+                }
+
+                var role = (staff.Role ?? string.Empty).Trim();
+
+                if (string.Equals(role, "Farmer", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (string.IsNullOrWhiteSpace(staff.Email))
+                    {
+                        TempData["ErrorMessage"] = "Email is required for Farmer (Admin) accounts.";
+                        return RedirectToAction(nameof(Staff));
+                    }
+                    if (string.IsNullOrWhiteSpace(adminPassword))
+                    {
+                        TempData["ErrorMessage"] = "Password is required for Farmer (Admin) accounts.";
+                        return RedirectToAction(nameof(Staff));
+                    }
+
+                    var adminId = _adminService.CreateAdmin(staff.Email!, adminPassword!);
+                    if (adminId <= 0)
+                    {
+                        TempData["ErrorMessage"] = "Failed to create Farmer (Admin). Please try again.";
+                        return RedirectToAction(nameof(Staff));
+                    }
+
+                    TempData["SuccessMessage"] = "Farmer has been added as Admin successfully.";
+                    return RedirectToAction(nameof(Staff));
+                }
+                else
+                {
+                    staff.CreatedAt = DateTime.UtcNow;
+                    staff.IsActive = true;
+                    _context.Staff.Add(staff);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Staff has been added successfully.";
+                    return RedirectToAction(nameof(Staff));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding staff/admin");
+                TempData["ErrorMessage"] = "An error occurred while adding staff/admin.";
                 return RedirectToAction(nameof(Staff));
             }
-
-            return View(staff);
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -853,6 +894,54 @@ namespace LiveStock.Web.Controllers
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Staff));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Updates an admin's email and optionally password"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        public IActionResult EditAdmin(int id, string email, string? password)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(email))
+                {
+                    TempData["ErrorMessage"] = "Admin email is required.";
+                    return RedirectToAction(nameof(Staff));
+                }
+
+                var ok = _adminService.UpdateAdmin(id, email, password);
+                TempData[ok ? "SuccessMessage" : "ErrorMessage"] = ok ? "Admin updated successfully." : "Failed to update admin.";
+                return RedirectToAction(nameof(Staff));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating admin {Id}", id);
+                TempData["ErrorMessage"] = "An error occurred while updating admin.";
+                return RedirectToAction(nameof(Staff));
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        // "Deletes an admin account"
+        //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
+        public IActionResult DeleteAdmin(int id)
+        {
+            try
+            {
+                var ok = _adminService.DeleteAdmin(id);
+                TempData[ok ? "SuccessMessage" : "ErrorMessage"] = ok ? "Admin deleted successfully." : "Failed to delete admin.";
+                return RedirectToAction(nameof(Staff));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting admin {Id}", id);
+                TempData["ErrorMessage"] = "An error occurred while deleting admin.";
+                return RedirectToAction(nameof(Staff));
+            }
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -1410,8 +1499,7 @@ namespace LiveStock.Web.Controllers
                     return RedirectToAction("Login", "Account");
                 }
                 int userId = int.Parse(userIdStr);
-                var query = _context.Notes
-                    .Where(n => n.CreatedByUserId == userId);
+                var query = _context.Notes.AsQueryable();
 
                 if (!string.IsNullOrWhiteSpace(category) && !string.Equals(category, "All", StringComparison.OrdinalIgnoreCase))
                 {

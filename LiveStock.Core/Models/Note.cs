@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using LiveStock.Core.Validation;
 
 namespace LiveStock.Core.Models
 {
@@ -8,14 +9,17 @@ namespace LiveStock.Core.Models
 
         [Required]
         [StringLength(100)]
+        [SafeString(ErrorMessage = "Title contains potentially unsafe content")]
         public string Title { get; set; } = string.Empty;
 
         [Required]
         [StringLength(4000)]
+        [SafeString(ErrorMessage = "Content contains potentially unsafe content")]
         public string Content { get; set; } = string.Empty;
 
         [Required]
         [StringLength(50)]
+        [RegularExpression("^(Sheep|Cow|Tasks|Camps|Finance|Staff)$", ErrorMessage = "Invalid category")] 
         public string Category { get; set; } = string.Empty; // "Sheep", "Cow", "Tasks", "Camps", "Finance", "Staff"
 
         [Required]

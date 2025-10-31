@@ -16,12 +16,16 @@ namespace LiveStock.Core.Models
         
         [Required]
         [Phone]
+        [StringLength(20, ErrorMessage = "Phone number cannot exceed 20 characters")]
         public string PhoneNumber { get; set; } = string.Empty;
         
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address")]
+        [StringLength(100, ErrorMessage = "Email cannot exceed 100 characters")]
         public string? Email { get; set; }
         
         [Required]
+        [StringLength(20, ErrorMessage = "Role cannot exceed 20 characters")]
+        [RegularExpression(@"^(Farmer|Staff)$", ErrorMessage = "Role must be either 'Farmer' or 'Staff'")]
         public string Role { get; set; } = string.Empty; // "Farmer", "Staff"
         
         public bool IsActive { get; set; } = true;
@@ -36,4 +40,4 @@ namespace LiveStock.Core.Models
         
         public virtual ICollection<Message> ReceivedMessages { get; set; } = new List<Message>();
     }
-} 
+}

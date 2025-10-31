@@ -5,6 +5,7 @@ using LiveStock.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using LiveStock.Web.Service;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace LiveStock.Web.Controllers
 {
@@ -13,15 +14,17 @@ namespace LiveStock.Web.Controllers
         private readonly adminService _adminService;
         private readonly LiveStockDbContext _context;
         private readonly ILogger<AccountController> _logger;
+        private readonly IConfiguration _configuration;
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
         // "Initializes account controller with admin service and DB context"
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
-        public AccountController(adminService adminService, LiveStockDbContext context, ILogger<AccountController> logger)
+        public AccountController(adminService adminService, LiveStockDbContext context, ILogger<AccountController> logger, IConfiguration configuration)
         {
             _adminService = adminService;
             _context = context;
             _logger = logger;
+            _configuration = configuration;
         }
 
         //-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_ -_-_-_-_-_-_-_-_
@@ -59,7 +62,8 @@ namespace LiveStock.Web.Controllers
                         return RedirectToAction("Dashboard", "Management");
                     }
 
-                    if (model.Email?.Trim().ToLower() == "staff@gmail.com" && model.Password == "staff123")
+                    var demoStaffPassword = _configuration["DemoStaffPassword"];
+                    if (model.Email?.Trim().ToLower() == "staff@gmail.com" && model.Password == demoStaffPassword)
                     {
                         var staffId = await _context.Staff.Where(s => s.IsActive).Select(s => s.Id).FirstOrDefaultAsync();
                         if (staffId == 0)

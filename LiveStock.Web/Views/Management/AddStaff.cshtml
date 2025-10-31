@@ -124,15 +124,15 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label asp-for="Email" class="form-label">Email (optional):</label>
-                                            <input asp-for="Email" class="form-control" type="email" placeholder="Enter email address" />
+                                            <label asp-for="Email" class="form-label">Email:</label>
+                                            <input asp-for="Email" id="AddStaffEmail" class="form-control" type="email" placeholder="Enter email address" />
                                             <span asp-validation-for="Email" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label asp-for="Role" class="form-label">Role:</label>
-                                            <select asp-for="Role" class="form-control" required>
+                                            <select asp-for="Role" id="AddStaffRole" class="form-control" required>
                                                 <option value="">Select Role</option>
                                                 <option value="Farmer">Farmer</option>
                                                 <option value="Staff">Staff</option>
@@ -140,6 +140,10 @@
                                             <span asp-validation-for="Role" class="text-danger"></span>
                                         </div>
                                     </div>
+                                </div>
+                                <div id="AdminPasswordSection" class="mb-3" style="display:none;">
+                                    <label class="form-label">Admin Password:</label>
+                                    <input type="password" class="form-control" name="adminPassword" id="AddStaffAdminPassword" placeholder="Set admin password" />
                                 </div>
                                 
                                 <div class="d-flex justify-content-end gap-2">
@@ -162,8 +166,9 @@
                             <p><strong>Full Name:</strong> Enter the complete name of the staff member.</p>
                             <p><strong>Employee ID:</strong> Unique identification number for the employee.</p>
                             <p><strong>Phone Number:</strong> Primary contact number for the staff member.</p>
-                            <p><strong>Email:</strong> Optional email address for communication.</p>
-                            <p><strong>Role:</strong> Select between Farmer (owner/manager) or Staff (employee).</p>
+                            <p><strong>Email:</strong> Required for Farmer (Admin) accounts; optional for Staff.</p>
+                            <p><strong>Password:</strong> Required only when role is Farmer to access Admin dashboard.</p>
+                            <p><strong>Role:</strong> Select between Farmer (Admin) or Staff (employee).</p>
                         </div>
                     </div>
                     
@@ -223,4 +228,32 @@
         border-color: var(--medium-green);
         box-shadow: 0 0 0 0.2rem rgba(78, 113, 69, 0.25);
     }
-</style> 
+</style>
+
+<script>
+    (function() {
+        function toggleAdminRequirements() {
+            const role = document.getElementById('AddStaffRole').value;
+            const email = document.getElementById('AddStaffEmail');
+            const adminSection = document.getElementById('AdminPasswordSection');
+            const adminPassword = document.getElementById('AddStaffAdminPassword');
+            if (role === 'Farmer') {
+                email.setAttribute('required', 'required');
+                adminSection.style.display = '';
+                adminPassword.setAttribute('required', 'required');
+            } else {
+                email.removeAttribute('required');
+                adminSection.style.display = 'none';
+                adminPassword.removeAttribute('required');
+                adminPassword.value = '';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleSelect = document.getElementById('AddStaffRole');
+            if (roleSelect) {
+                roleSelect.addEventListener('change', toggleAdminRequirements);
+                toggleAdminRequirements();
+            }
+        });
+    })();
+</script>
