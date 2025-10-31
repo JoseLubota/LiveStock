@@ -3,6 +3,7 @@ using LiveStock.Infrastructure.Data;
 using LiveStock.Web.Service;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,19 @@ builder.Services.AddScoped<sheepService>();
 builder.Services.AddScoped<cowService>();
 builder.Services.AddScoped<INoteService,noteService>();
 builder.Services.AddScoped<IStaffService, staffService>();
+
+// Add Rate Limit
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddPolicy("fixed-by-user", HttpContext =>
+    RateLimitPartition.GetFixedWindowLimiter(
+        partitionKey: HttpContext.User.Identity?.Name?.ToString(),
+        factory: _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = 10,
+            Window = TimeSpan.FromMinutes(1)
+        }));
+});
 
 // Add Entity Framework with Azure SQL Server
 builder.Services.AddDbContext<LiveStockDbContext>(options =>
@@ -42,22 +56,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-// Serve images from the project Images folder
-/*
-var imagePath = Path.Combine(builder.Environment.ContentRootPath, "Images");
-if (Directory.Exists(imagePath))
-{
-    app.UseStaticFiles(new StaticFileOptions
-    {
-        FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Images")),
-        RequestPath = "/Images"
-    });
-}
-else
-{
-    Console.WriteLine($"[Warning] 'Images' folder not found at {imagePath}");
-}
- */
+
 
 app.UseRouting();
 
