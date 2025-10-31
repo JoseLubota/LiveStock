@@ -2,6 +2,8 @@
 
 A comprehensive livestock management system built with ASP.NET Core, designed for modern farm operations. This system provides both a public-facing agriculture website and an internal management system for tracking livestock, staff, tasks, and farm operations.
 
+## Link to the Azure hosted website: https://live-stock.azurewebsites.net/
+
 ## 🌾 Features
 
 ### Public Website
